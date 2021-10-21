@@ -1,0 +1,90 @@
+<div class="sb-nav-fixed" [ngClass]="{'sb-sidenav-toggled': isSidebarToggle}">
+    <nav class=" sb-topnav navbar navbar-expand navbar-dark bg-dark" *ngIf="isAuthenticated">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="#">Royal Car Rentals</a>
+        <!-- Sidebar Toggle-->
+        <button (click)="toggleSidebar()" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"
+            href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <div class="d-none d-md-inline-block ms-auto">
+
+        </div>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="navbarDropdown">
+                    <!-- <li>
+                        <hr class="dropdown-divider" />
+                    </li> -->
+                    <li (click)="signOut()"><a class="dropdown-item p-3">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav" *ngIf="isAuthenticated">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <!-- <div class="sb-sidenav-menu-heading">Core</div> -->
+                        <a class="nav-link" routerLink="dashboard">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+
+                        <a class="nav-link" routerLink="customer">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Customers
+                        </a>
+
+                        <a class="nav-link" routerLink="vehicle">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Vehicles
+                        </a>
+
+                        <a class="nav-link" routerLink="driver">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Drivers
+                        </a>
+
+                        <a class="nav-link" routerLink="inquiries">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Inquiries
+                        </a>
+
+                        <a class="nav-link" routerLink="reports">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Reports
+                        </a>
+
+                        <a class="nav-link" routerLink="seeting">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Setting
+                        </a>
+                        <!-- <div class="sb-sidenav-menu-heading">Interface</div> -->
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Administrator
+                </div>
+            </nav>
+        </div>
+
+        <div id="layoutSidenav_content" [ngClass]="{'is-authenticated-toggled': !isAuthenticated}">
+            <main>
+                <router-outlet></router-outlet>
+            </main>
+            <footer class="py-4 bg-light mt-auto" *ngIf="isAuthenticated">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>

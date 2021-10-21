@@ -1,0 +1,141 @@
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="../../../assets/images/slider-bg1.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="../../../assets/images/slider-bg2.png" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="../../../assets/images/slider-bg1.png" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<div class="container">
+    <section class="m-5">
+        <h1 class="text-center">Welcome To Car Rentals Pakistan</h1>
+        <h4 class="text-center">Best Rent a Car Islamabad Company</h4>
+        <h6 class="text-center">Discover your Dream Cars for Rent at Car Rentals Pakistan.
+            <div class="mt-4">
+                <div class="row">
+                    <div class="col-md-4" *ngFor="let product of products">
+
+                        <div class="outer-card-box mb-3">
+                            <div class="card-box-image" [ngStyle]="{'background-image': 'url(../../../assets/images/Honda-Civic.jpg)'}">
+                                
+                            </div>
+
+                            <table class="w-100">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>{{product.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Price</td>
+                                    <td>7500 PKR / Per Day</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="d-block">
+                                            <button style="background-color: black;" class="btn btn-info w-100" type="button">More Detail</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </h6>
+    </section>
+
+
+    <section style="text-align: center;  padding: 4em 0;">
+        <h2 class="mb-5">RENTING CARS HAS NEVER BEEN EASIER</h2>
+
+        <div class="row">
+            <div class="col-md-3">
+                <img src="../../../assets/images/select-car.png" class="w-25" alt="...">
+                <h6>SELECT</h6>
+                <p>
+                    Select the category of vehicle you want
+                </p>
+            </div>
+            <div class="col-md-3">
+                <img src="../../../assets/images/book-car.png" class="w-25" alt="...">
+                <h6>BOOK</h6>
+                <p>
+                    Use your Roamer app to complete your booking request
+                </p>
+            </div>
+            <div class="col-md-3">
+                <img src="../../../assets/images/certified-driver.png" class="w-25" alt="...">
+                <h6>RIDE</h6>
+                <p>
+                    A certified Driver will pick you up and drive you around
+                </p>
+            </div>
+            <div class="col-md-3">
+                <img src="../../../assets/images/rate-trip.png" class="w-25" alt="...">
+                <h6>RATE</h6>
+                <p>At the end of your booking rate your Driver</p>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section style="    text-align: center;  padding: 4em 0;">
+        <h2 class="mb-5">RELIABLE OUT OF CITY TRAVEL</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="../../../assets/images/select-car.png" class="w-25" alt="...">
+                <h6>GO ANYWHERE</h6>
+                <p>
+                    Wherever you're headed, count on us for a ride. Just remember to pay tolls and taxes.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <img src="../../../assets/images/book-car.png" class="w-25" alt="...">
+                <h6>MULTIPLE CAR OPTIONS</h6>
+                <p>
+                    We have a variety of different car categories. Choose whichever car type best fits your needs.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <img src="../../../assets/images/certified-driver.png" class="w-25" alt="...">
+                <h6>CERTIFIED VEHICLES</h6>
+                <p>
+                    Your safety is our priority. All our chauffeurs are screened and our cars are inspected
+                    periodically.
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+
+
+</div>

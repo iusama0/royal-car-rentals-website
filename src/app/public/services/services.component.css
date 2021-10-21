@@ -1,0 +1,25 @@
+.services-us-bannber-wrapper {
+    background-image: url('../../../assets/images/contact-us-1.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.services-us-bannber-text{
+    color: #fff;
+    font-size: 60px;
+    font-weight: 700;
+    width: 100%;
+}
+
+
+.services-list-wrapper {
+    border: 2px solid #dedede;
+    border-radius: 12px;
+    padding: 12px;
+    height: 100%;
+}
