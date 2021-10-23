@@ -6,7 +6,7 @@ export class Vehicle {
     registrationNumber: string;
     color: string;
     status: string;
-    availability: string;
+    availability: boolean;
     price: number;
     imagesPath: string;
     dateAdded: string;
