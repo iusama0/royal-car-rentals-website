@@ -94,7 +94,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let vehicle of vehicles">
-                        <td>{{ vehicle.id }}</td>
+                        <td class="vid">{{ vehicle.id }}</td>
                         <td>{{ vehicle.makerName+"/"+ vehicle.modelName+"/"+ vehicle.modelYear}}</td>
                         <td>{{ vehicle.registrationNumber }}</td>
                         <td class="text-center">{{ vehicle.status }}</td>
@@ -102,9 +102,9 @@
                         <td class="text-center">{{ vehicle.price }}</td>
                         <td>{{ vehicle.dateAdded | date:'short'}}</td>
                         <td>
-                            <button (click)="viewVehicle()">VIEW</button> |
-                            <button (click)="editVehicle()">EDIT</button> |
-                            <button (click)="deleteVehicle()">DELETE</button>
+                            <a class="viewVehicleC">VIEW</a> |
+                            <a class="editVehicleC">EDIT</a> |
+                            <a class="deleteVehicleC">DELETE</a>
                         </td>
                     </tr>
                 </tbody>

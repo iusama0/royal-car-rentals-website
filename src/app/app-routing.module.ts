@@ -5,6 +5,7 @@ import { AdminCustomerComponent } from './admin/admin-customer/admin-customer.co
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { AdminDriverComponent } from './admin/admin-driver/admin-driver.component';
 import { AdminSigninComponent } from './admin/admin-signin/admin-signin.component';
+import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-vehicle-detail.component';
 import { AdminVehicleComponent } from './admin/admin-vehicle/admin-vehicle.component';
 import { AboutUsComponent } from './public/about-us/about-us.component';
 import { BookingComponent } from './public/booking/booking.component';
@@ -41,6 +42,7 @@ const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'signin', component: AdminSigninComponent },
       { path: 'vehicle', component: AdminVehicleComponent },
+      { path: 'vehicle-detail', component: AdminVehicleDetailComponent },
       { path: 'driver', component: AdminDriverComponent },
       { path: 'customer', component: AdminCustomerComponent },
     ],

@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Vehicle } from 'src/app/Models/vehicle.model';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { VehicleService } from 'src/app/services/vehicle.service';
 import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
-
+declare var $: any
 
 @Component({
   selector: 'app-admin-vehicle',
@@ -73,6 +73,23 @@ export class AdminVehicleComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVehicles();
+    let _this = this;
+    $(document).on('click', '.viewVehicleC', function (this: any) {
+      var _id = $(this).parents("tr").find(".vid").text();
+      let data = _this.vehicles.find(i => i.id == _id);
+      _this.viewVehicle(data);
+    });
+
+    $(document).on('click', '.editVehicleC', function (this: any) {
+      var _id = $(this).parents("tr").find(".vid").text();
+      let data = _this.vehicles.find(i => i.id == _id);
+      _this.editVehicle(data);
+    });
+    $(document).on('click', '.deleteVehicleC', function (this: any) {
+      var _id = $(this).parents("tr").find(".vid").text();
+      let data = _this.vehicles.find(i => i.id == _id);
+      _this.deleteVehicle(data);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -110,7 +127,7 @@ export class AdminVehicleComponent implements OnInit {
 
     const formData = new FormData();
 
-    for (var i = 0; i < this.files.length; i++) {
+    for (var i = 0; i < 2; i++) {
       formData.append("Files", this.files[i]);
     }
 
@@ -138,16 +155,28 @@ export class AdminVehicleComponent implements OnInit {
     this.files = [];
   }
 
-  viewVehicle() {
+  viewVehicle(data: any) {
     console.log("viewVehicle")
+    console.log(data)
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+          "user": JSON.stringify(data)
+      }
+    };
+
+    this.router.navigate(["admin/vehicle-detail"],  navigationExtras);
+
+    //this.router.navigateByUrl("admin/vehicle-detail", { state: { data: data } });
   }
 
-  editVehicle() {
+  editVehicle(data: any) {
     console.log("editVehicle")
+    console.log(data)
   }
 
-  deleteVehicle() {
+  deleteVehicle(data: any) {
     console.log("deleteVehicle")
+    console.log(data)
   }
 
 }

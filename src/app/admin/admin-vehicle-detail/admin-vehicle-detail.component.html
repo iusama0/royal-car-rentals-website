@@ -1,0 +1,82 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Vehicles Information</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">admin/vehicle-detail</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            Vehicle Information
+        </div>
+        <div class="card-body">
+            <table class="table caption-top">
+                <tbody>
+                    <tr>
+                        <td>Vehicle Id </td>
+                        <td>: </td>
+                        <td>{{vehicle.id}}</td>
+                        <td>Maker Name : {{vehicle.makerName}}</td>
+                        <td> : </td>
+                        <td>{{vehicle.makerName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Model Name</td>
+                        <td> : </td>
+                        <td>{{vehicle.modelName}}</td>
+                        <td>Model Year </td>
+                        <td>: </td>
+                        <td>{{vehicle.modelYear}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Registration# </td>
+                        <td>:</td>
+                        <td>{{vehicle.registrationNumber}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Color </td>
+                        <td>:</td>
+                        <td>{{vehicle.color}}</td>
+                        <td>Price/Day </td>
+                        <td>:</td>
+                        <td> {{vehicle.price}}</td>
+                    </tr>
+                    <tr>
+                        <td>Status </td>
+                        <td>:</td>
+                        <td>{{vehicle.status}}</td>
+                        <td>Availability </td>
+                        <td>:</td>
+                        <td>{{vehicle.availability}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date Added </td>
+                        <td>:</td>
+                        <td>{{vehicle.dateAdded | date:'short'}}</td>
+                        <td>Date Updated </td>
+                        <td>:</td>
+                        <td>{{vehicle.dateUpdated | date:'short'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Vehicle Pictures
+        </div>
+        <div class="card-body">
+          
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Vehicle Report
+        </div>
+        <div class="card-body">
+          
+        </div>
+    </div>
+</div>
