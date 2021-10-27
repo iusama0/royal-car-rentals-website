@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Vehicle } from 'src/app/Models/vehicle.model';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +15,9 @@ declare var $: any
 })
 export class AdminVehicleComponent implements OnInit {
   @ViewChild('closebutton') closebutton: any;
+  @ViewChild('showdeletemodel') showdeletemodel: any;
+  @ViewChild('hidedeletemodel') hidedeletemodel: any;
+  @ViewChild('imagesPath') uploadImagesInput: ElementRef;
   newVehicle: Vehicle = {
     id: 0,
     makerName: '',
@@ -30,6 +33,7 @@ export class AdminVehicleComponent implements OnInit {
     dateUpdated: new Date().toISOString()
   };
   files: string[] = [];
+  fileMessage = '';
   title = 'datatables';
   dtOptions: DataTables.Settings = {
     //default number of records per page
@@ -55,15 +59,11 @@ export class AdminVehicleComponent implements OnInit {
 
   //{ data: 'modelYear' }, { data: 'Email' }, { data: 'IsActive' }, { defaultContent: '', orderable: false }
   @ViewChild(DataTableDirective)
-
-
   dtElement: DataTableDirective;
-
-
-
-
   dtTrigger: Subject<any> = new Subject();
+
   public vehicles: Vehicle[];
+  public deleteVehicleInfo: Vehicle;
 
   constructor(
     public vehicleService: VehicleService,
@@ -76,18 +76,18 @@ export class AdminVehicleComponent implements OnInit {
     let _this = this;
     $(document).on('click', '.viewVehicleC', function (this: any) {
       var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.vehicles.find(i => i.id == _id);
+      let data = _this.vehicles.find(i => i.id == parseInt(_id));
       _this.viewVehicle(data);
     });
 
     $(document).on('click', '.editVehicleC', function (this: any) {
       var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.vehicles.find(i => i.id == _id);
+      let data = _this.vehicles.find(i => i.id == parseInt(_id));
       _this.editVehicle(data);
     });
     $(document).on('click', '.deleteVehicleC', function (this: any) {
       var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.vehicles.find(i => i.id == _id);
+      let data = _this.vehicles.find(i => i.id == parseInt(_id));
       _this.deleteVehicle(data);
     });
   }
@@ -116,9 +116,18 @@ export class AdminVehicleComponent implements OnInit {
     );
   }
 
-  onFileChange(event: any) {
-    for (var i = 0; i < event.target.files.length; i++) {
-      this.files.push(event.target.files[i]);
+  onFileChange(event: any) { 
+    this.files = [];
+    var fileCount = event.target.files.length;
+
+    if (fileCount <= 3) {
+      this.fileMessage = '';
+      for (var i = 0; i < event.target.files.length; i++) {
+        this.files.push(event.target.files[i]);
+      }
+    } else {
+      this.fileMessage = "You can select only 3 files"
+      this.uploadImagesInput.nativeElement.value = '';
     }
   }
 
@@ -127,7 +136,7 @@ export class AdminVehicleComponent implements OnInit {
 
     const formData = new FormData();
 
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 3; i++) {
       formData.append("Files", this.files[i]);
     }
 
@@ -139,11 +148,11 @@ export class AdminVehicleComponent implements OnInit {
         this.rerender();
         this.resetForm(form);
         this.closebutton.nativeElement.click();
-        this.toastr.success('', 'Administration Login Successfully');
+        this.toastr.success('', 'Vehicle Added Successfully');
       },
       error => {
         form.form.reset();
-        this.toastr.error('', 'Incorrect Email and Password!');
+        this.toastr.error('', 'Vehicle Adding Error');
         console.log("Error: " + error);
       }
     );
@@ -151,6 +160,7 @@ export class AdminVehicleComponent implements OnInit {
 
   resetForm(form: NgForm) {
     form.form.reset();
+    this.uploadImagesInput.nativeElement.value = '';
     this.newVehicle = new Vehicle();
     this.files = [];
   }
@@ -160,11 +170,11 @@ export class AdminVehicleComponent implements OnInit {
     console.log(data)
     let navigationExtras: NavigationExtras = {
       queryParams: {
-          "user": JSON.stringify(data)
+        "user": JSON.stringify(data)
       }
     };
 
-    this.router.navigate(["admin/vehicle-detail"],  navigationExtras);
+    this.router.navigate(["admin/vehicle-detail"], navigationExtras);
 
     //this.router.navigateByUrl("admin/vehicle-detail", { state: { data: data } });
   }
@@ -175,8 +185,34 @@ export class AdminVehicleComponent implements OnInit {
   }
 
   deleteVehicle(data: any) {
-    console.log("deleteVehicle")
     console.log(data)
+    this.deleteVehicleInfo = data;
+    this.showdeletemodel.nativeElement.click();
+
+  }
+
+  confirmDeleteVehicle() {
+    console.log("confirmDeleteVehicle: " + this.deleteVehicleInfo)
+    this.vehicleService.deleteVehicle(this.deleteVehicleInfo).subscribe(
+      (response: any) => {
+
+        // this.vehicles.(); remove vehicle
+        // for (var i = 0; i < this.vehicles.length; i++) {
+        //   let obj = this.vehicles[i];
+        //   if (this.vehicles.indexOf(obj) !== -1) {
+        //     this.vehicles.splice(i, 1);
+        //   }
+        // }
+
+        this.rerender();
+        this.hidedeletemodel.nativeElement.click();
+        this.toastr.success('', 'Vehicle Deleted Successfully');
+      },
+      error => {
+        this.toastr.error('', 'Error Vehicle Deleting');
+        console.log("Error: " + error);
+      }
+    );
   }
 
 }

@@ -13,6 +13,14 @@ export class VehicleService {
     return this.http.post(this.baseUrl, data);
   }
 
+  uploadVehiclePicture(id: number, data: FormData) {
+    return this.http.put(this.baseUrl + "/" + id, data);
+  }
+
+  removeVehiclePicture(id: number, data: string) {
+    return this.http.put(this.baseUrl + "/" + id, data);
+  }
+
   editVehicle(data: Vehicle) {
     return this.http.put(this.baseUrl + "/" + data.id, data);
   }
@@ -22,7 +30,7 @@ export class VehicleService {
   }
 
   getVehicle(data: Vehicle) {
-    return this.http.get(this.baseUrl+ "/" + data.id);
+    return this.http.get(this.baseUrl + "/" + data.id);
   }
 
   getVehicles() {

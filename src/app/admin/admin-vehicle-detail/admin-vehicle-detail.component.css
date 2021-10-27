@@ -1,0 +1,11 @@
+.delete-picture-wapper {
+    position: relative;
+    margin-right: 1rem;
+}
+
+.delete-picture {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+}
