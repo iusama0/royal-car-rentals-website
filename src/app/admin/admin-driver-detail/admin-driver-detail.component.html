@@ -1,0 +1,212 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Driver Information</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">admin/driver-detail</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            Driver Information
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editDriverModel">
+                    Edit Information
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table caption-top">
+                <tbody>
+                    <tr>
+                        <td>Vehicle Id </td>
+                        <td>: </td>
+                        <td>{{driver?.id}}</td>
+                        <td rowspan="4" colspan="3">
+                            <div class="delete-picture-wapper" (click)="removePicture()">
+                                <div class="picture-inner-wapper"
+                                    [ngStyle]="{'background-image': 'url('+'assets/adminUploads/drivers/'+ driver?.profilePicture +')'}">
+                                </div>
+                                <!-- <div class="delete-picture">
+                                    DELETE 
+                                </div> -->
+                            </div>
+                            <!-- <img [src]="'assets/adminUploads/drivers/'+ driver?.profilePicture" alt=""> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td> : </td>
+                        <td>{{driver?.firstName+" "+ driver?.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td> : </td>
+                        <td>{{driver?.email}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>PhoneNumber </td>
+                        <td>: </td>
+                        <td>{{driver?.phoneNumber}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Licence No </td>
+                        <td>:</td>
+                        <td>{{driver?.licenceNo}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Is Active </td>
+                        <td>:</td>
+                        <td>
+                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                [ngStyle]="{'background-color': driver?.isActive ? '#198754' : '#dc3545' }">
+                                {{ driver?.isActive }}
+                            </div>
+                        </td>
+                        <td>Availability </td>
+                        <td>:</td>
+                        <td>
+                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                [ngStyle]="{'background-color': driver?.availability ? '#198754' : '#dc3545' }">
+                                {{ driver?.availability }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date Added </td>
+                        <td>:</td>
+                        <td>{{driver?.dateAdded | date:'short'}}</td>
+                        <td>Date Updated </td>
+                        <td>:</td>
+                        <td>{{driver?.dateUpdated | date:'short'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Driver Report
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Start Edit New Driver Modal -->
+<div class="modal fade" id="editDriverModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editDriverModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form novalidate #form="ngForm" (submit)="edit(form)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDriverModelLabel">Edit Information</h5>
+                    <button type="button" class="btn-close" #hideeditmodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="firstName" class="col-form-label">First Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="firstName"
+                                    id="firstName" #firstName="ngModel" [(ngModel)]="editDriverObj.firstName"
+                                    [class.invalid]="firstName.invalid && firstName.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="lastName" class="col-form-label">Last Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="lastName"
+                                    id="lastName" #lastName="ngModel" [(ngModel)]="editDriverObj.lastName"
+                                    [class.invalid]="lastName.invalid && lastName.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="col-form-label">Email:</label>
+                                <input required type="email" class="form-control" name="email" id="email"
+                                    #email="ngModel" [(ngModel)]="editDriverObj.email"
+                                    [class.invalid]="email.invalid && email.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="password" class="col-form-label">Password:</label>
+                                <input required type="text" class="form-control" name="password" id="password"
+                                    #password="ngModel" [(ngModel)]="editDriverObj.password"
+                                    [class.invalid]="password.invalid && password.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="col-form-label">Phone Number:</label>
+                                <input required type="text" class="form-control" name="phoneNumber" id="phoneNumber"
+                                    #phoneNumber="ngModel" [(ngModel)]="editDriverObj.phoneNumber"
+                                    [class.invalid]="phoneNumber.invalid && phoneNumber.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address" class="col-form-label">Address:</label>
+                                <input required type="text" class="form-control" name="address" id="address"
+                                    #address="ngModel" [(ngModel)]="editDriverObj.address"
+                                    [class.invalid]="address.invalid && address.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="availability" class="col-form-label">Choose Availability:</label>
+
+                                <select class="form-control" name="availability" id="availability"
+                                    #availability="ngModel" [(ngModel)]="editDriverObj.availability"
+                                    [class.invalid]="availability.invalid && availability.touched">
+                                    <option value="true">True</option>
+                                    <option selected value="false">False</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="isActive" class="col-form-label">Choose Status:</label>
+
+                                <select class="form-control" name="isActive" id="isActive" #isActive="ngModel"
+                                    [(ngModel)]="editDriverObj.isActive"
+                                    [class.invalid]="isActive.invalid && isActive.touched">
+                                    <option value="true">True</option>
+                                    <option selected value="false">False</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="licenceNo" class="col-form-label">licenceNo:</label>
+                                <input required type="text" class="form-control" name="licenceNo" id="licenceNo"
+                                    #licenceNo="ngModel" [(ngModel)]="editDriverObj.licenceNo"
+                                    [class.invalid]="licenceNo.invalid && licenceNo.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="profilePicture" class="col-form-label">Choose Profile Picture:</label>
+
+                                <input name="profilePicture" id="profilePicture" type="file" class="form-control"
+                                    (change)="onFileChange($event)" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Edit New Driver Modal -->

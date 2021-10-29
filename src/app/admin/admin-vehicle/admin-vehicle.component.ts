@@ -17,7 +17,7 @@ export class AdminVehicleComponent implements OnInit {
   @ViewChild('closebutton') closebutton: any;
   @ViewChild('showdeletemodel') showdeletemodel: any;
   @ViewChild('hidedeletemodel') hidedeletemodel: any;
-  @ViewChild('imagesPath') uploadImagesInput: ElementRef;
+  // @ViewChild('imagesPath') uploadImagesInput: ElementRef;
   newVehicle: Vehicle = {
     id: 0,
     makerName: '',
@@ -116,7 +116,7 @@ export class AdminVehicleComponent implements OnInit {
     );
   }
 
-  onFileChange(event: any) { 
+  onFileChange(event: any) {
     this.files = [];
     var fileCount = event.target.files.length;
 
@@ -127,11 +127,11 @@ export class AdminVehicleComponent implements OnInit {
       }
     } else {
       this.fileMessage = "You can select only 3 files"
-      this.uploadImagesInput.nativeElement.value = '';
+      // this.uploadImagesInput.nativeElement.value = '';
     }
   }
 
-  addVehicle(form: NgForm) {
+  addVehicle(form: NgForm, event: any) {
     console.log(this.newVehicle)
 
     const formData = new FormData();
@@ -140,7 +140,7 @@ export class AdminVehicleComponent implements OnInit {
       formData.append("Files", this.files[i]);
     }
 
-    formData.append("VehicleInfo", JSON.stringify(this.newVehicle));
+    formData.append("Info", JSON.stringify(this.newVehicle));
 
     this.vehicleService.addVehicle(formData).subscribe(
       (response: any) => {
@@ -149,6 +149,9 @@ export class AdminVehicleComponent implements OnInit {
         this.resetForm(form);
         this.closebutton.nativeElement.click();
         this.toastr.success('', 'Vehicle Added Successfully');
+        alert('Uploaded Successfully.');
+        event.preventDefault();
+        event.stopPropagation();
       },
       error => {
         form.form.reset();
@@ -160,23 +163,29 @@ export class AdminVehicleComponent implements OnInit {
 
   resetForm(form: NgForm) {
     form.form.reset();
-    this.uploadImagesInput.nativeElement.value = '';
+    // this.uploadImagesInput.nativeElement.value = '';
     this.newVehicle = new Vehicle();
+    this.newVehicle.availability = false;
+    this.newVehicle.status = 'pending';
+    this.newVehicle.dateAdded = new Date().toISOString();
+    this.newVehicle.dateUpdated = new Date().toISOString();
     this.files = [];
   }
 
   viewVehicle(data: any) {
-    console.log("viewVehicle")
-    console.log(data)
-    let navigationExtras: NavigationExtras = {
-      queryParams: {
-        "user": JSON.stringify(data)
-      }
-    };
 
-    this.router.navigate(["admin/vehicle-detail"], navigationExtras);
 
-    //this.router.navigateByUrl("admin/vehicle-detail", { state: { data: data } });
+    // let navigationExtras: NavigationExtras = {
+    //   queryParams: {
+    //     "user": JSON.stringify(data)
+    //   }
+    // };
+    let _data = JSON.stringify(data);
+
+    this.router.navigate(["admin/vehicle-detail"], { queryParams: { _data } });
+    // this.router.navigate(["admin/vehicle-detail"]);
+
+    // this.router.navigateByUrl("admin/vehicle-detail", { state: { data: data } });
   }
 
   editVehicle(data: any) {

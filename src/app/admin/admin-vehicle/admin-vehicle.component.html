@@ -71,7 +71,6 @@
             <!-- <i class="fas fa-table me-1"></i> -->
             Vehicles
             <div class="float-end">
-
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addVehicleModel">
                     Add New Vehicle
@@ -115,7 +114,7 @@
                         <td>{{ vehicle.dateAdded | date:'short'}}</td>
                         <td>
                             <a class="viewVehicleC">VIEW</a> |
-                            <a class="editVehicleC">EDIT</a> |
+                            <!-- <a class="editVehicleC">EDIT</a> | -->
                             <a class="deleteVehicleC">DELETE</a>
                         </td>
                     </tr>
@@ -130,7 +129,7 @@
     aria-labelledby="addVehicleModelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form novalidate #form="ngForm" (submit)="addVehicle(form)">
+            <form novalidate #form="ngForm" (submit)="addVehicle(form,$event);$event.preventDefault()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addVehicleModelLabel">Add New Vehicle</h5>
                     <button type="button" class="btn-close" #closebutton data-bs-dismiss="modal"
@@ -141,9 +140,23 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="makerName" class="col-form-label">Maker Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="makerName"
+
+                                <select required class="form-control" name="makerName" id="makerName"
+                                    #makerName="ngModel" [(ngModel)]="newVehicle.makerName"
+                                    [class.invalid]="{'invalid-textbox' : makerName.invalid && makerName.touched }">
+                                    <option selected>Select Maker</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="Audi">Audi</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Mercedes">Mercedes</option>
+                                    <option value="Suzuki">Suzuki</option>
+                                </select>
+
+                                <!-- <input required maxlength="100" type="text" class="form-control" name="makerName"
                                     id="makerName" #makerName="ngModel" [(ngModel)]="newVehicle.makerName"
-                                    [class.invalid]="makerName.invalid && makerName.touched">
+                                    [class.invalid]="makerName.invalid && makerName.touched"> -->
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -202,9 +215,6 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="recipient-name" class="col-form-label">Choose Status:</label>
-                                <!-- <input required type="text" class="form-control" name="status" id="status"
-                                    #status="ngModel" [(ngModel)]="newVehicle.status"
-                                    [class.invalid]="status.invalid && status.touched"> -->
 
                                 <select class="form-control" name="status" id="status" #status="ngModel"
                                     [(ngModel)]="newVehicle.status" [class.invalid]="status.invalid && status.touched">
@@ -214,8 +224,9 @@
                                 </select>
                             </div>
                         </div>
-                        <input #imagesPath name="imagesPath" id="imagesPath" type="file" multiple class="form-control"
-                            (change)="onFileChange($event)" accept="image/*">
+                        <input #imagesPath="ngModel" name="imagesPath" id="imagesPath" type="file" multiple
+                            class="form-control" (change)="onFileChange($event)" [(ngModel)]="newVehicle.imagesPath"
+                            accept="image/*">
                         <p *ngIf="fileMessage!=''">{{fileMessage}}</p>
                     </div>
                 </div>

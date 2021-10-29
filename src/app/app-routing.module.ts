@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminCommonSectionComponent } from './admin/admin-common-section/admin-common-section.component';
 import { AdminCustomerComponent } from './admin/admin-customer/admin-customer.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
+import { AdminDriverDetailComponent } from './admin/admin-driver-detail/admin-driver-detail.component';
 import { AdminDriverComponent } from './admin/admin-driver/admin-driver.component';
 import { AdminSigninComponent } from './admin/admin-signin/admin-signin.component';
 import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-vehicle-detail.component';
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'vehicle', component: AdminVehicleComponent },
       { path: 'vehicle-detail', component: AdminVehicleDetailComponent },
       { path: 'driver', component: AdminDriverComponent },
+      { path: 'driver-detail', component: AdminDriverDetailComponent },
       { path: 'customer', component: AdminCustomerComponent },
     ],
   }

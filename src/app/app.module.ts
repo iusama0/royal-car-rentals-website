@@ -23,8 +23,10 @@ import { AdminVehicleComponent } from './admin/admin-vehicle/admin-vehicle.compo
 import { AdminDriverComponent } from './admin/admin-driver/admin-driver.component';
 import { AdminCustomerComponent } from './admin/admin-customer/admin-customer.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
-import { FormsModule } from '@angular/forms';
 import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-vehicle-detail.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdminDriverDetailComponent } from './admin/admin-driver-detail/admin-driver-detail.component';
 
 @NgModule({
   declarations: [
@@ -42,12 +44,14 @@ import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-
     AdminDriverComponent,
     AdminCustomerComponent,
     AdminDashboardComponent,
-    AdminVehicleDetailComponent
+    AdminVehicleDetailComponent,
+    AdminDriverDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     DataTablesModule,
     HttpClientModule,
     BrowserAnimationsModule, // required animations module

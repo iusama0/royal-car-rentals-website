@@ -16,15 +16,15 @@ export class AdminVehicleDetailComponent implements OnInit {
   @ViewChild('showpicturemodel') showpicturemodel: any;
   @ViewChild('hidepicturemodel') hidepicturemodel: any;
   @ViewChild('hideuploadpicturemodel') hideuploadpicturemodel: any;
-  @ViewChild('uploadImages') uploadImagesInput: ElementRef;
+  // @ViewChild('uploadImages') uploadImagesInput: ElementRef;
   vehicle: Vehicle;
   editVehicleObj: Vehicle;
   images: string[] = [];
   imagesCopy: string[] = [];
   files: string[] = [];
   deletePictureName: string;
-  uploadImages: string;
   fileMessage = '';
+
 
   constructor(
     public vehicleService: VehicleService,
@@ -35,16 +35,26 @@ export class AdminVehicleDetailComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.vehicle = JSON.parse(params["user"]);
-      this.editVehicleObj = Object.assign({}, this.vehicle);
-      console.log(JSON.parse(params["user"]));
+    // this.activatedRoute.queryParams.subscribe(params => {
+    //   this.vehicle = JSON.parse(params["user"]);
+    //   this.editVehicleObj = Object.assign({}, this.vehicle);
+    //   console.log(JSON.parse(params["user"]));
 
-      if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
-        this.images = this.vehicle.imagesPath.split(',');
-      }
+    //   if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
+    //     this.images = this.vehicle.imagesPath.split(',');
+    //   }
 
-    });
+    // });
+
+    // console.log(this.activatedRoute.snapshot.queryParams._data)
+
+    this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
+    // this.vehicle = { "id": 12, "makerName": "Audi", "modelName": "A6", "modelYear": 2020, "registrationNumber": "PK6777HJHJ", "color": "red", "status": "approved", "availability": true, "price": 5000, "imagesPath": "AudiA6202020211028180614055.jpg,AudiA6202020211028180905419.jpg", "dateAdded": "2021-10-25T17:08:54.653", "dateUpdated": "2021-10-28T18:09:05.427" };
+    this.editVehicleObj = Object.assign({}, this.vehicle);
+
+    if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
+      this.images = this.vehicle.imagesPath.split(',');
+    }
 
   }
 
@@ -103,38 +113,19 @@ export class AdminVehicleDetailComponent implements OnInit {
       }
     } else {
       this.fileMessage = "You can select only " + (3 - this.images.length) + " file"
-      this.uploadImagesInput.nativeElement.value = '';
+      //this.uploadImagesInput.nativeElement.value = '';
     }
   }
 
-  UploadPicture(form: NgForm) {
-
-    const formData = new FormData();
-
-    for (var i = 0; i < 3; i++) {
-      formData.append("Files", this.files[i]);
-    }
-
-    formData.append("VehicleInfo", JSON.stringify(this.editVehicleObj));
-
-    // this.vehicleService.addVehicle(formData).subscribe(
-    //   (response: any) => {
-    //     //set vehicle updated obj
-    //     this.resetForm(form);
-    //     this.hideuploadpicturemodel.nativeElement.click();
-    //     this.toastr.success('', 'Vehicle Added Successfully');
-    //   },
-    //   error => {
-    //     form.form.reset();
-    //     this.toastr.error('', 'Vehicle Adding Error');
-    //     console.log("Error: " + error);
-    //   }
-    // );
+  UploadPicture() {
+    this.vehicleService.uploadVehiclePicture(this.editVehicleObj, this.files).subscribe(
+      (response) => {
+        let _data = JSON.stringify(response);
+        this.router.navigate(["admin/vehicle-detail"], { queryParams: { _data } });
+      },
+      error => {
+        console.log("Error: " + error);
+      }
+    );
   }
-
-  resetForm(form: NgForm) {
-    form.form.reset();
-    this.files = [];
-  }
-
 }
