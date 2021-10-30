@@ -27,6 +27,8 @@ import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminDriverDetailComponent } from './admin/admin-driver-detail/admin-driver-detail.component';
+import { VehiclesComponent } from './public/vehicles/vehicles.component';
+import { VehicleComponent } from './public/vehicle/vehicle.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { AdminDriverDetailComponent } from './admin/admin-driver-detail/admin-dr
     AdminCustomerComponent,
     AdminDashboardComponent,
     AdminVehicleDetailComponent,
-    AdminDriverDetailComponent
+    AdminDriverDetailComponent,
+    VehiclesComponent,
+    VehicleComponent
   ],
   imports: [
     BrowserModule,

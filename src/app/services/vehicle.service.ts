@@ -11,6 +11,43 @@ export class VehicleService {
   readonly baseUrl = "http://localhost:25271/api/Vehicle";
   constructor(private http: HttpClient) { }
 
+  public makersObj = [
+    {
+      id: 1,
+      name: 'Honda',
+      value: 'honda'
+    },
+    {
+      id: 2,
+      name: 'BMW',
+      value: 'bmw'
+    },
+    {
+      id: 3,
+      name: 'Audi',
+      value: 'audi'
+    },
+    {
+      id: 4,
+      name: 'Nissan',
+      value: 'nissan'
+    },
+    {
+      id: 5,
+      name: 'Toyota',
+      value: 'toyota'
+    },
+    {
+      id: 6,
+      name: 'Mercedes',
+      value: 'mercedes'
+    },
+    {
+      id: 7,
+      name: 'Suzuki',
+      value: 'suzuki'
+    }
+  ]
   addVehicle(data: FormData) {
     return this.http.post(this.baseUrl, data).
       pipe(
@@ -65,5 +102,8 @@ export class VehicleService {
 
   getVehicles() {
     return this.http.get(this.baseUrl);
+  }
+  getVehiclesByMaker(maker: string) {
+    return this.http.get(this.baseUrl + "/bymaker/" + maker);
   }
 }

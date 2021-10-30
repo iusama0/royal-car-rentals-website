@@ -14,15 +14,16 @@ import { CommonSectionComponent } from './public/common-section/common-section.c
 import { ContactUsComponent } from './public/contact-us/contact-us.component';
 import { HomeComponent } from './public/home/home.component';
 import { ServicesComponent } from './public/services/services.component';
+import { VehicleComponent } from './public/vehicle/vehicle.component';
+import { VehiclesComponent } from './public/vehicles/vehicles.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'public',
     redirectTo: "public/home",
     pathMatch: 'full'
   },
   {
-
     path: 'public', component: CommonSectionComponent,
     children: [
       { path: 'home', component: HomeComponent, },
@@ -30,6 +31,8 @@ const routes: Routes = [
       { path: 'about-us', component: AboutUsComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'services', component: ServicesComponent },
+      { path: 'vehicles', component: VehiclesComponent },
+      { path: 'vehicle', component: VehicleComponent }
     ],
   },
   {
@@ -46,7 +49,7 @@ const routes: Routes = [
       { path: 'vehicle-detail', component: AdminVehicleDetailComponent },
       { path: 'driver', component: AdminDriverComponent },
       { path: 'driver-detail', component: AdminDriverDetailComponent },
-      { path: 'customer', component: AdminCustomerComponent },
+      { path: 'customer', component: AdminCustomerComponent }
     ],
   }
 ];

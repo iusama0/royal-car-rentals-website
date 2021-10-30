@@ -103,7 +103,7 @@
                     background-size: cover;">
                     </div>
                     <div class="delete-picture">
-                        DELETE 
+                        DELETE
                     </div>
                 </div>
             </div>
@@ -136,9 +136,16 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="makerName" class="col-form-label">Maker Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="makerName"
+                                <!-- <input required maxlength="100" type="text" class="form-control" name="makerName"
                                     id="makerName" #makerName="ngModel" [(ngModel)]="editVehicleObj.makerName"
-                                    [class.invalid]="makerName.invalid && makerName.touched">
+                                    [class.invalid]="makerName.invalid && makerName.touched"> -->
+
+                                <select required class="form-control" name="makerName" id="makerName"
+                                    #makerName="ngModel" [(ngModel)]="editVehicleObj.makerName"
+                                    [class.invalid]="{'invalid-textbox' : makerName.invalid && makerName.touched }">
+                                    <option *ngFor="let maker of vehicleService.makersObj" [value]="maker.value">
+                                        {{maker.name}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -249,25 +256,26 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- <form novalidate #form="ngForm" (ngSubmit)="UploadPicture($event)"> -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadPictureModelLabel">Update Vehicle</h5>
-                    <button type="button" class="btn-close" #hideuploadpicturemodel data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="uploadImages" class="col-form-label">Choose Images:</label>
-                            <input name="uploadImages" type="file" multiple class="form-control"
-                                (change)="onFileChange($event)" accept="image/*">
-                            <p *ngIf="fileMessage!=''">{{fileMessage}}</p>
-                        </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadPictureModelLabel">Update Vehicle</h5>
+                <button type="button" class="btn-close" #hideuploadpicturemodel data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="uploadImages" class="col-form-label">Choose Images:</label>
+                        <input name="uploadImages" type="file" multiple class="form-control"
+                            (change)="onFileChange($event)" accept="image/*">
+                        <p *ngIf="fileMessage!=''">{{fileMessage}}</p>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button (click)="UploadPicture()" type="button" [disabled]="files.length==0" class="btn btn-primary">Update</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button (click)="UploadPicture()" type="button" [disabled]="files.length==0"
+                    class="btn btn-primary">Update</button>
+            </div>
             <!-- </form> -->
         </div>
     </div>

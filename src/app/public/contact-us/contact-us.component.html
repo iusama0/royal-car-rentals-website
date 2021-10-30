@@ -5,25 +5,34 @@
     <div class="row my-5 py-5">
         <div class="col-md-6">
             <div class="" style="border: 2px solid #dedede;border-radius: 12px;padding: 2em;">
-                <form class="row g-3">
+                <form novalidate #form="ngForm" (submit)="addVehicle(form,$event);$event.preventDefault()"
+                    class="row g-3">
                     <div class="col-md-6">
-                        <label for="inputEmail4" class="form-label">First Name</label>
-                        <input type="email" class="form-control" id="inputEmail4">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input required maxlength="80" type="text" class="form-control" name="firstName" id="firstName"
+                            #firstName="ngModel" [(ngModel)]="inquiryObj.firstName"
+                            [class.invalid]="firstName.invalid && firstName.touched">
                     </div>
                     <div class="col-md-6">
-                        <label for="inputPassword4" class="form-label">Last Name</label>
-                        <input type="password" class="form-control" id="inputPassword4">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input required maxlength="80" type="text" class="form-control" name="lastName" id="lastName"
+                            #lastName="ngModel" [(ngModel)]="inquiryObj.lastName"
+                            [class.invalid]="lastName.invalid && lastName.touched">
                     </div>
                     <div class="col-md-12">
-                        <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4">
+                        <label for="email" class="form-label">Email</label>
+                        <input required maxlength="80" type="email" class="form-control" name="email" id="email"
+                            #email="ngModel" [(ngModel)]="inquiryObj.email"
+                            [class.invalid]="email.invalid && email.touched">
                     </div>
                     <div class="col-md-12">
-                        <label for="inputPassword4" class="form-label">Message</label>
-                        <textarea class="form-control" name="message" id="" cols="30" rows="10"></textarea>
+                        <label for="message" class="form-label">Message</label>
+                        <textarea #message="ngModel" [(ngModel)]="inquiryObj.message"
+                            [class.invalid]="message.invalid && message.touched" class="form-control" name="message"
+                            id="message" cols="30" rows="10"></textarea>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                        <button type="submit" [disabled]="form.invalid" class="btn btn-primary w-100">Send Message</button>
                     </div>
                 </form>
             </div>

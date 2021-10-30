@@ -30,7 +30,8 @@ export class AdminVehicleComponent implements OnInit {
     price: 0,
     imagesPath: '',
     dateAdded: new Date().toISOString(),
-    dateUpdated: new Date().toISOString()
+    dateUpdated: new Date().toISOString(),
+    images: []
   };
   files: string[] = [];
   fileMessage = '';
@@ -69,7 +70,9 @@ export class AdminVehicleComponent implements OnInit {
     public vehicleService: VehicleService,
     private toastr: ToastrService,
     private router: Router
-  ) { }
+  ) {
+    this.newVehicle.makerName = vehicleService.makersObj[0].value;
+  }
 
   ngOnInit(): void {
     this.getVehicles();
@@ -149,9 +152,6 @@ export class AdminVehicleComponent implements OnInit {
         this.resetForm(form);
         this.closebutton.nativeElement.click();
         this.toastr.success('', 'Vehicle Added Successfully');
-        alert('Uploaded Successfully.');
-        event.preventDefault();
-        event.stopPropagation();
       },
       error => {
         form.form.reset();
@@ -165,6 +165,7 @@ export class AdminVehicleComponent implements OnInit {
     form.form.reset();
     // this.uploadImagesInput.nativeElement.value = '';
     this.newVehicle = new Vehicle();
+    this.newVehicle.makerName = this.vehicleService.makersObj[0].value;
     this.newVehicle.availability = false;
     this.newVehicle.status = 'pending';
     this.newVehicle.dateAdded = new Date().toISOString();
@@ -206,12 +207,12 @@ export class AdminVehicleComponent implements OnInit {
       (response: any) => {
 
         // this.vehicles.(); remove vehicle
-        // for (var i = 0; i < this.vehicles.length; i++) {
-        //   let obj = this.vehicles[i];
-        //   if (this.vehicles.indexOf(obj) !== -1) {
-        //     this.vehicles.splice(i, 1);
-        //   }
-        // }
+        for (var i = 0; i < this.vehicles.length; i++) {
+          let obj = this.vehicles[i];
+          if (this.vehicles.indexOf(obj) !== -1) {
+            this.vehicles.splice(i, 1);
+          }
+        }
 
         this.rerender();
         this.hidedeletemodel.nativeElement.click();

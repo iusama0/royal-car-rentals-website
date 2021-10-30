@@ -11,4 +11,5 @@ export class Vehicle {
     imagesPath: string;
     dateAdded: string;
     dateUpdated: string;
+    images: string[];
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { VehicleService } from 'src/app/services/vehicle.service';
 
 @Component({
   selector: 'app-common-section',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CommonSectionComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public vehicleService: VehicleService
+  ) { }
 
   ngOnInit(): void {
   }

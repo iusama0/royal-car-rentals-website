@@ -18,13 +18,12 @@
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-bs-toggle="dropdown"
                             aria-expanded="false">Vehicles</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown04">
-                            <li><a class="dropdown-item" routerLink="#">BMW </a></li>
-                            <li><a class="dropdown-item" routerLink="#">Audi </a></li>
-                            <li><a class="dropdown-item" routerLink="#">Honda </a></li>
-                            <li><a class="dropdown-item" routerLink="#">Nissan </a></li>
-                            <li><a class="dropdown-item" routerLink="#">Toyota</a></li>
-                            <li><a class="dropdown-item" routerLink="#">Mercedes </a></li>
-                            <li><a class="dropdown-item" routerLink="#">Rolls-Royce</a></li>
+                            <li>
+                                <a *ngFor="let maker of vehicleService.makersObj" class="dropdown-item"
+                                    routerLink="vehicles" [queryParams]="{maker: maker.value}">
+                                    {{maker.name}}
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
@@ -49,7 +48,9 @@
     </nav>
 </div>
 
-<router-outlet></router-outlet>
+<router-outlet>
+
+</router-outlet>
 
 <footer class="footer-wrapper">
     <p>©2021 royalcarrentals, All Rights Reserved</p>

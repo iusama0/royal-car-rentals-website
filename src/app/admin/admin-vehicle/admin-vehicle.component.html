@@ -143,15 +143,8 @@
 
                                 <select required class="form-control" name="makerName" id="makerName"
                                     #makerName="ngModel" [(ngModel)]="newVehicle.makerName"
-                                    [class.invalid]="{'invalid-textbox' : makerName.invalid && makerName.touched }">
-                                    <option selected>Select Maker</option>
-                                    <option value="BMW">BMW</option>
-                                    <option value="Audi">Audi</option>
-                                    <option value="Honda">Honda</option>
-                                    <option value="Nissan">Nissan</option>
-                                    <option value="Toyota">Toyota</option>
-                                    <option value="Mercedes">Mercedes</option>
-                                    <option value="Suzuki">Suzuki</option>
+                                    [class.invalid]="{'invalid-textbox' : makerName.invalid && makerName.touched }">                                   
+                                    <option *ngFor="let maker of vehicleService.makersObj" [value]="maker.value">{{maker.name}}</option>                                    
                                 </select>
 
                                 <!-- <input required maxlength="100" type="text" class="form-control" name="makerName"
