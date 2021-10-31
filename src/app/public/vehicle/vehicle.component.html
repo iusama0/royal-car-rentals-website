@@ -1,1 +1,104 @@
-<p>vehicle works!</p>
+<div class="container">
+
+    <section class="m-5">
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="">
+
+                        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button *ngIf="images?.length==2 || images?.length==3" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" class=""
+                                    aria-current="true" aria-label="Slide 2"></button>
+                                <button *ngIf="images?.length==3" type="button"
+                                    data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class=""
+                                    aria-current="true" aria-label="Slide 3"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div [ngClass]="{'active': i===0}" class="carousel-item"
+                                    *ngFor="let image of images; index as i">
+                                    <img [src]="'assets/adminUploads/vehicles/'+ image" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+
+                        <!-- <div class="delete-picture-wapper" *ngFor="let image of images">
+                            <div [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ image +')'}"
+                                style="
+                            width: 300px;
+                            height: 200px;                    
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            background-size: cover;">
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2>{{vehicle.makerName +" "+ vehicle.modelName}}</h2>
+                    <table class="table caption-top">
+                        <tbody>
+                            <tr>
+                                <td>Maker Name</td>
+                                <td> : </td>
+                                <td>{{vehicle?.makerName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Model Name</td>
+                                <td> : </td>
+                                <td>{{vehicle?.modelName}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Model Year </td>
+                                <td>: </td>
+                                <td>{{vehicle?.modelYear}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Registration# </td>
+                                <td>:</td>
+                                <td>{{vehicle?.registrationNumber}}</td>
+                            </tr>
+                            <tr>
+                                <td>Color </td>
+                                <td>:</td>
+                                <td>{{vehicle?.color}}</td>
+                            </tr>
+                            <tr>
+                                <td>Price/Day </td>
+                                <td>:</td>
+                                <td> {{vehicle?.price}}</td>
+                            </tr>
+                            <tr>
+                                <td>Availability </td>
+                                <td>:</td>
+                                <td>
+                                    <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                        [ngStyle]="{'background-color': vehicle?.availability ? '#198754' : '#dc3545' }">
+                                        {{ vehicle?.availability }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 4em 0;"></section>
+</div>

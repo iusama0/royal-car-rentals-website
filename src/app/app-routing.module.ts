@@ -5,6 +5,7 @@ import { AdminCustomerComponent } from './admin/admin-customer/admin-customer.co
 import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard.component';
 import { AdminDriverDetailComponent } from './admin/admin-driver-detail/admin-driver-detail.component';
 import { AdminDriverComponent } from './admin/admin-driver/admin-driver.component';
+import { AdminInquiryComponent } from './admin/admin-inquiry/admin-inquiry.component';
 import { AdminSigninComponent } from './admin/admin-signin/admin-signin.component';
 import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-vehicle-detail.component';
 import { AdminVehicleComponent } from './admin/admin-vehicle/admin-vehicle.component';
@@ -19,8 +20,18 @@ import { VehiclesComponent } from './public/vehicles/vehicles.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: "public/home",
+    pathMatch: 'full'
+  },
+  {
     path: 'public',
     redirectTo: "public/home",
+    pathMatch: 'full'
+  },
+  {
+    path: 'admin',
+    redirectTo: "admin/signin",
     pathMatch: 'full'
   },
   {
@@ -36,11 +47,6 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'admin',
-    redirectTo: "admin/signin",
-    pathMatch: 'full'
-  },
-  {
     path: 'admin', component: AdminCommonSectionComponent,
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
@@ -49,7 +55,8 @@ const routes: Routes = [
       { path: 'vehicle-detail', component: AdminVehicleDetailComponent },
       { path: 'driver', component: AdminDriverComponent },
       { path: 'driver-detail', component: AdminDriverDetailComponent },
-      { path: 'customer', component: AdminCustomerComponent }
+      { path: 'customer', component: AdminCustomerComponent },
+      { path: 'inquiries', component: AdminInquiryComponent }
     ],
   }
 ];
