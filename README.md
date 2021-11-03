@@ -28,7 +28,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 
 ## Generate Component
-ng g s services/name --skipTests
+ng g c admin/name
+
+ng g c public/name
 
 ## Generate Service
 ng g s services/name --skipTests

@@ -6,6 +6,8 @@ import { AdminDashboardComponent } from './admin/admin-dashboard/admin-dashboard
 import { AdminDriverDetailComponent } from './admin/admin-driver-detail/admin-driver-detail.component';
 import { AdminDriverComponent } from './admin/admin-driver/admin-driver.component';
 import { AdminInquiryComponent } from './admin/admin-inquiry/admin-inquiry.component';
+import { AdminReportComponent } from './admin/admin-report/admin-report.component';
+import { AdminSettingComponent } from './admin/admin-setting/admin-setting.component';
 import { AdminSigninComponent } from './admin/admin-signin/admin-signin.component';
 import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-vehicle-detail.component';
 import { AdminVehicleComponent } from './admin/admin-vehicle/admin-vehicle.component';
@@ -56,7 +58,9 @@ const routes: Routes = [
       { path: 'driver', component: AdminDriverComponent },
       { path: 'driver-detail', component: AdminDriverDetailComponent },
       { path: 'customer', component: AdminCustomerComponent },
-      { path: 'inquiries', component: AdminInquiryComponent }
+      { path: 'inquiries', component: AdminInquiryComponent },
+      { path: 'reports', component: AdminReportComponent },
+      { path: 'settings', component: AdminSettingComponent }
     ],
   }
 ];

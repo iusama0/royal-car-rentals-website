@@ -1,0 +1,366 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Settings </h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">admin/settings</li>
+    </ol>
+    <div class="row">
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Total Vehicles</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-warning text-white mb-4">
+                <div class="card-body">Active/InActive Vehicles</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">Pending Vehicles</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">Booked Vehicles</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="#">View Details</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Vehicle Makers
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#addVehicleMakerModel">
+                    Add New Vehicle Maker
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="mat-elevation-z8">
+                <table #VehicleMakerTable="matTable" mat-table [dataSource]="vehicleMakers" matSort
+                    #VehicleMakerSort="matSort">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                    </ng-container>
+
+                    <!-- Display Value Column -->
+                    <ng-container matColumnDef="displayName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Display Value </th>
+                        <td mat-cell *matCellDef="let row"> {{row.displayName}} </td>
+                    </ng-container>
+
+                    <!-- Backend Value Column -->
+                    <ng-container matColumnDef="storageValue">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Backend Value </th>
+                        <td mat-cell *matCellDef="let row"> {{row.storageValue}} </td>
+                    </ng-container>
+
+                    <!-- Date Added Column -->
+                    <ng-container matColumnDef="dateAdded">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Added </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateAdded | date:'short'}} </td>
+                    </ng-container>
+
+                    <!-- Date Updated Column -->
+                    <ng-container matColumnDef="dateUpdated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Updated </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateUpdated | date:'short'}} </td>
+                    </ng-container>
+
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="editVehicleMaker(row)">
+                                <mat-icon>
+                                    edit
+                                </mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="deleteVehicleMaker(row)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="VehicleMakerColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: VehicleMakerColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <!-- <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr> -->
+                </table>
+
+                <mat-paginator #VehicleMakerPaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Vehicle Models
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#addVehicleModelModel">
+                    Add New Vehicle Model
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- <mat-form-field appearance="standard">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+            </mat-form-field> -->
+
+            <div class="mat-elevation-z8">
+                <table #VehicleModelTable="matTable" mat-table [dataSource]="vehicleModels" matSort
+                    #VehicleModelSort="matSort">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                    </ng-container>
+
+                    <!-- Maker Name Column -->
+                    <ng-container matColumnDef="makerId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Maker Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.makerId}} </td>
+                    </ng-container>
+
+                    <!-- Display Value Column -->
+                    <ng-container matColumnDef="displayName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Display Value </th>
+                        <td mat-cell *matCellDef="let row"> {{row.displayName}} </td>
+                    </ng-container>
+
+                    <!-- Backend Value Column -->
+                    <ng-container matColumnDef="storageValue">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Backend Value </th>
+                        <td mat-cell *matCellDef="let row"> {{row.storageValue}} </td>
+                    </ng-container>
+
+                    <!-- Date Added Column -->
+                    <ng-container matColumnDef="dateAdded">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Added </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateAdded | date:'short'}} </td>
+                    </ng-container>
+
+                    <!-- Date Updated Column -->
+                    <ng-container matColumnDef="dateUpdated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Updated </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateUpdated | date:'short'}} </td>
+                    </ng-container>
+
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="editVehicleModel(row)">
+                                <mat-icon>
+                                    edit
+                                </mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="deleteVehicleModel(row)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="VehicleModelColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: VehicleModelColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <!-- <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr> -->
+                </table>
+
+                <mat-paginator #VehicleModelPaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Add New Vehicle Maker Modal -->
+<div class="modal fade" id="addVehicleMakerModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addVehicleMakerModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form novalidate #makerform="ngForm" (submit)="addVehicleMaker(makerform)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleMakerModelLabel">Add New Vehicle Maker</h5>
+                    <button type="button" class="btn-close" #closevehiclemakermodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="displayName" class="col-form-label">Display Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="displayName"
+                                    id="displayName" #displayName="ngModel" [(ngModel)]="newVehicleMaker.displayName"
+                                    [class.invalid]="displayName.invalid && displayName.touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="storageValue" class="col-form-label">Backend Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
+                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="newVehicleMaker.storageValue"
+                                    [class.invalid]="storageValue.invalid && storageValue.touched">
+                                <p class="m-0">
+                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="makerform.invalid" class="btn btn-primary">Add Maker</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Vehicle Maker Model -->
+<div class="modal fade" id="deleteVehicleMakerModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="deleteVehicleMakerModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteVehicleMakerModelLabel">Delete Vehicle Maker</h5>
+                <button type="button" class="btn-close" #hidedeletemakermodel data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this vehicle maker?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" (click)="confirmDeleteVehicleMaker()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button hidden type="button" class="btn btn-primary" #showvehiclemakermodel data-bs-toggle="modal"
+    data-bs-target="#deleteVehicleMakerModel">
+    Add New Vehicle Maker
+</button>
+
+
+
+<!-- Add New Vehicle Model Modal -->
+<div class="modal fade" id="addVehicleModelModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addVehicleModelModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form novalidate #modelform="ngForm" (submit)="addVehicleModel(modelform)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleModelModelLabel">Add New Vehicle Model</h5>
+                    <button type="button" class="btn-close" #closevehiclemodelmodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="displayName" class="col-form-label">Display Name:</label>
+                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
+                                    [(ngModel)]="newVehicleModel.makerId"
+                                    [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
+                                    <option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
+                                        {{maker.displayName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="displayName" class="col-form-label">Display Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="displayName"
+                                    id="displayName" #displayName="ngModel" [(ngModel)]="newVehicleModel.displayName"
+                                    [class.invalid]="displayName.invalid && displayName.touched">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="storageValue" class="col-form-label">Backend Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
+                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="newVehicleModel.storageValue"
+                                    [class.invalid]="storageValue.invalid && storageValue.touched">
+                                <p class="m-0">
+                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="modelform.invalid" class="btn btn-primary">Add Model</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Vehicle Model Model -->
+<div class="modal fade" id="deleteVehicleModelModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="deleteVehicleModelModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteVehicleModelModelLabel">Delete Vehicle Model</h5>
+                <button type="button" class="btn-close" #hidedeletemodelmodel data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this vehicle model?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" (click)="confirmDeleteVehicleModel()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button hidden type="button" class="btn btn-primary" #showvehiclemodelmodel data-bs-toggle="modal"
+    data-bs-target="#deleteVehicleModelModel">
+    Add New Vehicle Model
+</button>

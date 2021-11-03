@@ -135,13 +135,11 @@ export class AdminDriverComponent implements OnInit {
     this.driverService.delete(this.deleteInfo).subscribe(
       (response: any) => {
 
-        // this.drivers.(); remove vehicle
-        // for (var i = 0; i < this.drivers.length; i++) {
-        //   let obj = this.drivers[i];
-        //   if (this.drivers.indexOf(obj) !== -1) {
-        //     this.drivers.splice(i, 1);
-        //   }
-        // }
+        for (var i = 0; i < this.drivers.length; i++) {
+          if (this.drivers[i].id == this.deleteInfo.id) {
+            this.drivers.splice(i, 1);
+          }
+        }
 
         this.rerender();
         this.hidedeletemodel.nativeElement.click();

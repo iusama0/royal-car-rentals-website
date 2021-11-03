@@ -208,8 +208,7 @@ export class AdminVehicleComponent implements OnInit {
 
         // this.vehicles.(); remove vehicle
         for (var i = 0; i < this.vehicles.length; i++) {
-          let obj = this.vehicles[i];
-          if (this.vehicles.indexOf(obj) !== -1) {
+          if (this.vehicles[i].id == this.deleteVehicleInfo.id) {
             this.vehicles.splice(i, 1);
           }
         }
