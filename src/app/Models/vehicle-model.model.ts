@@ -1,8 +1,7 @@
 export class VehicleModel {
-    id: number;
-    makerId: number;
-    displayName: string;
-    storageValue: string;
-    dateAdded: string;
-    dateUpdated: string;
+    id: number = 0;
+    makerId: number = 0;
+    displayName: string = '';
+    dateAdded: string = '';
+    dateUpdated: string = '';
 }

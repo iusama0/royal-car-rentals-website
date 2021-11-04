@@ -77,8 +77,106 @@
                 </button>
             </div>
         </div>
-        <div class="card-body">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <div class="card-body p-0">
+            <div class="mat-elevation-z8">
+                <table #VehicleTable="matTable" mat-table [dataSource]="vehicles" matSort #VehicleSort="matSort">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                    </ng-container>
+
+                    <!-- Maker Name Column -->
+                    <ng-container matColumnDef="makerId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Maker Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.maker?.displayName}} </td>
+                    </ng-container>
+
+                    <!-- Maker Name Column -->
+                    <ng-container matColumnDef="modelId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Model Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.model?.displayName}} </td>
+                    </ng-container>
+
+                    <!-- Registration Number Column -->
+                    <ng-container matColumnDef="registrationNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Registration# </th>
+                        <td mat-cell *matCellDef="let row"> {{row.registrationNumber}} </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="text-light fw-bold rounded-pill py-2 px-3 text-capitalize"
+                                [ngStyle]="{'background-color': row.status === 'pending' ? '#ffc107' : (row.status === 'approved' ? '#198754' : '#dc3545') }">
+                                {{row.status}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Availability Column -->
+                    <ng-container matColumnDef="availability">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Availability </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="text-light fw-bold rounded-pill py-2 px-3 text-capitalize"
+                                [ngStyle]="{'background-color': row.availability ? '#198754' : '#dc3545' }">
+                                {{row.availability}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Price Column -->
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+                        <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+                    </ng-container>
+
+                    <!-- Date Added Column -->
+                    <ng-container matColumnDef="dateAdded">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Added </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateAdded | date:'short'}} </td>
+                    </ng-container>
+
+                    <!-- Date Updated Column -->
+                    <ng-container matColumnDef="dateUpdated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Updated </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateUpdated | date:'short'}} </td>
+                    </ng-container>
+
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="viewVehicle(row)">
+                                <mat-icon>
+                                    edit
+                                </mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="deleteVehicle(row)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="VehicleColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: VehicleColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <!-- <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr> -->
+                </table>
+
+                <mat-paginator #VehiclePaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
+            <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -97,7 +195,6 @@
                         <td>{{ vehicle.makerName+"/"+ vehicle.modelName+"/"+ vehicle.modelYear}}</td>
                         <td>{{ vehicle.registrationNumber }}</td>
                         <td class="text-center">
-                            <!-- blockedapprovedpending -->
                             <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
                                 [ngStyle]="{'background-color': vehicle.status === 'pending' ? '#ffc107' : (vehicle.status === 'approved' ? '#198754' : '#dc3545') }">
                                 {{ vehicle.status }}
@@ -114,12 +211,11 @@
                         <td>{{ vehicle.dateAdded | date:'short'}}</td>
                         <td>
                             <a class="viewVehicleC">VIEW</a> |
-                            <!-- <a class="editVehicleC">EDIT</a> | -->
                             <a class="deleteVehicleC">DELETE</a>
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
         </div>
     </div>
 </div>
@@ -139,25 +235,24 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="makerName" class="col-form-label">Maker Name:</label>
-
-                                <select required class="form-control" name="makerName" id="makerName"
-                                    #makerName="ngModel" [(ngModel)]="newVehicle.makerName"
-                                    [class.invalid]="{'invalid-textbox' : makerName.invalid && makerName.touched }">                                   
-                                    <option *ngFor="let maker of vehicleService.makersObj" [value]="maker.value">{{maker.name}}</option>                                    
+                                <label for="makerId" class="col-form-label">Maker Name:</label>
+                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
+                                    [(ngModel)]="newVehicle.makerId"
+                                    [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
+                                    <option *ngFor="let maker of vehicleMakers" [value]="maker.id">
+                                        {{maker.displayName}}</option>
                                 </select>
-
-                                <!-- <input required maxlength="100" type="text" class="form-control" name="makerName"
-                                    id="makerName" #makerName="ngModel" [(ngModel)]="newVehicle.makerName"
-                                    [class.invalid]="makerName.invalid && makerName.touched"> -->
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="modelName" class="col-form-label">Model Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="modelName"
-                                    id="modelName" #modelName="ngModel" [(ngModel)]="newVehicle.modelName"
-                                    [class.invalid]="modelName.invalid && modelName.touched">
+                                <label for="modelId" class="col-form-label">Model Name:</label>
+                                <select required class="form-control" name="modelId" id="modelId" #modelId="ngModel"
+                                    [(ngModel)]="newVehicle.modelId"
+                                    [class.invalid]="{'invalid-textbox' : modelId.invalid && modelId.touched }">
+                                    <option *ngFor="let model of vehicleModels" [value]="model.id">
+                                        {{model.displayName}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">

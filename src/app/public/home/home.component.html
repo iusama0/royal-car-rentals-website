@@ -41,9 +41,8 @@
                     <div class="outer-card-box mb-3">
                         <div class="card-box-image"
                             [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ ( vehicle?.imagesPath !='' ? showalert(vehicle?.imagesPath) :'dumy-car.jpg') +')'}">
-
                         </div>
-                        <h2>{{vehicle.makerName +" "+ vehicle.modelName+" "+vehicle.modelYear}}</h2>
+                        <h2>{{vehicle.maker?.displayName +" "+ vehicle.model?.displayName+" "+vehicle.modelYear}}</h2>
                         <table class="w-100">
                             <tbody>
                                 <tr>
@@ -58,8 +57,9 @@
                             <!-- <button class="btn btn-info w-100" type="button" routerLink="../vehicle"
                                 [queryParams]="{id: vehicle.id}">More
                                 Detail</button> -->
-                            <button class="btn btn-info w-100" type="button" (click)="viewVehicle(vehicle)">More
-                                Detail</button>
+                            <button class="btn btn-info w-100" type="button" (click)="viewVehicle(vehicle)">
+                                More Detail
+                            </button>
                         </div>
                     </div>
                 </div>

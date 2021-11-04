@@ -19,9 +19,9 @@
                             aria-expanded="false">Vehicles</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown04">
                             <li>
-                                <a *ngFor="let maker of vehicleService.makersObj" class="dropdown-item"
-                                    routerLink="vehicles" [queryParams]="{maker: maker.value}">
-                                    {{maker.name}}
+                                <a *ngFor="let maker of vehicleMakers" class="dropdown-item"
+                                    routerLink="vehicles" [queryParams]="{maker: maker.id}">
+                                    {{maker.displayName}}
                                 </a>
                             </li>
                         </ul>

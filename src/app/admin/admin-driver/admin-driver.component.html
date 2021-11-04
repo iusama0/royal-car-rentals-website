@@ -77,47 +77,99 @@
             </div>
             <!-- Button Trigger Edit Modal -->
         </div>
-        <div class="card-body">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>PhoneNumber</th>
-                        <th>IsActive</th>
-                        <th>Availability</th>
-                        <th>Date Added</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let driver of drivers">
-                        <td class="vid">{{ driver.id }}</td>
-                        <td>{{ driver.firstName+" "+ driver.lastName}}</td>
-                        <td>{{ driver.email }}</td>
-                        <td>{{ driver.phoneNumber }}</td>
-                        <td class="text-center">
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': driver.isActive ? '#198754' : '#dc3545' }">
-                                {{ driver.isActive }}
-                            </div>
+        <div class="card-body p-0">
+            <div class="mat-elevation-z8">
+                <table #DriverTable="matTable" mat-table [dataSource]="drivers" matSort #DriverSort="matSort">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="firstName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.firstName + " "+ row.lastName}} </td>
+                    </ng-container>
+
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                    </ng-container>
+
+                    <!-- PhoneNumber Column -->
+                    <ng-container matColumnDef="phoneNumber">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone# </th>
+                        <td mat-cell *matCellDef="let row"> {{row.phoneNumber}} </td>
+                    </ng-container>
+
+                    <!-- isActive Column -->
+                    <ng-container matColumnDef="isActive">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="text-light fw-bold rounded-pill py-2 px-3 text-capitalize"
+                                [ngStyle]="{'background-color': row.isActive ? '#198754' : '#dc3545' }">
+                                {{row.isActive}}
+                            </span>
                         </td>
-                        <td class="text-center">
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': driver.availability ? '#198754' : '#dc3545' }">
-                                {{ driver.availability }}
-                            </div>
+                    </ng-container>
+
+                    <!-- Availability Column -->
+                    <ng-container matColumnDef="availability">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Availability </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="text-light fw-bold rounded-pill py-2 px-3 text-capitalize"
+                                [ngStyle]="{'background-color': row.availability ? '#198754' : '#dc3545' }">
+                                {{row.availability}}
+                            </span>
                         </td>
-                        <td>{{ driver.dateAdded | date:'short'}}</td>
-                        <td>
-                            <a class="viewDriverC">VIEW</a> |
-                            <!-- <a class="editDriverC">EDIT</a> | -->
-                            <a class="deleteDriverC">DELETE</a>
+                    </ng-container>
+
+                    <!-- Date Added Column -->
+                    <ng-container matColumnDef="dateAdded">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Added </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateAdded | date:'short'}} </td>
+                    </ng-container>
+
+                    <!-- Date Updated Column -->
+                    <ng-container matColumnDef="dateUpdated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Updated </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateUpdated | date:'short'}} </td>
+                    </ng-container>
+
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button (click)="viewDriver(row)">
+                                <mat-icon>
+                                    edit
+                                </mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="deleteDriver(row)">
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
                         </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="DriverColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: DriverColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <!-- <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr> -->
+                </table>
+
+                <mat-paginator #DriverPaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
         </div>
     </div>
 </div>
@@ -142,6 +194,7 @@
         </div>
     </div>
 </div>
+
 <button hidden type="button" class="btn btn-primary" #showdeletemodel data-bs-toggle="modal"
     data-bs-target="#deleteDriverModel">
     Add New Driver

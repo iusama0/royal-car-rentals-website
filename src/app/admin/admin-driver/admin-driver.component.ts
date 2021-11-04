@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { Driver } from 'src/app/Models/driver.model';
@@ -17,32 +19,11 @@ export class AdminDriverComponent implements OnInit {
   @ViewChild('showdeletemodel') showdeletemodel: any;
   @ViewChild('hidedeletemodel') hidedeletemodel: any;
 
-  @ViewChild(DataTableDirective)
-  dtElement: DataTableDirective;
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: DataTables.Settings = {
-    //default number of records per page
-    pageLength: 10,
-    //It can be simple or full_numbers
-    pagingType: 'full_numbers',
-    autoWidth: false,
-    responsive: true,
-    //select from drop down list to select number of records per page 
-    lengthMenu: [10, 20, 30, 40],
-    processing: true,
-    columns: [
-      { data: 'id', orderable: true },
-      { data: 'firstName', orderable: true },
-      { data: 'email', orderable: false },
-      { data: 'phoneNumber', orderable: false },
-      { data: 'isActive', orderable: true },
-      { data: 'availability', orderable: true },
-      { data: 'dateAdded', orderable: true },
-      { data: 'action', orderable: false },
-    ]
-  };
-
-  public drivers: Driver[];
+  DriverColumns: string[] = ['id', 'firstName', 'email', 'phoneNumber', 'isActive', 'availability','dateAdded', 'dateUpdated', 'actions'];
+  drivers: MatTableDataSource<Driver>;
+  @ViewChild('DriverTable', { static: true }) driverTable: MatTable<Driver>;
+  @ViewChild('DriverPaginator', { static: true }) driverPaginator: MatPaginator;
+  @ViewChild('DriverSort', { static: true }) driverSort: MatSort;
   public deleteInfo: Driver;
   public newDriver: Driver = {
     id: 0,
@@ -70,41 +51,36 @@ export class AdminDriverComponent implements OnInit {
   ngOnInit(): void {
     this.getDrivers();
     let _this = this;
-    $(document).on('click', '.viewDriverC', function (this: any) {
-      var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.drivers.find(i => i.id == parseInt(_id));
-      _this.viewDriver(data);
-    });
+    // $(document).on('click', '.viewDriverC', function (this: any) {
+    //   var _id = $(this).parents("tr").find(".vid").text();
+    //   let data = _this.drivers.find(i => i.id == parseInt(_id));
+    //   _this.viewDriver(data);
+    // });
 
-    $(document).on('click', '.editDriverC', function (this: any) {
-      var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.drivers.find(i => i.id == parseInt(_id));
-      _this.editDriver(data);
-    });
-    $(document).on('click', '.deleteDriverC', function (this: any) {
-      var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.drivers.find(i => i.id == parseInt(_id));
-      _this.deleteDriver(data);
-    });
+    // $(document).on('click', '.editDriverC', function (this: any) {
+    //   var _id = $(this).parents("tr").find(".vid").text();
+    //   let data = _this.drivers.find(i => i.id == parseInt(_id));
+    //   _this.editDriver(data);
+    // });
+    // $(document).on('click', '.deleteDriverC', function (this: any) {
+    //   var _id = $(this).parents("tr").find(".vid").text();
+    //   let data = _this.drivers.find(i => i.id == parseInt(_id));
+    //   _this.deleteDriver(data);
+    // });
   }
 
   ngAfterViewInit(): void {
-    this.dtTrigger.next();
+
   }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.destroy();
-      this.dtTrigger.next();
-    });
-  }
 
   getDrivers() {
     this.driverService.gets().subscribe(
       (response: any) => {
-        this.drivers = response
-        this.rerender();
-        console.log("Success: " + response);
+        this.drivers = new MatTableDataSource(response);
+        this.drivers.paginator = this.driverPaginator;
+        this.drivers.sort = this.driverSort;
+        // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -135,13 +111,16 @@ export class AdminDriverComponent implements OnInit {
     this.driverService.delete(this.deleteInfo).subscribe(
       (response: any) => {
 
-        for (var i = 0; i < this.drivers.length; i++) {
-          if (this.drivers[i].id == this.deleteInfo.id) {
-            this.drivers.splice(i, 1);
+        for (var i = 0; i < this.drivers.data.length; i++) {
+          if (this.drivers.data[i].id == this.deleteInfo.id) {
+            this.drivers.data.splice(i, 1);
           }
         }
 
-        this.rerender();
+        this.drivers.paginator = this.driverPaginator;
+        this.drivers.sort = this.driverSort;
+        this.driverTable.renderRows();
+
         this.hidedeletemodel.nativeElement.click();
         this.toastr.success('', 'Driver Deleted Successfully');
       },
@@ -166,8 +145,10 @@ export class AdminDriverComponent implements OnInit {
 
     this.driverService.add(formData).subscribe(
       (response: any) => {
-        this.drivers.push(response)
-        this.rerender();
+        this.drivers.data.push(response)
+        this.drivers.paginator = this.driverPaginator;
+        this.drivers.sort = this.driverSort;
+        this.driverTable.renderRows();
         this.resetForm(form);
         this.hideaddmodel.nativeElement.click();
         this.toastr.success('', 'Driver Added Successfully');

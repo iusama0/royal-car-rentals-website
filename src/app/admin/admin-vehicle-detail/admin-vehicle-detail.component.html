@@ -23,12 +23,12 @@
                         <td>{{vehicle?.id}}</td>
                         <td>Maker Name</td>
                         <td> : </td>
-                        <td>{{vehicle?.makerName}}</td>
+                        <td>{{vehicle?.maker?.displayName}}</td>
                     </tr>
                     <tr>
                         <td>Model Name</td>
                         <td> : </td>
-                        <td>{{vehicle?.modelName}}</td>
+                        <td>{{vehicle?.model?.displayName}}</td>
                         <td>Model Year </td>
                         <td>: </td>
                         <td>{{vehicle?.modelYear}}</td>
@@ -135,25 +135,24 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="makerName" class="col-form-label">Maker Name:</label>
-                                <!-- <input required maxlength="100" type="text" class="form-control" name="makerName"
-                                    id="makerName" #makerName="ngModel" [(ngModel)]="editVehicleObj.makerName"
-                                    [class.invalid]="makerName.invalid && makerName.touched"> -->
-
-                                <select required class="form-control" name="makerName" id="makerName"
-                                    #makerName="ngModel" [(ngModel)]="editVehicleObj.makerName"
-                                    [class.invalid]="{'invalid-textbox' : makerName.invalid && makerName.touched }">
-                                    <option *ngFor="let maker of vehicleService.makersObj" [value]="maker.value">
-                                        {{maker.name}}</option>
+                                <label for="makerId" class="col-form-label">Maker Name:</label>
+                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
+                                    [(ngModel)]="editVehicleObj.makerId"
+                                    [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
+                                    <option *ngFor="let maker of vehicleMakers" [value]="maker.id">
+                                        {{maker.displayName}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="modelName" class="col-form-label">Model Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="modelName"
-                                    id="modelName" #modelName="ngModel" [(ngModel)]="editVehicleObj.modelName"
-                                    [class.invalid]="modelName.invalid && modelName.touched">
+                                <label for="modelId" class="col-form-label">Model Name:</label>
+                                <select required class="form-control" name="modelId" id="modelId" #modelId="ngModel"
+                                    [(ngModel)]="editVehicleObj.modelId"
+                                    [class.invalid]="{'invalid-textbox' : modelId.invalid && modelId.touched }">
+                                    <option *ngFor="let model of vehicleModels" [value]="model.id">
+                                        {{model.displayName}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-4">

@@ -52,7 +52,7 @@
                 </button>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body  p-0">
             <div class="mat-elevation-z8">
                 <table #VehicleMakerTable="matTable" mat-table [dataSource]="vehicleMakers" matSort
                     #VehicleMakerSort="matSort">
@@ -70,10 +70,10 @@
                     </ng-container>
 
                     <!-- Backend Value Column -->
-                    <ng-container matColumnDef="storageValue">
+                    <!-- <ng-container matColumnDef="storageValue">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Backend Value </th>
                         <td mat-cell *matCellDef="let row"> {{row.storageValue}} </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- Date Added Column -->
                     <ng-container matColumnDef="dateAdded">
@@ -92,7 +92,7 @@
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef> </th>
                         <td mat-cell *matCellDef="let row">
-                            <button mat-icon-button (click)="editVehicleMaker(row)">
+                            <button mat-icon-button (click)="showEditVehicleMakerModel(row)">
                                 <mat-icon>
                                     edit
                                 </mat-icon>
@@ -131,7 +131,7 @@
                 </button>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body  p-0">
             <!-- <mat-form-field appearance="standard">
                 <mat-label>Filter</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
@@ -150,7 +150,7 @@
                     <!-- Maker Name Column -->
                     <ng-container matColumnDef="makerId">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Maker Name </th>
-                        <td mat-cell *matCellDef="let row"> {{row.makerId}} </td>
+                        <td mat-cell *matCellDef="let row"> {{row?.maker?.displayName}} </td>
                     </ng-container>
 
                     <!-- Display Value Column -->
@@ -160,10 +160,10 @@
                     </ng-container>
 
                     <!-- Backend Value Column -->
-                    <ng-container matColumnDef="storageValue">
+                    <!-- <ng-container matColumnDef="storageValue">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Backend Value </th>
                         <td mat-cell *matCellDef="let row"> {{row.storageValue}} </td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- Date Added Column -->
                     <ng-container matColumnDef="dateAdded">
@@ -182,7 +182,7 @@
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef> </th>
                         <td mat-cell *matCellDef="let row">
-                            <button mat-icon-button (click)="editVehicleModel(row)">
+                            <button mat-icon-button (click)="showEditVehicleModelModel(row)">
                                 <mat-icon>
                                     edit
                                 </mat-icon>
@@ -208,7 +208,6 @@
                     showFirstLastButtons>
                 </mat-paginator>
             </div>
-
         </div>
     </div>
 </div>
@@ -216,7 +215,7 @@
 <!-- Add New Vehicle Maker Modal -->
 <div class="modal fade" id="addVehicleMakerModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="addVehicleMakerModelLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <form novalidate #makerform="ngForm" (submit)="addVehicleMaker(makerform)">
                 <div class="modal-header">
@@ -226,7 +225,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="displayName" class="col-form-label">Display Name:</label>
                                 <input required maxlength="100" type="text" class="form-control" name="displayName"
@@ -234,7 +233,7 @@
                                     [class.invalid]="displayName.invalid && displayName.touched">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="storageValue" class="col-form-label">Backend Name:</label>
                                 <input required maxlength="100" type="text" class="form-control" name="storageValue"
@@ -244,7 +243,7 @@
                                     <small>Only enter small latters and do not cotains (space, -, _)</small>
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -256,7 +255,58 @@
     </div>
 </div>
 
-<!-- Delete Vehicle Maker Model -->
+<!-- Start Edit Vehicle Maker Modal -->
+<div class="modal fade" id="editVehicleMakerModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editVehicleMakerModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form novalidate #makereditform="ngForm" (submit)="editVehicleMaker(makereditform)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editVehicleMakerModelLabel">Edit Vehicle Maker</h5>
+                    <button type="button" class="btn-close" #hidevehiclemakereditmodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="displayName" class="col-form-label">Display Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="displayName"
+                                    id="displayName" #displayName="ngModel"
+                                    [(ngModel)]="editVehicleMakerObj.displayName"
+                                    [class.invalid]="displayName.invalid && displayName.touched">
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="storageValue" class="col-form-label">Backend Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
+                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="editVehicleMakerObj.storageValue"
+                                    [class.invalid]="storageValue.invalid && storageValue.touched">
+                                <p class="m-0">
+                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
+                                </p>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="makereditform.invalid" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<button hidden type="button" class="btn btn-primary" #showvehiclemakereditmodel data-bs-toggle="modal"
+    data-bs-target="#editVehicleMakerModel">
+    Edit Vehicle Maker
+</button>
+
+<!-- End Edit Vehicle Maker Modal -->
+
+<!-- Start Delete Vehicle Maker Model -->
 <div class="modal fade" id="deleteVehicleMakerModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="deleteVehicleMakerModelLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -281,10 +331,10 @@
     data-bs-target="#deleteVehicleMakerModel">
     Add New Vehicle Maker
 </button>
+<!-- End Delete Vehicle Maker Model -->
 
 
-
-<!-- Add New Vehicle Model Modal -->
+<!-- Start Add New Vehicle Model Modal -->
 <div class="modal fade" id="addVehicleModelModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="addVehicleModelModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -297,9 +347,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Display Name:</label>
+                                <label for="displayName" class="col-form-label">Select Maker:</label>
                                 <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
                                     [(ngModel)]="newVehicleModel.makerId"
                                     [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
@@ -310,14 +360,14 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Display Name:</label>
+                                <label for="displayName" class="col-form-label">Model Name:</label>
                                 <input required maxlength="100" type="text" class="form-control" name="displayName"
                                     id="displayName" #displayName="ngModel" [(ngModel)]="newVehicleModel.displayName"
                                     [class.invalid]="displayName.invalid && displayName.touched">
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="storageValue" class="col-form-label">Backend Name:</label>
                                 <input required maxlength="100" type="text" class="form-control" name="storageValue"
@@ -327,7 +377,7 @@
                                     <small>Only enter small latters and do not cotains (space, -, _)</small>
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -338,8 +388,72 @@
         </div>
     </div>
 </div>
+<!-- End Add New Vehicle Model Modal -->
 
-<!-- Delete Vehicle Model Model -->
+<!-- Start Edit Vehicle Model Modal -->
+<div class="modal fade" id="editVehicleModelModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editVehicleModelModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form novalidate #modeleditform="ngForm" (submit)="editVehicleModel(modeleditform)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editVehicleModelModelLabel">Edit Vehicle Model</h5>
+                    <button type="button" class="btn-close" #hidevehiclemodeleditmodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="displayName" class="col-form-label">Select Maker:</label>
+                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
+                                    [(ngModel)]="editVehicleModelObj.makerId"
+                                    [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
+                                    <option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
+                                        {{maker.displayName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="displayName" class="col-form-label">Model Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="displayName"
+                                    id="displayName" #displayName="ngModel"
+                                    [(ngModel)]="editVehicleModelObj.displayName"
+                                    [class.invalid]="displayName.invalid && displayName.touched">
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="storageValue" class="col-form-label">Backend Name:</label>
+                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
+                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="editVehicleModelObj.storageValue"
+                                    [class.invalid]="storageValue.invalid && storageValue.touched">
+                                <p class="m-0">
+                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
+                                </p>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="modeleditform.invalid" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<button hidden type="button" class="btn btn-primary" #showvehiclemodeleditmodel data-bs-toggle="modal"
+    data-bs-target="#editVehicleModelModel">
+    Edit Vehicle Model
+</button>
+
+<!-- End Edit Vehicle Model Modal -->
+
+<!-- Start Delete Vehicle Model Model -->
 <div class="modal fade" id="deleteVehicleModelModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="deleteVehicleModelModelLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -364,3 +478,5 @@
     data-bs-target="#deleteVehicleModelModel">
     Add New Vehicle Model
 </button>
+
+<!-- End Delete Vehicle Model Model -->

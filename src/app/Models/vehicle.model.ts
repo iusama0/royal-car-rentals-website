@@ -1,7 +1,10 @@
+import { VehicleMaker } from "./vehicle-maker.model";
+import { VehicleModel } from "./vehicle-model.model";
+
 export class Vehicle {
     id: number;
-    makerName: string;
-    modelName: string;
+    makerId: number;
+    modelId: number;
     modelYear: number;
     registrationNumber: string;
     color: string;
@@ -12,4 +15,6 @@ export class Vehicle {
     dateAdded: string;
     dateUpdated: string;
     images: string[];
+    maker: VehicleMaker;
+    model: VehicleModel;
 }

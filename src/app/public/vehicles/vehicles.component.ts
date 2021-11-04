@@ -28,7 +28,7 @@ export class VehiclesComponent implements OnInit {
       );
   }
 
-  getVehicles(maker: string) {
+  getVehicles(maker: number) {
     this.vehicleService.getVehiclesByMaker(maker).subscribe(
       (response: any) => {
         this.vehicles = response

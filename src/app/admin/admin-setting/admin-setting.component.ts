@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { VehicleMaker } from 'src/app/Models/vehicle-maker.model';
@@ -22,18 +21,25 @@ export class AdminSettingComponent implements OnInit {
   @ViewChild('closevehiclemakermodel') closevehiclemakermodel: any;
   @ViewChild('showvehiclemakermodel') showvehiclemakermodel: any;
   @ViewChild('hidedeletemakermodel') hidedeletemakermodel: any;
+  @ViewChild('showvehiclemakereditmodel') showvehiclemakereditmodel: any;
+  @ViewChild('hidevehiclemakereditmodel') hidevehiclemakereditmodel: any;
 
-  VehicleMakerColumns: string[] = ['id', 'displayName', 'storageValue', 'dateAdded', 'dateUpdated', 'actions'];
+  VehicleMakerColumns: string[] = ['id', 'displayName', 'dateAdded', 'dateUpdated', 'actions'];
   vehicleMakers: MatTableDataSource<VehicleMaker>;
   @ViewChild('VehicleModelTable', { static: true }) vehicleMakerTable: MatTable<VehicleMaker>;
   @ViewChild('VehicleMakerPaginator', { static: true }) vehicleMakerPaginator: MatPaginator;
   @ViewChild('VehicleMakerSort', { static: true }) vehicleMakerSort: MatSort;
 
   deleteVehicleMakerObj: VehicleMaker;
+  editVehicleMakerObj: VehicleMaker = {
+    id: 0,
+    displayName: '',
+    dateAdded: new Date().toISOString(),
+    dateUpdated: new Date().toISOString(),
+  };
   newVehicleMaker: VehicleMaker = {
     id: 0,
     displayName: '',
-    storageValue: '',
     dateAdded: new Date().toISOString(),
     dateUpdated: new Date().toISOString(),
   }
@@ -42,19 +48,27 @@ export class AdminSettingComponent implements OnInit {
   @ViewChild('closevehiclemodelmodel') closevehiclemodelmodel: any;
   @ViewChild('showvehiclemodelmodel') showvehiclemodelmodel: any;
   @ViewChild('hidedeletemodelmodel') hidedeletemodelmodel: any;
+  @ViewChild('showvehiclemodeleditmodel') showvehiclemodeleditmodel: any;
+  @ViewChild('hidevehiclemodeleditmodel') hidevehiclemodeleditmodel: any;
 
-  VehicleModelColumns: string[] = ['id', 'makerId', 'displayName', 'storageValue', 'dateAdded', 'dateUpdated', 'actions'];
+  VehicleModelColumns: string[] = ['id', 'makerId', 'displayName', 'dateAdded', 'dateUpdated', 'actions'];
   vehicleModels: MatTableDataSource<VehicleModel>;
   @ViewChild('VehicleModelTable', { static: true }) vehicleModelTable: MatTable<VehicleModel>;
   @ViewChild('VehicleModelPaginator', { static: true }) vehicleModelPaginator: MatPaginator;
   @ViewChild('VehicleModelSort', { static: true }) vehicleModelSort: MatSort;
 
   deleteVehicleModelObj: VehicleModel;
+  editVehicleModelObj: VehicleModel = {
+    id: 0,
+    makerId: 0,
+    displayName: '',
+    dateAdded: new Date().toISOString(),
+    dateUpdated: new Date().toISOString(),
+  };
   newVehicleModel: VehicleModel = {
     id: 0,
     makerId: 0,
     displayName: '',
-    storageValue: '',
     dateAdded: new Date().toISOString(),
     dateUpdated: new Date().toISOString(),
   }
@@ -97,7 +111,6 @@ export class AdminSettingComponent implements OnInit {
 
   addVehicleMaker(makerform: NgForm) {
     console.log(this.newVehicleMaker)
-
     this.vehicleMakerService.add(this.newVehicleMaker).subscribe(
       (response: any) => {
         this.vehicleMakers.data.push(response)
@@ -123,15 +136,40 @@ export class AdminSettingComponent implements OnInit {
     this.newVehicleMaker.dateUpdated = new Date().toISOString();
   }
 
-  editVehicleMaker(data: any) {
-    console.log(this.editVehicleMaker)
+  showEditVehicleMakerModel(data: any) {
+    this.editVehicleMakerObj = Object.assign({}, data);
+    this.showvehiclemakereditmodel.nativeElement.click();
+  }
+
+  editVehicleMaker(form: NgForm) {
+    this.vehicleMakerService.edit(this.editVehicleMakerObj).subscribe(
+      (response: any) => {
+        console.log(response)
+        for (var i = 0; i < this.vehicleMakers.data.length; i++) {
+          if (this.vehicleMakers.data[i].id == this.editVehicleMakerObj.id) {
+            this.vehicleMakers.data[i] = this.editVehicleMakerObj;
+          }
+        }
+        this.vehicleMakers.paginator = this.vehicleMakerPaginator;
+        this.vehicleMakers.sort = this.vehicleMakerSort;
+        this.vehicleMakerTable.renderRows();
+
+        this.hidevehiclemakereditmodel.nativeElement.click();
+        this.toastr.success('', 'Vehicle Maker Updated Successfully');
+      },
+      error => {
+        form.form.reset();
+        this.toastr.error('', 'Vehicle Maker Updating Error');
+        console.log("Error: " + error);
+      }
+    );
+
   }
 
   deleteVehicleMaker(data: any) {
     console.log(data)
     this.deleteVehicleMakerObj = data;
     this.showvehiclemakermodel.nativeElement.click();
-
   }
 
   confirmDeleteVehicleMaker() {
@@ -180,13 +218,13 @@ export class AdminSettingComponent implements OnInit {
         this.vehicleModels.paginator = this.vehicleModelPaginator;
         this.vehicleModels.sort = this.vehicleModelSort;
         this.vehicleModelTable.renderRows();
-        this.resetVehicleModelForm(modelform);
-        this.closevehiclemodelmodel.nativeElement.click();
-        this.toastr.success('', 'Vehicle Model Added Successfully');
+
+        this.hidevehiclemodeleditmodel.nativeElement.click();
+        this.toastr.success('', 'Vehicle Model Updated Successfully');
       },
       error => {
         modelform.form.reset();
-        this.toastr.error('', 'Vehicle Model Adding Error');
+        this.toastr.error('', 'Vehicle Model Updating Error');
         console.log("Error: " + error);
       }
     );
@@ -199,15 +237,40 @@ export class AdminSettingComponent implements OnInit {
     this.newVehicleModel.dateUpdated = new Date().toISOString();
   }
 
-  editVehicleModel(data: any) {
-    console.log(data)
+  showEditVehicleModelModel(data: any) {
+    this.editVehicleModelObj = Object.assign({}, data);
+    this.showvehiclemodeleditmodel.nativeElement.click();
+  }
+
+  editVehicleModel(modeleditform: NgForm) {
+    this.vehicleModelService.edit(this.editVehicleModelObj).subscribe(
+      (response: any) => {
+        for (var i = 0; i < this.vehicleModels.data.length; i++) {
+          if (this.vehicleModels.data[i].id == this.editVehicleModelObj.id) {
+            this.vehicleModels.data[i] = this.editVehicleModelObj;
+          }
+        }
+
+        this.vehicleModels.paginator = this.vehicleModelPaginator;
+        this.vehicleModels.sort = this.vehicleModelSort;
+        this.vehicleModelTable.renderRows();
+
+        //this.resetVehicleModelForm(modeleditform);
+        this.hidevehiclemodeleditmodel.nativeElement.click();
+        this.toastr.success('', 'Vehicle Model Added Successfully');
+      },
+      error => {
+        modeleditform.form.reset();
+        this.toastr.error('', 'Vehicle Model Adding Error');
+        console.log("Error: " + error);
+      }
+    );
   }
 
   deleteVehicleModel(data: any) {
     console.log(data)
     this.deleteVehicleModelObj = data;
     this.showvehiclemodelmodel.nativeElement.click();
-
   }
 
   confirmDeleteVehicleModel() {

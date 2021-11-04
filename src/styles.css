@@ -3,9 +3,24 @@
 input.invalid {
     border-color: red;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 table {
     width: 100%;
-  }
+}
+
+.card-body {
+    /* padding: 0 !important; */
+}
+
+.mat-elevation-z8 {
+    box-shadow: none !important;
+}

@@ -2,7 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { VehicleMaker } from 'src/app/Models/vehicle-maker.model';
+import { VehicleModel } from 'src/app/Models/vehicle-model.model';
 import { Vehicle } from 'src/app/Models/vehicle.model';
+import { VehicleMakerService } from 'src/app/services/vehicle-maker.service';
+import { VehicleModelService } from 'src/app/services/vehicle-model.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
 
 
@@ -25,37 +29,50 @@ export class AdminVehicleDetailComponent implements OnInit {
   deletePictureName: string;
   fileMessage = '';
 
+  public vehicleMakers: VehicleMaker[];
+  public vehicleModels: VehicleModel[];
 
   constructor(
+    public vehicleMakerService: VehicleMakerService,
+    public vehicleModelService: VehicleModelService,
     public vehicleService: VehicleService,
-    private toastr: ToastrService,
     public activatedRoute: ActivatedRoute,
+    private toastr: ToastrService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-
-    // this.activatedRoute.queryParams.subscribe(params => {
-    //   this.vehicle = JSON.parse(params["user"]);
-    //   this.editVehicleObj = Object.assign({}, this.vehicle);
-    //   console.log(JSON.parse(params["user"]));
-
-    //   if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
-    //     this.images = this.vehicle.imagesPath.split(',');
-    //   }
-
-    // });
-
-    // console.log(this.activatedRoute.snapshot.queryParams._data)
-
-    this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
-    // this.vehicle = { "id": 12, "makerName": "Audi", "modelName": "A6", "modelYear": 2020, "registrationNumber": "PK6777HJHJ", "color": "red", "status": "approved", "availability": true, "price": 5000, "imagesPath": "AudiA6202020211028180614055.jpg,AudiA6202020211028180905419.jpg", "dateAdded": "2021-10-25T17:08:54.653", "dateUpdated": "2021-10-28T18:09:05.427" };
+    this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams._data);  
     this.editVehicleObj = Object.assign({}, this.vehicle);
 
     if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
       this.images = this.vehicle.imagesPath.split(',');
     }
 
+    this.getVehicleMakers();
+    this.getVehicleModels();
+  }
+
+  getVehicleMakers() {
+    this.vehicleMakerService.gets().subscribe(
+      (response: any) => {
+        this.vehicleMakers = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  getVehicleModels() {
+    this.vehicleModelService.gets().subscribe(
+      (response: any) => {
+        this.vehicleModels = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
   }
 
   editVehicle() {

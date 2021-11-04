@@ -11,7 +11,7 @@
                             [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ ( vehicle?.imagesPath !='' ? showalert(vehicle?.imagesPath) :'dumy-car.jpg') +')'}">
 
                         </div>
-                        <h2>{{vehicle.makerName +" "+ vehicle.modelName+" "+vehicle.modelYear}}</h2>
+                        <h2>{{vehicle.maker?.displayName +" "+ vehicle.model?.displayName+" "+vehicle.modelYear}}</h2>
                         <table class="w-100">
                             <tbody>
                                 <tr>

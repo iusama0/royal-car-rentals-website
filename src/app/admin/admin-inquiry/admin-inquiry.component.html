@@ -45,32 +45,77 @@
         <div class="card-header">
             Inquiries
         </div>
-        <div class="card-body">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Message</th>
-                        <th>Date Added</th>
-                        <!-- <th>Action</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let inquiry of inquiries">
-                        <td class="vid">{{ inquiry.id }}</td>
-                        <td>{{ inquiry.firstName+"/"+ inquiry.lastName}}</td>
-                        <td>{{ inquiry.email }}</td>
-                        <td>{{ inquiry.message }}</td>
-                        <td>{{ inquiry.dateAdded | date:'short'}}</td>
-                        <!-- <td>
-                            <a class="viewVehicleC">VIEW</a> |
-                            <a class="deleteVehicleC">DELETE</a>
-                        </td> -->
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card-body p-0">
+            <div class="mat-elevation-z8">
+                <table #InquiriesTable="matTable" mat-table [dataSource]="inquiries" matSort #InquiriesSort="matSort">
+
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="firstName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.firstName + " "+ row.lastName}} </td>
+                    </ng-container>
+
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                    </ng-container>
+
+                    <!-- Message Column -->
+                    <ng-container matColumnDef="message">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
+                        <td mat-cell *matCellDef="let row"> {{row.message}} </td>
+                    </ng-container>
+
+                    <!-- Date Added Column -->
+                    <ng-container matColumnDef="dateAdded">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Added </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateAdded | date:'short'}} </td>
+                    </ng-container>
+
+                    <!-- Date Updated Column -->
+                    <ng-container matColumnDef="dateUpdated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Updated </th>
+                        <td mat-cell *matCellDef="let row"> {{row.dateUpdated | date:'short'}} </td>
+                    </ng-container>
+
+
+                    <!-- Actions Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button>
+                                <mat-icon>
+                                    edit
+                                </mat-icon>
+                            </button>
+                            <button mat-icon-button>
+                                <mat-icon>
+                                    delete
+                                </mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="InquiriesColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: InquiriesColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <!-- <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr> -->
+                </table>
+
+                <mat-paginator #InquiriesPaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
+                    showFirstLastButtons>
+                </mat-paginator>
+            </div>
         </div>
     </div>
 </div>

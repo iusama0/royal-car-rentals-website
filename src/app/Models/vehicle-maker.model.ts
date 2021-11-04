@@ -1,7 +1,6 @@
 export class VehicleMaker {
-    id: number;
-    displayName: string;
-    storageValue: string;
-    dateAdded: string;
-    dateUpdated: string;
+    id: number = 0;
+    displayName: string = '';
+    dateAdded: string = '';
+    dateUpdated: string = '';
 }

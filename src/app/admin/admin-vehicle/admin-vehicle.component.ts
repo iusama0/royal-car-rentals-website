@@ -5,7 +5,13 @@ import { ToastrService } from 'ngx-toastr';
 import { NavigationExtras, Router } from '@angular/router';
 import { VehicleService } from 'src/app/services/vehicle.service';
 import { Subject } from 'rxjs';
-import { DataTableDirective } from 'angular-datatables';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { VehicleMakerService } from 'src/app/services/vehicle-maker.service';
+import { VehicleModelService } from 'src/app/services/vehicle-model.service';
+import { VehicleModel } from 'src/app/Models/vehicle-model.model';
+import { VehicleMaker } from 'src/app/Models/vehicle-maker.model';
 declare var $: any
 
 @Component({
@@ -17,11 +23,11 @@ export class AdminVehicleComponent implements OnInit {
   @ViewChild('closebutton') closebutton: any;
   @ViewChild('showdeletemodel') showdeletemodel: any;
   @ViewChild('hidedeletemodel') hidedeletemodel: any;
-  // @ViewChild('imagesPath') uploadImagesInput: ElementRef;
+
   newVehicle: Vehicle = {
     id: 0,
-    makerName: '',
-    modelName: '',
+    makerId: 0,
+    modelId: 0,
     modelYear: 0,
     registrationNumber: '',
     color: '',
@@ -31,87 +37,74 @@ export class AdminVehicleComponent implements OnInit {
     imagesPath: '',
     dateAdded: new Date().toISOString(),
     dateUpdated: new Date().toISOString(),
-    images: []
+    images: [],
+    maker:new VehicleMaker,
+    model:new VehicleModel
   };
   files: string[] = [];
   fileMessage = '';
-  title = 'datatables';
-  dtOptions: DataTables.Settings = {
-    //default number of records per page
-    pageLength: 10,
-    //It can be simple or full_numbers
-    pagingType: 'full_numbers',
-    autoWidth: false,
-    responsive: true,
-    //select from drop down list to select number of records per page 
-    lengthMenu: [10, 20, 30, 40],
-    processing: true,
-    columns: [
-      { data: 'id', orderable: true },
-      { data: 'makerName', orderable: false },
-      { data: 'registrationNumber', orderable: false },
-      { data: 'status', orderable: false },
-      { data: 'availability', orderable: false },
-      { data: 'price', orderable: true },
-      { data: 'dateAdded', orderable: true },
-      { data: 'action', orderable: false },
-    ]
-  };
 
-  //{ data: 'modelYear' }, { data: 'Email' }, { data: 'IsActive' }, { defaultContent: '', orderable: false }
-  @ViewChild(DataTableDirective)
-  dtElement: DataTableDirective;
-  dtTrigger: Subject<any> = new Subject();
-
-  public vehicles: Vehicle[];
   public deleteVehicleInfo: Vehicle;
+  VehicleColumns: string[] = ['id', 'makerId','modelId', 'registrationNumber', 'status', 'availability', 'price', 'dateAdded', 'dateUpdated', 'actions'];
+  vehicles: MatTableDataSource<Vehicle>;
+  @ViewChild('VehicleTable', { static: true }) vehicleTable: MatTable<Vehicle>;
+  @ViewChild('VehiclePaginator', { static: true }) vehiclePaginator: MatPaginator;
+  @ViewChild('VehicleSort', { static: true }) vehicleSort: MatSort;
+
+  public vehicleMakers: VehicleMaker[];
+  public vehicleModels: VehicleModel[];
 
   constructor(
     public vehicleService: VehicleService,
+    public vehicleMakerService: VehicleMakerService,
+    public vehicleModelService: VehicleModelService,
     private toastr: ToastrService,
     private router: Router
   ) {
-    this.newVehicle.makerName = vehicleService.makersObj[0].value;
+
   }
 
   ngOnInit(): void {
     this.getVehicles();
-    let _this = this;
-    $(document).on('click', '.viewVehicleC', function (this: any) {
-      var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.vehicles.find(i => i.id == parseInt(_id));
-      _this.viewVehicle(data);
-    });
-
-    $(document).on('click', '.editVehicleC', function (this: any) {
-      var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.vehicles.find(i => i.id == parseInt(_id));
-      _this.editVehicle(data);
-    });
-    $(document).on('click', '.deleteVehicleC', function (this: any) {
-      var _id = $(this).parents("tr").find(".vid").text();
-      let data = _this.vehicles.find(i => i.id == parseInt(_id));
-      _this.deleteVehicle(data);
-    });
+    this.getVehicleMakers();
+    this.getVehicleModels();
   }
 
   ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
 
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.destroy();
-      this.dtTrigger.next();
-    });
   }
 
   getVehicles() {
     this.vehicleService.getVehicles().subscribe(
       (response: any) => {
-        this.vehicles = response
-        this.rerender();
-        console.log("Success: " + response);
+        this.vehicles = new MatTableDataSource(response);
+        this.vehicles.paginator = this.vehiclePaginator;
+        this.vehicles.sort = this.vehicleSort;
+        // this.vehicleMakerTable.renderRows();
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  getVehicleMakers() {
+    this.vehicleMakerService.gets().subscribe(
+      (response: any) => {
+        this.vehicleMakers = response;
+        this.newVehicle.makerId = this.vehicleMakers[0].id;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  getVehicleModels() {
+    this.vehicleModelService.gets().subscribe(
+      (response: any) => {
+        this.vehicleModels = response;
+        this.newVehicle.modelId = this.vehicleModels[0].id;
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -147,8 +140,10 @@ export class AdminVehicleComponent implements OnInit {
 
     this.vehicleService.addVehicle(formData).subscribe(
       (response: any) => {
-        this.vehicles.push(response)
-        this.rerender();
+        this.vehicles.data.push(response)
+        this.vehicles.paginator = this.vehiclePaginator;
+        this.vehicles.sort = this.vehicleSort;
+        this.vehicleTable.renderRows();
         this.resetForm(form);
         this.closebutton.nativeElement.click();
         this.toastr.success('', 'Vehicle Added Successfully');
@@ -165,7 +160,8 @@ export class AdminVehicleComponent implements OnInit {
     form.form.reset();
     // this.uploadImagesInput.nativeElement.value = '';
     this.newVehicle = new Vehicle();
-    this.newVehicle.makerName = this.vehicleService.makersObj[0].value;
+    this.newVehicle.makerId = this.vehicleMakers[0].id;
+    this.newVehicle.modelId = this.vehicleModels[0].id;
     this.newVehicle.availability = false;
     this.newVehicle.status = 'pending';
     this.newVehicle.dateAdded = new Date().toISOString();
@@ -174,19 +170,8 @@ export class AdminVehicleComponent implements OnInit {
   }
 
   viewVehicle(data: any) {
-
-
-    // let navigationExtras: NavigationExtras = {
-    //   queryParams: {
-    //     "user": JSON.stringify(data)
-    //   }
-    // };
     let _data = JSON.stringify(data);
-
     this.router.navigate(["admin/vehicle-detail"], { queryParams: { _data } });
-    // this.router.navigate(["admin/vehicle-detail"]);
-
-    // this.router.navigateByUrl("admin/vehicle-detail", { state: { data: data } });
   }
 
   editVehicle(data: any) {
@@ -207,13 +192,15 @@ export class AdminVehicleComponent implements OnInit {
       (response: any) => {
 
         // this.vehicles.(); remove vehicle
-        for (var i = 0; i < this.vehicles.length; i++) {
-          if (this.vehicles[i].id == this.deleteVehicleInfo.id) {
-            this.vehicles.splice(i, 1);
+        for (var i = 0; i < this.vehicles.data.length; i++) {
+          if (this.vehicles.data[i].id == this.deleteVehicleInfo.id) {
+            this.vehicles.data.splice(i, 1);
           }
         }
+        this.vehicles.paginator = this.vehiclePaginator;
+        this.vehicles.sort = this.vehicleSort;
+        this.vehicleTable.renderRows();
 
-        this.rerender();
         this.hidedeletemodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Deleted Successfully');
       },
