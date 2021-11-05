@@ -9,7 +9,7 @@ import { EventEmitter } from '@angular/core';
 })
 export class AdminService {
   isAuthenticated = new EventEmitter<boolean>();
-  //formData: Admin = new Admin();
+
   readonly baseUrl = "http://localhost:25271/api/Admin/";
   constructor(private http: HttpClient) { }
 

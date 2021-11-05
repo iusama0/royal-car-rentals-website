@@ -1,0 +1,158 @@
+<div class="">
+    <section class="h-100" style="min-height: 100vh;">
+        <div class="container py-5 h-100">
+            <form *ngIf="showSignInForm" novalidate #form="ngForm" (submit)="signIn(form)">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 pb-4">
+                                <h2 class="mb-5 text-center">Sign In</h2>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input required maxlength="100" type="email" name="email"
+                                        class="form-control form-control-lg" #email="ngModel" [(ngModel)]="cred.email"
+                                        [class.invalid]="email.invalid && email.touched" />
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="password">Password</label>
+                                    <input required maxlength="100" type="password" name="password"
+                                        class="form-control form-control-lg" #password="ngModel"
+                                        [(ngModel)]="cred.password"
+                                        [class.invalid]="password.invalid && password.touched" />
+                                </div>
+
+                                <div class="form-check d-flex justify-content-start mb-4">
+                                    <input class="form-check-input" type="checkbox" #isRemember="ngModel"
+                                        [(ngModel)]="cred.isRemember" name="isRemember" />
+                                    <label class="form-check-label ps-2" for="isRemember"> Remember password
+                                    </label>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success p-3" type="submit" [disabled]="form.invalid">
+                                        Sign in
+                                    </button>
+                                </div>
+
+                                <p class="pt-4 text-center m-0">
+                                    Do not have an account?
+                                    <button class="p-0 btn btn-link" type="button" (click)="toggleForm()">
+                                        Sign Up
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form *ngIf="!showSignInForm" novalidate #form="ngForm" (submit)="signUp(form)">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                            <div class="card-body p-5 pb-4">
+                                <h2 class="mb-5 text-center">Sign Up </h2>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="firstName">First Name</label>
+                                            <input required maxlength="100" type="text" name="firstName"
+                                                class="form-control form-control-lg" #firstName="ngModel"
+                                                [(ngModel)]="newregisterCustomer.firstName"
+                                                [class.invalid]="firstName.invalid && firstName.touched" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="lastName">Last Name</label>
+                                            <input required maxlength="100" type="text" name="lastName"
+                                                class="form-control form-control-lg" #lastName="ngModel"
+                                                [(ngModel)]="newregisterCustomer.lastName"
+                                                [class.invalid]="lastName.invalid && lastName.touched" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="email">Email</label>
+                                            <input required maxlength="100" type="email" name="email"
+                                                class="form-control form-control-lg" #email="ngModel"
+                                                [(ngModel)]="newregisterCustomer.email"
+                                                [class.invalid]="email.invalid && email.touched" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="phoneNumber">Phone Number</label>
+                                            <input required maxlength="100" type="tel" name="phoneNumber"
+                                                class="form-control form-control-lg" #phoneNumber="ngModel"
+                                                [(ngModel)]="newregisterCustomer.phoneNumber"
+                                                [class.invalid]="phoneNumber.invalid && phoneNumber.touched" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="licenceNo">Licence No</label>
+                                            <input required maxlength="100" type="text" name="licenceNo"
+                                                class="form-control form-control-lg" #licenceNo="ngModel"
+                                                [(ngModel)]="newregisterCustomer.licenceNo"
+                                                [class.invalid]="licenceNo.invalid && licenceNo.touched" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check d-flex justify-content-start mb-4">
+                                            <label class="form-label" for="gender">Gender</label>
+                                            
+                                            <div>
+                                                <input id="male" class="form-radio-input" value="male" type="radio"
+                                                    #gender="ngModel" [(ngModel)]="newregisterCustomer.gender"
+                                                    name="gender" />
+                                                <label class="form-check-label ps-2" for="male"> Male </label>
+                                                <input id="female" class="form-radio-input" value="female" type="radio"
+                                                    #gender="ngModel" [(ngModel)]="newregisterCustomer.gender"
+                                                    name="gender" />
+                                                <label class="form-check-label ps-2" for="female"> Female </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="password">Password</label>
+                                            <input required maxlength="100" type="password" name="password"
+                                                class="form-control form-control-lg" #password="ngModel"
+                                                [(ngModel)]="newregisterCustomer.password"
+                                                [class.invalid]="password.invalid && password.touched" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="confirmPassword">Confirm Password</label>
+                                            <input required maxlength="100" type="password" name="confirmPassword"
+                                                class="form-control form-control-lg" #confirmPassword="ngModel"
+                                                [(ngModel)]="newregisterCustomer.confirmPassword"
+                                                [class.invalid]="confirmPassword.invalid && confirmPassword.touched" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success p-3" type="submit" [disabled]="form.invalid">
+                                        Sign Up
+                                    </button>
+                                </div>
+
+                                <p class="pt-4 text-center m-0">
+                                    Do you have already account?
+                                    <button class="p-0 btn btn-link" type="button" (click)="toggleForm()">
+                                        Sign In
+                                    </button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

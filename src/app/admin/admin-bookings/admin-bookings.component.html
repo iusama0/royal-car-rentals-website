@@ -1,12 +1,12 @@
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Inquiries Details</h1>
+    <h1 class="mt-4">Bookings</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">admin/Inquiries</li>
+        <li class="breadcrumb-item active">admin/bookings</li>
     </ol>
     <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Total Inquiries</div>
+                <div class="card-body">Total Bookings</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="#">View Details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -15,7 +15,7 @@
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
-                <div class="card-body">ReplayInquiries</div>
+                <div class="card-body">Active/InActive Bookings</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="#">View Details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -24,7 +24,7 @@
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
-                <div class="card-body">Pending Vehicles</div>
+                <div class="card-body">Pending Bookings</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="#">View Details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -33,7 +33,7 @@
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
-                <div class="card-body">Booked Vehicles</div>
+                <div class="card-body">XYZ Bookings</div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
                     <a class="small text-white stretched-link" href="#">View Details</a>
                     <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -41,13 +41,14 @@
             </div>
         </div>
     </div>
+
     <div class="card mb-4">
         <div class="card-header">
-            Inquiries
+            Bookings
         </div>
         <div class="card-body p-0">
             <div class="mat-elevation-z8">
-                <table #InquiriesTable="matTable" mat-table [dataSource]="inquiries" matSort #InquiriesSort="matSort">
+                <table #BookingTable="matTable" mat-table [dataSource]="bookings" matSort #BookingSort="matSort">
 
                     <!-- ID Column -->
                     <ng-container matColumnDef="id">
@@ -55,22 +56,45 @@
                         <td mat-cell *matCellDef="let row"> {{row.id}} </td>
                     </ng-container>
 
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="firstName">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-                        <td mat-cell *matCellDef="let row"> {{row.firstName + " "+ row.lastName}} </td>
+                    <!-- Vehicle Name Column -->
+                    <ng-container matColumnDef="vehicleId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.vehicleId }} </td>
                     </ng-container>
 
-                    <!-- Email Column -->
-                    <ng-container matColumnDef="email">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                    <!-- Customer Name Column -->
+                    <ng-container matColumnDef="customerId">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+                        <td mat-cell *matCellDef="let row"> {{row.customerId}} </td>
                     </ng-container>
 
-                    <!-- Message Column -->
-                    <ng-container matColumnDef="message">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
-                        <td mat-cell *matCellDef="let row"> {{row.message}} </td>
+                    <!-- WithDriver Column -->
+                    <ng-container matColumnDef="withDriver">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> With Driver </th>
+                        <td mat-cell *matCellDef="let row"> {{row.withDriver}} </td>
+                    </ng-container>
+
+                    <!-- Status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="text-light fw-bold rounded-pill py-2 px-3 text-capitalize"
+                                [ngStyle]="{'background-color': row.status === 'pending' ? '#ffc107' : (row.status === 'approved' ? '#198754' : '#dc3545') }">
+                                {{row.status}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- Start Time Column -->
+                    <ng-container matColumnDef="startTime">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Time </th>
+                        <td mat-cell *matCellDef="let row"> {{row.startTime | date:'short'}} </td>
+                    </ng-container>
+
+                    <!-- End Time Column -->
+                    <ng-container matColumnDef="endTime">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> End Time </th>
+                        <td mat-cell *matCellDef="let row"> {{row.EndTime | date:'short'}} </td>
                     </ng-container>
 
                     <!-- Date Added Column -->
@@ -90,28 +114,29 @@
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef> </th>
                         <td mat-cell *matCellDef="let row">
-                            <button mat-icon-button>
+                            <button mat-icon-button (click)="viewBooking(row)">
                                 <mat-icon>
                                     edit
                                 </mat-icon>
                             </button>
-                            <button mat-icon-button>
+                            <!-- <button mat-icon-button (click)="deleteCustomer(row)">
                                 <mat-icon>
                                     delete
                                 </mat-icon>
-                            </button>
+                            </button> -->
                         </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="InquiriesColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: InquiriesColumns;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="BookingColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: BookingColumns;"></tr>
 
+                    <!-- Row shown when there is no matching data. -->
                     <tr class="mat-row" *matNoDataRow>
-                        <td class="text-center mat-cell" colspan="7">No data found.</td>
+                        <td class="text-center mat-cell" colspan="10">No data found.</td>
                     </tr>
                 </table>
 
-                <mat-paginator #InquiriesPaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
+                <mat-paginator #BookingPaginator="matPaginator" [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"
                     showFirstLastButtons>
                 </mat-paginator>
             </div>

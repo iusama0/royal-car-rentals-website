@@ -1,7 +1,7 @@
 <div class="sb-nav-fixed" [ngClass]="{'sb-sidenav-toggled': isSidebarToggle}">
     <nav class=" sb-topnav navbar navbar-expand navbar-dark bg-dark" *ngIf="isAuthenticated">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="#">Royal Car Rentals</a>
+        <a class="navbar-brand ps-3" routerLink="dashboard">Royal Car Rentals</a>
         <!-- Sidebar Toggle-->
         <button (click)="toggleSidebar()" class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle"
             href="#!"><i class="fas fa-bars"></i></button>
@@ -35,7 +35,7 @@
                             Dashboard
                         </a>
 
-                        <a class="nav-link" routerLink="customer">
+                        <a class="nav-link" routerLink="customers">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Customers
                         </a>
@@ -50,12 +50,12 @@
                             Inquiries
                         </a>
 
-                        <a class="nav-link" routerLink="vehicle">
+                        <a class="nav-link" routerLink="vehicles">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Vehicles
                         </a>
 
-                        <a class="nav-link" routerLink="driver">
+                        <a class="nav-link" routerLink="drivers">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Drivers
                         </a>
@@ -67,7 +67,7 @@
 
                         <a class="nav-link" routerLink="settings">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Setting
+                            Settings
                         </a>
                         <!-- <div class="sb-sidenav-menu-heading">Interface</div> -->
                     </div>
@@ -83,13 +83,13 @@
             <main>
                 <router-outlet></router-outlet>
             </main>
-            <footer class="py-4 bg-light mt-auto" *ngIf="isAuthenticated">
+            <!-- <footer class="py-4 bg-light mt-auto" *ngIf="isAuthenticated">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">Copyright &copy; Your Website 2021</div>
                     </div>
                 </div>
-            </footer>
+            </footer> -->
         </div>
     </div>
 </div>

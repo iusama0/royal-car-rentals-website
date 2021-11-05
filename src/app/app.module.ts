@@ -69,6 +69,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { RegisterComponent } from './public/register/register.component';
+import { AdminCustomerDetailComponent } from './admin/admin-customer-detail/admin-customer-detail.component';
+import { AdminBookingsComponent } from './admin/admin-bookings/admin-bookings.component';
 
 //====================
 @NgModule({
@@ -93,7 +96,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     VehicleComponent,
     AdminInquiryComponent,
     AdminSettingComponent,
-    AdminReportComponent
+    AdminReportComponent,
+    RegisterComponent,
+    AdminCustomerDetailComponent,
+    AdminBookingsComponent
   ],
   imports: [
     BrowserModule,

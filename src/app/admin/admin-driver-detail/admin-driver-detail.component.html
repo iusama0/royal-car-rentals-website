@@ -23,7 +23,7 @@
                         <td rowspan="4" colspan="3">
                             <div class="delete-picture-wapper" (click)="removePicture()">
                                 <div class="picture-inner-wapper"
-                                    [ngStyle]="{'background-image': 'url('+'assets/adminUploads/drivers/'+ driver?.profilePicture +')'}">
+                                    [ngStyle]="{'background-image': 'url('+'assets/adminUploads/drivers/'+ ( driver?.profilePicture !='' ? driver?.profilePicture :'dumy-car.jpg') +')'}">
                                 </div>
                                 <!-- <div class="delete-picture">
                                     DELETE 

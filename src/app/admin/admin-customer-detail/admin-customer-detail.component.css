@@ -1,0 +1,20 @@
+.delete-picture-wapper {
+    position: relative;
+    text-align: center;
+    /* margin-right: 1rem; */
+}
+.picture-inner-wapper{
+    width: 300px;
+    height: 200px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+}
+
+.delete-picture {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+}

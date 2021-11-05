@@ -1,0 +1,149 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Customer Information</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">admin/customer-detail</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            Customer Information
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#editCustomerModel">
+                    Change Status
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table caption-top">
+                <tbody>
+                    <tr>
+                        <td>Vehicle Id </td>
+                        <td>: </td>
+                        <td>{{customer?.id}}</td>
+                        <td rowspan="4" colspan="3">
+                            <div class="delete-picture-wapper">
+                                <div class="picture-inner-wapper"
+                                    [ngStyle]="{'background-image': 'url('+'assets/adminUploads/customers/'+ ( customer?.profilePicture !='' ? customer?.profilePicture :'dumy-car.jpg') +')'}">
+                                </div>
+                                <!-- <div class="delete-picture">
+                                    DELETE 
+                                </div> -->
+                            </div>
+                            <!-- <img [src]="'assets/adminUploads/customers/'+ customer?.profilePicture" alt=""> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td> : </td>
+                        <td>{{customer?.firstName+" "+ customer?.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td> : </td>
+                        <td>{{customer?.email}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>PhoneNumber </td>
+                        <td>: </td>
+                        <td>{{customer?.phoneNumber}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Licence No </td>
+                        <td>:</td>
+                        <td>{{customer?.licenceNo}}</td>
+                        <td>Genger</td>
+                        <td>:</td>
+                        <td>{{customer?.gender | titlecase}}</td>
+                    </tr>
+                    <tr>
+                        <td>Active Status </td>
+                        <td>:</td>
+                        <td>
+                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                [ngStyle]="{'background-color': customer?.isActive ? '#198754' : '#dc3545' }">
+                                {{ customer?.isActive }}
+                            </div>
+                        </td>
+                        <td>Verification Status </td>
+                        <td>:</td>
+                        <td>
+                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                [ngStyle]="{'background-color': customer?.verificationStatus === 'pending' ? '#ffc107' : (customer?.verificationStatus === 'approved' ? '#198754' : '#dc3545') }">
+                                {{ customer?.verificationStatus }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date Added </td>
+                        <td>:</td>
+                        <td>{{customer?.dateAdded | date:'short'}}</td>
+                        <td>Date Updated </td>
+                        <td>:</td>
+                        <td>{{customer?.dateUpdated | date:'short'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Customer Report
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Start Edit New Customer Modal -->
+<div class="modal fade" id="editCustomerModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editCustomerModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form novalidate #form="ngForm" (submit)="changeStatus(form)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCustomerModelLabel">Change Status</h5>
+                    <button type="button" class="btn-close" #hideeditmodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="isActive" class="col-form-label">Select Active Status:</label>
+                                <select class="form-control" name="isActive" id="isActive" #isActive="ngModel"
+                                    [(ngModel)]="editCustomerObj.isActive"
+                                    [class.invalid]="isActive.invalid && isActive.touched">
+                                    <option value="true">True</option>
+                                    <option selected value="false">False</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="verificationStatus" class="col-form-label">Select Verification
+                                    Status:</label>
+                                <select class="form-control" name="verificationStatus" id="verificationStatus"
+                                    #verificationStatus="ngModel" [(ngModel)]="editCustomerObj.verificationStatus"
+                                    [class.invalid]="verificationStatus.invalid && verificationStatus.touched">
+                                    <option selected value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="blocked">Blocked</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Edit New Customer Modal -->
