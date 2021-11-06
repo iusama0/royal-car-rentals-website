@@ -6,8 +6,11 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { City } from 'src/app/Models/city.model';
 import { VehicleMaker } from 'src/app/Models/vehicle-maker.model';
 import { VehicleModel } from 'src/app/Models/vehicle-model.model';
+import { CityService } from 'src/app/services/city.service';
+import { CommonService } from 'src/app/services/common.service';
 import { VehicleMakerService } from 'src/app/services/vehicle-maker.service';
 import { VehicleModelService } from 'src/app/services/vehicle-model.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -74,25 +77,64 @@ export class AdminSettingComponent implements OnInit {
   }
 
 
-  //==============================================
+  //cities objects
+  @ViewChild('Hidecityaddmodel') hidecityaddmodel: any;
+  @ViewChild('showcityeditmodel') showcityeditmodel: any;
+  @ViewChild('hidecityeditmodel') hidecityeditmodel: any;
+  @ViewChild('showcitydeletemodel') showcitydeletemodel: any;
+  @ViewChild('hidecitydeletemodel') hidecitydeletemodel: any;
 
+  CityColumns: string[] = ['id', 'cityName', 'dateAdded', 'dateUpdated', 'actions'];
+  cities: MatTableDataSource<City>;
+  @ViewChild('CityTable', { static: true }) cityTable: MatTable<City>;
+  @ViewChild('CityPaginator', { static: true }) cityPaginator: MatPaginator;
+  @ViewChild('CitySort', { static: true }) citySort: MatSort;
 
-
-  constructor(
-    public vehicleService: VehicleService,
-    public vehicleMakerService: VehicleMakerService,
-    public vehicleModelService: VehicleModelService,
-    private toastr: ToastrService,
-    private router: Router
-  ) { }
-
-  ngOnInit(): void {
-    this.getVehicleMakers();
-    this.getVehicleModels();
+  deleteCityObj: City;
+  editCityObj: City = {
+    id: 0,
+    cityName: '',
+    dateAdded: new Date().toISOString(),
+    dateUpdated: new Date().toISOString(),
+  };
+  newCity: City = {
+    id: 0,
+    cityName: '',
+    dateAdded: new Date().toISOString(),
+    dateUpdated: new Date().toISOString(),
   }
 
-  ngAfterViewInit(): void {
+  public counts: any;
 
+  constructor(
+    public vehicleModelService: VehicleModelService,
+    public vehicleMakerService: VehicleMakerService,
+    public vehicleService: VehicleService,
+    public commonService: CommonService,
+    public cityService: CityService,
+    private toastr: ToastrService,
+    private router: Router
+  ) {
+    this.getCounts();
+    this.getVehicleMakers();
+    this.getVehicleModels();
+    this.getCities();
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  getCounts() {
+    this.commonService.settingCounts().subscribe(
+      (response: any) => {
+        this.counts = response;
+        console.log(this.counts)
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    )
   }
 
   getVehicleMakers() {
@@ -110,7 +152,7 @@ export class AdminSettingComponent implements OnInit {
   }
 
   addVehicleMaker(makerform: NgForm) {
-    console.log(this.newVehicleMaker)
+    // console.log(this.newVehicleMaker)
     this.vehicleMakerService.add(this.newVehicleMaker).subscribe(
       (response: any) => {
         this.vehicleMakers.data.push(response)
@@ -144,7 +186,7 @@ export class AdminSettingComponent implements OnInit {
   editVehicleMaker(form: NgForm) {
     this.vehicleMakerService.edit(this.editVehicleMakerObj).subscribe(
       (response: any) => {
-        console.log(response)
+        // console.log(response)
         for (var i = 0; i < this.vehicleMakers.data.length; i++) {
           if (this.vehicleMakers.data[i].id == this.editVehicleMakerObj.id) {
             this.vehicleMakers.data[i] = this.editVehicleMakerObj;
@@ -167,13 +209,13 @@ export class AdminSettingComponent implements OnInit {
   }
 
   deleteVehicleMaker(data: any) {
-    console.log(data)
+    // console.log(data)
     this.deleteVehicleMakerObj = data;
     this.showvehiclemakermodel.nativeElement.click();
   }
 
   confirmDeleteVehicleMaker() {
-    console.log("deleteVehicleMakerObj: " + this.deleteVehicleMakerObj)
+    // console.log("deleteVehicleMakerObj: " + this.deleteVehicleMakerObj)
     this.vehicleMakerService.delete(this.deleteVehicleMakerObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.vehicleMakers.data.length; i++) {
@@ -210,7 +252,7 @@ export class AdminSettingComponent implements OnInit {
   }
 
   addVehicleModel(modelform: NgForm) {
-    console.log(this.newVehicleModel)
+    // console.log(this.newVehicleModel)
 
     this.vehicleModelService.add(this.newVehicleModel).subscribe(
       (response: any) => {
@@ -219,7 +261,7 @@ export class AdminSettingComponent implements OnInit {
         this.vehicleModels.sort = this.vehicleModelSort;
         this.vehicleModelTable.renderRows();
 
-        this.hidevehiclemodeleditmodel.nativeElement.click();
+        this.closevehiclemodelmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Model Updated Successfully');
       },
       error => {
@@ -274,7 +316,7 @@ export class AdminSettingComponent implements OnInit {
   }
 
   confirmDeleteVehicleModel() {
-    console.log("deleteVehicleModelObj: " + this.deleteVehicleModelObj)
+    // console.log("deleteVehicleModelObj: " + this.deleteVehicleModelObj)
     this.vehicleModelService.delete(this.deleteVehicleModelObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.vehicleModels.data.length; i++) {
@@ -290,6 +332,104 @@ export class AdminSettingComponent implements OnInit {
       },
       error => {
         this.toastr.error('', 'Error Vehicle Model Deleting');
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  //cities
+
+  getCities() {
+    this.cityService.gets().subscribe(
+      (response: any) => {
+        this.cities = new MatTableDataSource(response);
+        this.cities.paginator = this.cityPaginator;
+        this.cities.sort = this.citySort;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  showEditCityModel(data: any) {
+    this.editCityObj = Object.assign({}, data);
+    this.showcityeditmodel.nativeElement.click();
+  }
+
+  editCity(form: NgForm) {
+    this.cityService.edit(this.editCityObj).subscribe(
+      (response: any) => {
+        // console.log(response)
+        for (var i = 0; i < this.cities.data.length; i++) {
+          if (this.cities.data[i].id == this.editCityObj.id) {
+            this.cities.data[i] = this.editCityObj;
+          }
+        }
+        this.cities.paginator = this.cityPaginator;
+        this.cities.sort = this.citySort;
+        this.cityTable.renderRows();
+
+        this.hidecityeditmodel.nativeElement.click();
+        this.toastr.success('', 'City Updated Successfully');
+      },
+      error => {
+        form.form.reset();
+        this.toastr.error('', 'City Updating Error');
+        console.log("Error: " + error);
+      }
+    );
+
+  }
+
+  addCity(form: NgForm) {
+    this.cityService.add(this.newCity).subscribe(
+      (response: any) => {
+        this.cities.data.push(response)
+        this.cities.paginator = this.cityPaginator;
+        this.cities.sort = this.citySort;
+        this.cityTable.renderRows();
+        this.resetCityForm(form);
+        this.hidecityaddmodel.nativeElement.click();
+        this.toastr.success('', 'City Added Successfully');
+      },
+      error => {
+        form.form.reset();
+        this.toastr.error('', 'City Adding Error');
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  resetCityForm(form: NgForm) {
+    form.form.reset();
+    this.newCity = new City();
+    this.newCity.dateAdded = new Date().toISOString();
+    this.newCity.dateUpdated = new Date().toISOString();
+  }
+
+  showDeleteCityModel(data: any) {
+    this.deleteCityObj = data;
+    this.showcitydeletemodel.nativeElement.click();
+  }
+
+  confirmDeleteCity() {
+    this.cityService.delete(this.deleteCityObj).subscribe(
+      (response: any) => {
+        for (var i = 0; i < this.cities.data.length; i++) {
+          if (this.cities.data[i].id == this.deleteCityObj.id) {
+            this.cities.data.splice(i, 1);
+          }
+        }
+        this.cities.paginator = this.cityPaginator;
+        this.cities.sort = this.citySort;
+        this.cityTable.renderRows();
+
+        this.hidecitydeletemodel.nativeElement.click();
+        this.toastr.success('', 'City Deleted Successfully');
+      },
+      error => {
+        this.toastr.error('', 'Error City Deleting');
         console.log("Error: " + error);
       }
     );

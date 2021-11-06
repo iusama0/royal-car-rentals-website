@@ -30,43 +30,49 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <!-- <div class="sb-sidenav-menu-heading">Core</div> -->
-                        <a class="nav-link" routerLink="dashboard">
+                        <a [ngClass]="{'active': currentPage== '/admin/dashboard'}" class="nav-link"
+                            routerLink="dashboard">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
 
-                        <a class="nav-link" routerLink="customers">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/customers'}" class="nav-link"
+                            routerLink="customers">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Customers
                         </a>
 
-                        <a class="nav-link" routerLink="bookings">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/bookings'}" class="nav-link"
+                            routerLink="bookings">
+                            <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                             Bookings
                         </a>
 
-                        <a class="nav-link" routerLink="inquiries">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/inquiries'}" class="nav-link"
+                            routerLink="inquiries">
+                            <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
                             Inquiries
                         </a>
 
-                        <a class="nav-link" routerLink="vehicles">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/vehicles'}" class="nav-link"
+                            routerLink="vehicles">
+                            <div class="sb-nav-link-icon"><i class="fas fa-taxi"></i></div>
                             Vehicles
                         </a>
 
-                        <a class="nav-link" routerLink="drivers">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/drivers'}" class="nav-link" routerLink="drivers">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
                             Drivers
                         </a>
 
-                        <a class="nav-link" routerLink="reports">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/reports'}" class="nav-link" routerLink="reports">
+                            <div class="sb-nav-link-icon"><i class="fas fa-scroll"></i></div>
                             Reports
                         </a>
 
-                        <a class="nav-link" routerLink="settings">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <a [ngClass]="{'active': currentPage== '/admin/settings'}" class="nav-link"
+                            routerLink="settings">
+                            <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                             Settings
                         </a>
                         <!-- <div class="sb-sidenav-menu-heading">Interface</div> -->

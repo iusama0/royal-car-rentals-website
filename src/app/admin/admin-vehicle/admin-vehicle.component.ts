@@ -12,6 +12,8 @@ import { VehicleMakerService } from 'src/app/services/vehicle-maker.service';
 import { VehicleModelService } from 'src/app/services/vehicle-model.service';
 import { VehicleModel } from 'src/app/Models/vehicle-model.model';
 import { VehicleMaker } from 'src/app/Models/vehicle-maker.model';
+import { City } from 'src/app/Models/city.model';
+import { CityService } from 'src/app/services/city.service';
 declare var $: any
 
 @Component({
@@ -28,6 +30,7 @@ export class AdminVehicleComponent implements OnInit {
     id: 0,
     makerId: 0,
     modelId: 0,
+    cityId: 0,
     modelYear: 0,
     registrationNumber: '',
     color: '',
@@ -38,14 +41,15 @@ export class AdminVehicleComponent implements OnInit {
     dateAdded: new Date().toISOString(),
     dateUpdated: new Date().toISOString(),
     images: [],
-    maker:new VehicleMaker,
-    model:new VehicleModel
+    maker: new VehicleMaker,
+    model: new VehicleModel,
+    city: new City
   };
   files: string[] = [];
   fileMessage = '';
 
   public deleteVehicleInfo: Vehicle;
-  VehicleColumns: string[] = ['id', 'makerId','modelId', 'registrationNumber', 'status', 'availability', 'price', 'dateAdded', 'dateUpdated', 'actions'];
+  VehicleColumns: string[] = ['id', 'makerId', 'modelId', 'registrationNumber', 'status', 'availability', 'price', 'dateAdded', 'dateUpdated', 'actions'];
   vehicles: MatTableDataSource<Vehicle>;
   @ViewChild('VehicleTable', { static: true }) vehicleTable: MatTable<Vehicle>;
   @ViewChild('VehiclePaginator', { static: true }) vehiclePaginator: MatPaginator;
@@ -53,11 +57,15 @@ export class AdminVehicleComponent implements OnInit {
 
   public vehicleMakers: VehicleMaker[];
   public vehicleModels: VehicleModel[];
+  public vehicleModelsFilter: VehicleModel[];
+  public cities: City[];
+  public counts: any;
 
   constructor(
-    public vehicleService: VehicleService,
-    public vehicleMakerService: VehicleMakerService,
     public vehicleModelService: VehicleModelService,
+    public vehicleMakerService: VehicleMakerService,
+    public vehicleService: VehicleService,
+    public cityService: CityService,
     private toastr: ToastrService,
     private router: Router
   ) {
@@ -65,13 +73,23 @@ export class AdminVehicleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getCounts();
     this.getVehicles();
     this.getVehicleMakers();
     this.getVehicleModels();
+    this.getCities();
   }
 
-  ngAfterViewInit(): void {
-
+  getCounts() {
+    this.vehicleService.counts().subscribe(
+      (response: any) => {
+        this.counts = response;
+        console.log(this.counts)
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    )
   }
 
   getVehicles() {
@@ -93,6 +111,7 @@ export class AdminVehicleComponent implements OnInit {
       (response: any) => {
         this.vehicleMakers = response;
         this.newVehicle.makerId = this.vehicleMakers[0].id;
+        //this.changeVehicleMacker(this.newVehicle.makerId);
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -105,6 +124,19 @@ export class AdminVehicleComponent implements OnInit {
       (response: any) => {
         this.vehicleModels = response;
         this.newVehicle.modelId = this.vehicleModels[0].id;
+        this.changeVehicleMacker(this.newVehicle.makerId);
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  getCities() {
+    this.cityService.gets().subscribe(
+      (response: any) => {
+        this.cities = response;
+        this.newVehicle.cityId = this.cities[0].id;
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -127,9 +159,7 @@ export class AdminVehicleComponent implements OnInit {
     }
   }
 
-  addVehicle(form: NgForm, event: any) {
-    console.log(this.newVehicle)
-
+  addVehicle(form: NgForm) {
     const formData = new FormData();
 
     for (var i = 0; i < 3; i++) {
@@ -161,7 +191,8 @@ export class AdminVehicleComponent implements OnInit {
     // this.uploadImagesInput.nativeElement.value = '';
     this.newVehicle = new Vehicle();
     this.newVehicle.makerId = this.vehicleMakers[0].id;
-    this.newVehicle.modelId = this.vehicleModels[0].id;
+    this.changeVehicleMacker(this.newVehicle.makerId);
+    // this.newVehicle.modelId = this.vehicleModels[0].id;
     this.newVehicle.availability = false;
     this.newVehicle.status = 'pending';
     this.newVehicle.dateAdded = new Date().toISOString();
@@ -175,19 +206,19 @@ export class AdminVehicleComponent implements OnInit {
   }
 
   editVehicle(data: any) {
-    console.log("editVehicle")
-    console.log(data)
+    // console.log("editVehicle")
+    // console.log(data)
   }
 
   deleteVehicle(data: any) {
-    console.log(data)
+    // console.log(data)
     this.deleteVehicleInfo = data;
     this.showdeletemodel.nativeElement.click();
 
   }
 
   confirmDeleteVehicle() {
-    console.log("confirmDeleteVehicle: " + this.deleteVehicleInfo)
+    // console.log("confirmDeleteVehicle: " + this.deleteVehicleInfo)
     this.vehicleService.deleteVehicle(this.deleteVehicleInfo).subscribe(
       (response: any) => {
 
@@ -209,6 +240,10 @@ export class AdminVehicleComponent implements OnInit {
         console.log("Error: " + error);
       }
     );
+  }
+
+  changeVehicleMacker(data: number) {
+    this.vehicleModelsFilter = this.vehicleModels.filter(x => x.makerId == data);
   }
 
 }

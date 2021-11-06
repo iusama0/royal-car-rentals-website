@@ -21,16 +21,16 @@ export class HomeComponent implements OnInit {
   }
 
   getVehicles() {
-    this.vehicleService.getVehicles().subscribe(
+    this.vehicleService.getApprovedVehicles().subscribe(
       (response: any) => {
         this.vehicles = response
         this.vehicles.forEach(element => {
           if (element.imagesPath != "" && element.imagesPath != null) {
             element.images = element.imagesPath.split(',');
-            console.log(element.images)
+            // console.log(element.images)
           }
         });
-        console.log(this.vehicles)
+        // console.log(this.vehicles)
       },
       (error: any) => {
         console.log("Error: " + error);

@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
   signIn(form: NgForm) {
     this.customerService.signIn(this.cred).subscribe(
       response => {
-        console.log(response)
+        // console.log(response)
         localStorage.setItem('signincustomerinfo', JSON.stringify(response));
         this.resetSignInForm(form);
         this.customerService.isAuthenticatedCustomer.emit(true);
@@ -80,10 +80,10 @@ export class RegisterComponent implements OnInit {
   }
 
   signUp(form: NgForm) {
-    console.log(this.newregisterCustomer)
+    // console.log(this.newregisterCustomer)
     this.customerService.signUp(this.newregisterCustomer).subscribe(
       response => {
-        console.log(response)
+        // console.log(response)
         localStorage.setItem('signincustomerinfo', JSON.stringify(response));
         this.resetSignUpForm(form);
         this.customerService.isAuthenticatedCustomer.emit(true);

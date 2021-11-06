@@ -38,9 +38,9 @@
                         <td>Registration# </td>
                         <td>:</td>
                         <td>{{vehicle?.registrationNumber}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>City Name</td>
+                        <td>:</td>
+                        <td>{{vehicle?.city?.cityName}}</td>
                     </tr>
                     <tr>
                         <td>Color </td>
@@ -54,18 +54,18 @@
                         <td>Status </td>
                         <td>:</td>
                         <td>
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                            <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
                                 [ngStyle]="{'background-color': vehicle?.status === 'pending' ? '#ffc107' : (vehicle?.status === 'approved' ? '#198754' : '#dc3545') }">
                                 {{ vehicle?.status }}
-                            </div>
+                            </span>
                         </td>
                         <td>Availability </td>
                         <td>:</td>
                         <td>
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                            <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
                                 [ngStyle]="{'background-color': vehicle?.availability ? '#198754' : '#dc3545' }">
                                 {{ vehicle?.availability }}
-                            </div>
+                            </span>
                         </td>
                     </tr>
                     <tr>
@@ -136,7 +136,8 @@
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="makerId" class="col-form-label">Maker Name:</label>
-                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
+                                <select (change)="changeVehicleMacker(editVehicleObj.makerId)" required
+                                    class="form-control" name="makerId" id="makerId" #makerId="ngModel"
                                     [(ngModel)]="editVehicleObj.makerId"
                                     [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
                                     <option *ngFor="let maker of vehicleMakers" [value]="maker.id">
@@ -150,7 +151,7 @@
                                 <select required class="form-control" name="modelId" id="modelId" #modelId="ngModel"
                                     [(ngModel)]="editVehicleObj.modelId"
                                     [class.invalid]="{'invalid-textbox' : modelId.invalid && modelId.touched }">
-                                    <option *ngFor="let model of vehicleModels" [value]="model.id">
+                                    <option *ngFor="let model of vehicleModelsFilter" [value]="model.id">
                                         {{model.displayName}}</option>
                                 </select>
                             </div>

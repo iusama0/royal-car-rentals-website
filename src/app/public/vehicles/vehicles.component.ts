@@ -22,7 +22,6 @@ export class VehiclesComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams
       .subscribe(params => {
-        console.log(params.maker);
         this.getVehicles(params.maker)
       }
       );
@@ -35,7 +34,7 @@ export class VehiclesComponent implements OnInit {
         this.vehicles.forEach(element => {
           if (element.imagesPath != "" && element.imagesPath != null) {
             element.images = element.imagesPath.split(',');
-            console.log(element.images)
+            // console.log(element.images)
           }
         });
       },

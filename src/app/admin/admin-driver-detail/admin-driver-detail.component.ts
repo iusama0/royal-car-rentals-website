@@ -44,7 +44,7 @@ export class AdminDriverDetailComponent implements OnInit {
 
     this.driverService.edit(this.editDriverObj.id, formData).subscribe(
       (response: any) => {
-        console.log(response)
+        // console.log(response)
         if (this.file != '') {
           alert("if");
           let _data = JSON.stringify(response);

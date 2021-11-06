@@ -32,6 +32,10 @@ export class CustomerService {
     return this.http.get(this.baseUrl);
   }
 
+  counts(){
+    return this.http.get(this.baseUrl + "/counts");
+  }
+
   signIn(data: Signin){
     return this.http.post(this.baseUrl + "/signin", data);
   }

@@ -31,6 +31,7 @@ export class AdminVehicleDetailComponent implements OnInit {
 
   public vehicleMakers: VehicleMaker[];
   public vehicleModels: VehicleModel[];
+  public vehicleModelsFilter: VehicleModel[];
 
   constructor(
     public vehicleMakerService: VehicleMakerService,
@@ -42,7 +43,7 @@ export class AdminVehicleDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams._data);  
+    this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
     this.editVehicleObj = Object.assign({}, this.vehicle);
 
     if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
@@ -67,7 +68,8 @@ export class AdminVehicleDetailComponent implements OnInit {
   getVehicleModels() {
     this.vehicleModelService.gets().subscribe(
       (response: any) => {
-        this.vehicleModels = response;
+        this.vehicleModels = this.vehicleModelsFilter = response;
+        this.changeVehicleMacker(this.editVehicleObj.makerId);
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -76,7 +78,7 @@ export class AdminVehicleDetailComponent implements OnInit {
   }
 
   editVehicle() {
-    console.log(this.editVehicleObj)
+    // console.log(this.editVehicleObj)
 
     this.vehicleService.editVehicle(this.editVehicleObj).subscribe(
       (response: any) => {
@@ -98,7 +100,7 @@ export class AdminVehicleDetailComponent implements OnInit {
   }
 
   confirmDeletePicture() {
-    console.log(this.deletePictureName)
+    // console.log(this.deletePictureName)
     this.imagesCopy = this.images;
     let index = this.imagesCopy.findIndex(d => d === this.deletePictureName); //find index in your array
     this.imagesCopy.splice(index, 1);//remove element from array
@@ -144,5 +146,9 @@ export class AdminVehicleDetailComponent implements OnInit {
         console.log("Error: " + error);
       }
     );
+  }
+
+  changeVehicleMacker(data: number) {
+    this.vehicleModelsFilter = this.vehicleModels.filter(x => x.makerId == data);
   }
 }

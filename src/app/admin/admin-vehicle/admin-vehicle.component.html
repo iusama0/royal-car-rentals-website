@@ -1,71 +1,74 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Vehicles</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">admin/vehicle</li>
+    <ol class="breadcrumb mb-2">
+        <!-- <li class="breadcrumb-item active">admin/vehicle</li> -->
     </ol>
     <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Total Vehicles</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Total Vehicles
+                    <span class="float-end">{{counts?.totalVehicles}}</span>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
-                <div class="card-body">Active/InActive Vehicles</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Pending Vehicles
+                    <span class="float-end">{{counts?.pendingVehicles}}</span>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
-                <div class="card-body">Pending Vehicles</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Approved Vehicles
+                    <span class="float-end">{{counts?.approvedVehicles}}</span>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
-                <div class="card-body">Booked Vehicles</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Blocked Vehicles
+                    <span class="float-end">{{counts?.blockedVehicles}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    Availabe Vehicles
+                    <span class="float-end">{{counts?.availableVehicles}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    Booked Vehicles
+                    <span class="float-end">{{counts?.bookedVehicles}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    XYZ Vehicles
+                    <span class="float-end">000</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    XYZ Vehicles
+                    <span class="float-end">000</span>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- <div class="row">
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-area me-1"></i>
-                    Area Chart Example
-                </div>
-                <div class="card-body">
-                    <canvas id="myAreaChart" width="100%" height="40"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-bar me-1"></i>
-                    Bar Chart Example
-                </div>
-                <div class="card-body">
-                    <canvas id="myBarChart" width="100%" height="40"></canvas>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="card mb-4">
         <div class="card-header">
             <!-- <i class="fas fa-table me-1"></i> -->
@@ -176,46 +179,6 @@
                     showFirstLastButtons>
                 </mat-paginator>
             </div>
-            <!-- <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Maker/Model/Year</th>
-                        <th>Registration#</th>
-                        <th>status</th>
-                        <th>Availability</th>
-                        <th>Price Per Day</th>
-                        <th>Date Added</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let vehicle of vehicles">
-                        <td class="vid">{{ vehicle.id }}</td>
-                        <td>{{ vehicle.makerName+"/"+ vehicle.modelName+"/"+ vehicle.modelYear}}</td>
-                        <td>{{ vehicle.registrationNumber }}</td>
-                        <td class="text-center">
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': vehicle.status === 'pending' ? '#ffc107' : (vehicle.status === 'approved' ? '#198754' : '#dc3545') }">
-                                {{ vehicle.status }}
-                            </div>
-
-                        </td>
-                        <td class="text-center">
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': vehicle.availability ? '#198754' : '#dc3545' }">
-                                {{ vehicle.availability }}
-                            </div>
-                        </td>
-                        <td class="text-center">{{ vehicle.price }}</td>
-                        <td>{{ vehicle.dateAdded | date:'short'}}</td>
-                        <td>
-                            <a class="viewVehicleC">VIEW</a> |
-                            <a class="deleteVehicleC">DELETE</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> -->
         </div>
     </div>
 </div>
@@ -225,7 +188,7 @@
     aria-labelledby="addVehicleModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form novalidate #form="ngForm" (submit)="addVehicle(form,$event);$event.preventDefault()">
+            <form novalidate #addvehicleform="ngForm" (submit)="addVehicle(addvehicleform)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addVehicleModelLabel">Add New Vehicle</h5>
                     <button type="button" class="btn-close" #closebutton data-bs-dismiss="modal"
@@ -235,9 +198,9 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="makerId" class="col-form-label">Maker Name:</label>
-                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
-                                    [(ngModel)]="newVehicle.makerId"
+                                <label for="makerId" class="col-form-label">Selct Maker Name:</label>
+                                <select (change)="changeVehicleMacker(newVehicle.makerId)" required class="form-control"
+                                    name="makerId" id="makerId" #makerId="ngModel" [(ngModel)]="newVehicle.makerId"
                                     [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
                                     <option *ngFor="let maker of vehicleMakers" [value]="maker.id">
                                         {{maker.displayName}}</option>
@@ -246,15 +209,28 @@
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="modelId" class="col-form-label">Model Name:</label>
+                                <label for="modelId" class="col-form-label">Selct Model Name:</label>
                                 <select required class="form-control" name="modelId" id="modelId" #modelId="ngModel"
                                     [(ngModel)]="newVehicle.modelId"
                                     [class.invalid]="{'invalid-textbox' : modelId.invalid && modelId.touched }">
-                                    <option *ngFor="let model of vehicleModels" [value]="model.id">
+                                    <option *ngFor="let model of vehicleModelsFilter" [value]="model.id">
                                         {{model.displayName}}</option>
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="cityId" class="col-form-label">Selct City Name:</label>
+                                <select required class="form-control" name="cityId" id="cityId" #cityId="ngModel"
+                                    [(ngModel)]="newVehicle.cityId"
+                                    [class.invalid]="{'invalid-textbox' : cityId.invalid && cityId.touched }">
+                                    <option *ngFor="let city of cities" [value]="city.id">
+                                        {{city.cityName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="modelYear" class="col-form-label">Model Year:</label>
@@ -320,7 +296,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Add Vehicle</button>
+                    <button type="submit" [disabled]="addvehicleform.invalid" class="btn btn-primary">Add
+                        Vehicle</button>
                 </div>
             </form>
         </div>

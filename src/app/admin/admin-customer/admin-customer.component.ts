@@ -18,6 +18,7 @@ export class AdminCustomerComponent implements OnInit {
   @ViewChild('CustomerTable', { static: true }) customerTable: MatTable<Customer>;
   @ViewChild('CustomerPaginator', { static: true }) customerPaginator: MatPaginator;
   @ViewChild('CustomerSort', { static: true }) customerSort: MatSort;
+  public counts: any;
 
   constructor(
     public customerService: CustomerService,
@@ -27,6 +28,19 @@ export class AdminCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCustomers();
+    this.getCounts();
+  }
+
+  getCounts() {
+    this.customerService.counts().subscribe(
+      (response: any) => {
+        this.counts = response;
+        console.log(this.counts)
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    )
   }
 
   getCustomers() {

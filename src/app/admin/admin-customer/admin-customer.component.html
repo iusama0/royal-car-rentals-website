@@ -1,43 +1,71 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Customers</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">admin/customers</li>
+    <ol class="breadcrumb mb-2">
+        <!-- <li class="breadcrumb-item active">admin/customers</li> -->
     </ol>
     <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Total Customers</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">
+                    Total Customers
+                    <span class="float-end">{{counts?.totalCustomers}}</span>
+                </div>                
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-warning text-white mb-4">
-                <div class="card-body">Active/InActive Customers</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">
+                    Pending Customers
+                    <span class="float-end">{{counts?.pendingCustomers}}</span>
+                </div>               
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
-                <div class="card-body">Pending Customers</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">
+                    Approved Customers
+                    <span class="float-end">{{counts?.approvedCustomers}}</span>
+                </div>               
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
-                <div class="card-body">XYZ Customers</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
+                <div class="card-body">
+                    Blocked Customers
+                    <span class="float-end">{{counts?.blockedCustomers}}</span>
+                </div>               
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">
+                    Active Customers
+                    <span class="float-end">{{counts?.activeCustomers}}</span>
+                </div>               
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">
+                    In Active Customers
+                    <span class="float-end">{{counts?.inActiveCustomers}}</span>
+                </div>               
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    Male Customers
+                    <span class="float-end">{{counts?.maleCustomers}}</span>
+                </div>               
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    Female Customers
+                    <span class="float-end">{{counts?.femaleCustomers}}</span>
+                </div>              
             </div>
         </div>
     </div>

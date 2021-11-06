@@ -66,7 +66,16 @@ export class VehicleService {
   getVehicles() {
     return this.http.get(this.baseUrl);
   }
+  
+  getApprovedVehicles() {
+    return this.http.get(this.baseUrl + "/approved");
+  }
+
   getVehiclesByMaker(makerId: number) {
     return this.http.get(this.baseUrl + "/bymaker/" + makerId);
+  }
+
+  counts(){
+    return this.http.get(this.baseUrl + "/counts");
   }
 }

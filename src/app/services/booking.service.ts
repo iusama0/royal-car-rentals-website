@@ -28,4 +28,8 @@ export class BookingService {
   gets() {
     return this.http.get(this.baseUrl);
   }
+
+  counts(){
+    return this.http.get(this.baseUrl + "/counts");
+  }
 }

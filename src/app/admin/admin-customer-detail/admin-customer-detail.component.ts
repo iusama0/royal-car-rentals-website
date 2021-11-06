@@ -40,7 +40,7 @@ export class AdminCustomerDetailComponent implements OnInit {
 
     this.customerService.edit(this.editCustomerObj.id, formData).subscribe(
       (response: any) => {
-        console.log(response)
+        // console.log(response)
 
         this.customer = this.editCustomerObj;
 

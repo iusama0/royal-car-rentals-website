@@ -19,6 +19,8 @@ export class AdminBookingsComponent implements OnInit {
   @ViewChild('BookingPaginator', { static: true }) bookingPaginator: MatPaginator;
   @ViewChild('BookingSort', { static: true }) bookingSort: MatSort;
 
+  public counts: any;
+
   constructor(
     public bookingService: BookingService,
     private toastr: ToastrService,
@@ -26,9 +28,21 @@ export class AdminBookingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getCounts();
     this.getBookings();
   }
 
+  getCounts() {
+    this.bookingService.counts().subscribe(
+      (response: any) => {
+        this.counts = response;
+        console.log(this.counts)
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    )
+  }
   getBookings() {
     this.bookingService.gets().subscribe(
       (response: any) => {

@@ -72,7 +72,7 @@ export class CommonSectionComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    console.log("ngAfterViewInit")
+    // console.log("ngAfterViewInit")
   }
 
   getVehicleMakers() {

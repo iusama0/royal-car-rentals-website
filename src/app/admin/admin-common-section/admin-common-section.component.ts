@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Admin } from 'src/app/Models/admin.model';
 import { AdminService } from 'src/app/services/admin.service';
@@ -10,18 +10,19 @@ import { AdminService } from 'src/app/services/admin.service';
   styleUrls: ['./admin-common-section.component.css']
 })
 export class AdminCommonSectionComponent implements OnInit {
-  isSidebarToggle: boolean = false;
-  isAuthenticated: boolean = false;
-  currentUser: Admin;
+  public isSidebarToggle: boolean = false;
+  public isAuthenticated: boolean = false;
+  public currentUser: Admin;
+  public currentPage: string = '/admin/dashboard';
+
   constructor(
     public adminServices: AdminService,
     private toastr: ToastrService,
-    private router: Router) {
-  }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('signinuserinfo') || 'null');
-    console.log(this.currentUser)
+
     if (this.currentUser) {
       this.adminServices.isAuthenticated.emit(true);
       this.isAuthenticated = true;
@@ -33,7 +34,12 @@ export class AdminCommonSectionComponent implements OnInit {
       this.isAuthenticated = response;
     });
 
-
+    this.router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+        this.currentPage = e.url;
+        console.log(this.currentPage)
+      }
+    });
   }
 
   toggleSidebar() {

@@ -41,6 +41,7 @@ export class AdminDriverComponent implements OnInit {
     dateUpdated: new Date().toISOString()
   };
   file: string = '';
+  public counts: any;
 
   constructor(
     public driverService: DriverService,
@@ -49,30 +50,20 @@ export class AdminDriverComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getDrivers();
-    let _this = this;
-    // $(document).on('click', '.viewDriverC', function (this: any) {
-    //   var _id = $(this).parents("tr").find(".vid").text();
-    //   let data = _this.drivers.find(i => i.id == parseInt(_id));
-    //   _this.viewDriver(data);
-    // });
-
-    // $(document).on('click', '.editDriverC', function (this: any) {
-    //   var _id = $(this).parents("tr").find(".vid").text();
-    //   let data = _this.drivers.find(i => i.id == parseInt(_id));
-    //   _this.editDriver(data);
-    // });
-    // $(document).on('click', '.deleteDriverC', function (this: any) {
-    //   var _id = $(this).parents("tr").find(".vid").text();
-    //   let data = _this.drivers.find(i => i.id == parseInt(_id));
-    //   _this.deleteDriver(data);
-    // });
+    this.getCounts();
+    this.getDrivers();   
   }
 
-  ngAfterViewInit(): void {
-
+  getCounts() {
+    this.driverService.counts().subscribe(
+      (response: any) => {
+        this.counts = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    )
   }
-
 
   getDrivers() {
     this.driverService.gets().subscribe(
@@ -95,22 +86,19 @@ export class AdminDriverComponent implements OnInit {
   }
 
   editDriver(data: any) {
-    console.log("editDriver")
-    console.log(data)
+    // console.log("editDriver")
+    // console.log(data)
   }
 
   deleteDriver(data: any) {
-    console.log(data)
     this.deleteInfo = data;
     this.showdeletemodel.nativeElement.click();
 
   }
 
   confirmDelete() {
-    console.log("confirmDeleteDriver: " + this.deleteInfo)
     this.driverService.delete(this.deleteInfo).subscribe(
       (response: any) => {
-
         for (var i = 0; i < this.drivers.data.length; i++) {
           if (this.drivers.data[i].id == this.deleteInfo.id) {
             this.drivers.data.splice(i, 1);
@@ -136,11 +124,8 @@ export class AdminDriverComponent implements OnInit {
   }
 
   addDriver(form: NgForm) {
-    console.log(this.newDriver)
-
     const formData = new FormData();
     formData.append("Files", this.file);
-
     formData.append("Info", JSON.stringify(this.newDriver));
 
     this.driverService.add(formData).subscribe(
@@ -163,13 +148,11 @@ export class AdminDriverComponent implements OnInit {
 
   resetForm(form: NgForm) {
     form.form.reset();
-    // this.uploadImagesInput.nativeElement.value = '';
     this.newDriver = new Driver();
     this.newDriver.availability = false;
     this.newDriver.isActive = true;
     this.newDriver.dateAdded = new Date().toISOString();
     this.newDriver.dateUpdated = new Date().toISOString();
-
     this.file = '';
   }
 }

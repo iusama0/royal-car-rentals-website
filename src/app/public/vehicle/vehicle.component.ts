@@ -24,7 +24,7 @@ export class VehicleComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.queryParams.info);
+    // console.log(this.activatedRoute.snapshot.queryParams.info);
 
     this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams.info);
 

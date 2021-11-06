@@ -69,6 +69,12 @@
 
                             </tr>
                             <tr>
+                                <td>City Name </td>
+                                <td>: </td>
+                                <td>{{vehicle?.city?.cityName}}</td>
+
+                            </tr>
+                            <tr>
                                 <td>Registration# </td>
                                 <td>:</td>
                                 <td>{{vehicle?.registrationNumber}}</td>
@@ -87,10 +93,10 @@
                                 <td>Availability </td>
                                 <td>:</td>
                                 <td>
-                                    <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                    <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
                                         [ngStyle]="{'background-color': vehicle?.availability ? '#198754' : '#dc3545' }">
                                         {{ vehicle?.availability }}
-                                    </div>
+                                    </span>
                                 </td>
                             </tr>
 

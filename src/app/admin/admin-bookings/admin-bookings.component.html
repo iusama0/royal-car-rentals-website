@@ -1,42 +1,38 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Bookings</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">admin/bookings</li>
+    <ol class="breadcrumb mb-2">
+        <!-- <li class="breadcrumb-item active">admin/bookings</li> -->
     </ol>
     <div class="row">
         <div class="col-xl-3 col-md-6">
             <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Total Bookings</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Pending Bookings
+                    <span class="float-end">{{counts?.pendingBookings}}</span>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">Active/InActive Bookings</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            <div class="card bg-info text-white mb-4">
+                <div class="card-body">
+                    Scheduled Bookings
+                    <span class="float-end">{{counts?.scheduledBookings}}</span>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-success text-white mb-4">
-                <div class="card-body">Pending Bookings</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Completed Bookings
+                    <span class="float-end">{{counts?.completedBookings}}</span>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
             <div class="card bg-danger text-white mb-4">
-                <div class="card-body">XYZ Bookings</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="#">View Details</a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                <div class="card-body">
+                    Calcelled Bookings
+                    <span class="float-end">{{counts?.calcelledBookings}}</span>
                 </div>
             </div>
         </div>
