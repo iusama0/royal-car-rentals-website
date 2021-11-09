@@ -34,10 +34,10 @@ export class ContactUsComponent implements OnInit {
   };
 
   public contactUsForm = new FormGroup({
-    firstName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-    lastName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
+    firstName: new FormControl('', [Validators.required, Validators.pattern("^([a-zA-Z.]+((['.][a-zA-Z])?[a-zA-Z]*)*){2,30}$")]),
+    lastName: new FormControl('', [Validators.required, Validators.pattern("^([a-zA-Z]+((['.][a-zA-Z])?[a-zA-Z]*)*){2,30}$")]),
     message: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]),
-    email: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])
+    email: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z][-_.a-zA-Z0-9]{2,29}@(yahoo|hotmail|gmail).com$")])
   });
 
 
@@ -48,13 +48,6 @@ export class ContactUsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    this.contactUsForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-      message: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]),
-      email: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])
-    });
 
   }
 

@@ -24,3 +24,7 @@ table {
 .mat-elevation-z8 {
     box-shadow: none !important;
 }
+
+.cdk-overlay-container {
+    z-index: 9999 !important;
+}

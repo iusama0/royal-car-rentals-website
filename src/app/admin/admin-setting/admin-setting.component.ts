@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
@@ -47,6 +47,11 @@ export class AdminSettingComponent implements OnInit {
     dateUpdated: new Date().toISOString(),
   }
 
+
+  public VehicleMakerAddForm = new FormGroup({
+    displayName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z- ]{2,30}$")]),
+  });
+
   //model objects
   @ViewChild('closevehiclemodelmodel') closevehiclemodelmodel: any;
   @ViewChild('showvehiclemodelmodel') showvehiclemodelmodel: any;
@@ -59,6 +64,10 @@ export class AdminSettingComponent implements OnInit {
   @ViewChild('VehicleModelTable', { static: true }) vehicleModelTable: MatTable<VehicleModel>;
   @ViewChild('VehicleModelPaginator', { static: true }) vehicleModelPaginator: MatPaginator;
   @ViewChild('VehicleModelSort', { static: true }) vehicleModelSort: MatSort;
+
+  public VehicleMakerEditForm = new FormGroup({
+    displayName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z- ]{2,30}$")]),
+  });
 
   deleteVehicleModelObj: VehicleModel;
   editVehicleModelObj: VehicleModel = {
@@ -75,6 +84,16 @@ export class AdminSettingComponent implements OnInit {
     dateAdded: new Date().toISOString(),
     dateUpdated: new Date().toISOString(),
   }
+
+  public vehicleModelAddForm = new FormGroup({
+    makerId: new FormControl('', [Validators.required]),
+    displayName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9- ]{2,30}$")])
+  });
+
+  public vehicleModelEditForm = new FormGroup({
+    makerId: new FormControl('', [Validators.required]),
+    displayName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9- ]{2,30}$")])
+  });
 
 
   //cities objects
@@ -104,6 +123,15 @@ export class AdminSettingComponent implements OnInit {
     dateUpdated: new Date().toISOString(),
   }
 
+  public cityAddForm = new FormGroup({
+    cityName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z- ]{2,30}$")]),
+  });
+  public cityEditForm = new FormGroup({
+    cityName: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z- ]{2,30}$")]),
+  });
+
+
+  public isAlreadyEntered: boolean = false;
   public counts: any;
 
   constructor(
@@ -123,6 +151,25 @@ export class AdminSettingComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  public hasError = (formName: string, controlName: string, errorName: string) => {
+
+    if (formName == 'addmaker') {
+      return this.VehicleMakerAddForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'editmaker') {
+      return this.VehicleMakerEditForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'addmodel') {
+      return this.vehicleModelAddForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'editmodel') {
+      return this.vehicleModelEditForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'addCity') {
+      return this.cityAddForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'editCity') {
+      return this.cityEditForm.controls[controlName].hasError(errorName);
+    }
+
+    return null;
   }
 
   getCounts() {
@@ -151,28 +198,28 @@ export class AdminSettingComponent implements OnInit {
     );
   }
 
-  addVehicleMaker(makerform: NgForm) {
-    // console.log(this.newVehicleMaker)
+  addVehicleMaker(formValue: any, formDirective: FormGroupDirective) {
+    this.newVehicleMaker.displayName = formValue.displayName;
     this.vehicleMakerService.add(this.newVehicleMaker).subscribe(
       (response: any) => {
         this.vehicleMakers.data.push(response)
         this.vehicleMakers.paginator = this.vehicleMakerPaginator;
         this.vehicleMakers.sort = this.vehicleMakerSort;
         this.vehicleMakerTable.renderRows();
-        this.resetVehicleMakerForm(makerform);
+        this.resetVehicleMakerForm(formDirective);
+        formDirective.resetForm();
         this.closevehiclemakermodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Maker Added Successfully');
       },
       error => {
-        makerform.form.reset();
         this.toastr.error('', 'Vehicle Maker Adding Error');
         console.log("Error: " + error);
       }
     );
   }
 
-  resetVehicleMakerForm(makerform: NgForm) {
-    makerform.form.reset();
+  resetVehicleMakerForm(formDirective: FormGroupDirective) {
+    formDirective.resetForm();
     this.newVehicleMaker = new VehicleMaker();
     this.newVehicleMaker.dateAdded = new Date().toISOString();
     this.newVehicleMaker.dateUpdated = new Date().toISOString();
@@ -180,13 +227,14 @@ export class AdminSettingComponent implements OnInit {
 
   showEditVehicleMakerModel(data: any) {
     this.editVehicleMakerObj = Object.assign({}, data);
+    this.VehicleMakerEditForm.setValue({ displayName: this.editVehicleMakerObj.displayName });
     this.showvehiclemakereditmodel.nativeElement.click();
   }
 
-  editVehicleMaker(form: NgForm) {
+  editVehicleMaker(formValue: any, formDirective: FormGroupDirective) {
+    this.editVehicleMakerObj.displayName = formValue.displayName;
     this.vehicleMakerService.edit(this.editVehicleMakerObj).subscribe(
       (response: any) => {
-        // console.log(response)
         for (var i = 0; i < this.vehicleMakers.data.length; i++) {
           if (this.vehicleMakers.data[i].id == this.editVehicleMakerObj.id) {
             this.vehicleMakers.data[i] = this.editVehicleMakerObj;
@@ -196,11 +244,12 @@ export class AdminSettingComponent implements OnInit {
         this.vehicleMakers.sort = this.vehicleMakerSort;
         this.vehicleMakerTable.renderRows();
 
+        formDirective.resetForm();
+
         this.hidevehiclemakereditmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Maker Updated Successfully');
       },
       error => {
-        form.form.reset();
         this.toastr.error('', 'Vehicle Maker Updating Error');
         console.log("Error: " + error);
       }
@@ -251,29 +300,29 @@ export class AdminSettingComponent implements OnInit {
     );
   }
 
-  addVehicleModel(modelform: NgForm) {
-    // console.log(this.newVehicleModel)
-
+  addVehicleModel(formValue: any, formDirective: FormGroupDirective) {
+    console.log(formValue)
+    this.newVehicleModel.makerId = formValue.makerId;
+    this.newVehicleModel.displayName = formValue.displayName;
     this.vehicleModelService.add(this.newVehicleModel).subscribe(
       (response: any) => {
         this.vehicleModels.data.push(response)
         this.vehicleModels.paginator = this.vehicleModelPaginator;
         this.vehicleModels.sort = this.vehicleModelSort;
         this.vehicleModelTable.renderRows();
-
+        this.resetVehicleAddModelForm(formDirective);
         this.closevehiclemodelmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Model Updated Successfully');
       },
       error => {
-        modelform.form.reset();
         this.toastr.error('', 'Vehicle Model Updating Error');
         console.log("Error: " + error);
       }
     );
   }
 
-  resetVehicleModelForm(modelform: NgForm) {
-    modelform.form.reset();
+  resetVehicleAddModelForm(formDirective: FormGroupDirective) {
+    formDirective.resetForm();
     this.newVehicleModel = new VehicleModel();
     this.newVehicleModel.dateAdded = new Date().toISOString();
     this.newVehicleModel.dateUpdated = new Date().toISOString();
@@ -281,10 +330,18 @@ export class AdminSettingComponent implements OnInit {
 
   showEditVehicleModelModel(data: any) {
     this.editVehicleModelObj = Object.assign({}, data);
+    this.vehicleModelEditForm.setValue({ makerId: this.editVehicleModelObj.makerId, displayName: this.editVehicleModelObj.displayName });
     this.showvehiclemodeleditmodel.nativeElement.click();
   }
 
-  editVehicleModel(modeleditform: NgForm) {
+  resetVehicleEditModelForm(formDirective: FormGroupDirective) {
+    formDirective.resetForm();
+    this.editVehicleModelObj = new VehicleModel();
+  }
+
+  editVehicleModel(formValue: any, formDirective: FormGroupDirective) {
+    this.editVehicleModelObj.makerId = formValue.makerId;
+    this.editVehicleModelObj.displayName = formValue.displayName;
     this.vehicleModelService.edit(this.editVehicleModelObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.vehicleModels.data.length; i++) {
@@ -297,12 +354,11 @@ export class AdminSettingComponent implements OnInit {
         this.vehicleModels.sort = this.vehicleModelSort;
         this.vehicleModelTable.renderRows();
 
-        //this.resetVehicleModelForm(modeleditform);
+        this.resetVehicleEditModelForm(formDirective);
         this.hidevehiclemodeleditmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Model Added Successfully');
       },
       error => {
-        modeleditform.form.reset();
         this.toastr.error('', 'Vehicle Model Adding Error');
         console.log("Error: " + error);
       }
@@ -353,14 +409,25 @@ export class AdminSettingComponent implements OnInit {
   }
 
   showEditCityModel(data: any) {
+    this.isAlreadyEntered = false;
     this.editCityObj = Object.assign({}, data);
+    this.cityEditForm.setValue({ cityName: this.editCityObj.cityName });
     this.showcityeditmodel.nativeElement.click();
   }
 
-  editCity(form: NgForm) {
+  editCity(formValue: any, formDirective: FormGroupDirective) {
+    var _data = this.cities.data.filter(x => x.cityName.toLowerCase() == formValue.cityName.toLowerCase());
+    console.log(_data)
+    if (_data.length > 0) {
+      this.isAlreadyEntered = true;
+      return;
+    } else {
+      this.isAlreadyEntered = false;
+    }
+
+    this.editCityObj.cityName = formValue.cityName;
     this.cityService.edit(this.editCityObj).subscribe(
       (response: any) => {
-        // console.log(response)
         for (var i = 0; i < this.cities.data.length; i++) {
           if (this.cities.data[i].id == this.editCityObj.id) {
             this.cities.data[i] = this.editCityObj;
@@ -372,37 +439,53 @@ export class AdminSettingComponent implements OnInit {
 
         this.hidecityeditmodel.nativeElement.click();
         this.toastr.success('', 'City Updated Successfully');
+        this.isAlreadyEntered = false;
       },
       error => {
-        form.form.reset();
         this.toastr.error('', 'City Updating Error');
         console.log("Error: " + error);
       }
     );
-
   }
 
-  addCity(form: NgForm) {
+  resetEditCityForm(formDirective: FormGroupDirective) {
+    formDirective.resetForm();
+    this.isAlreadyEntered = false;
+    this.editCityObj = new City();
+  }
+
+  addCity(formValue: any, formDirective: FormGroupDirective) {
+    var _data = this.cities.data.filter(x => x.cityName.toLowerCase() == formValue.cityName.toLowerCase());
+    console.log(_data)
+    if (_data.length > 0) {
+      this.isAlreadyEntered = true;
+      return;
+    } else {
+      this.isAlreadyEntered = false;
+    }
+
+    this.newCity.cityName = formValue.cityName;
     this.cityService.add(this.newCity).subscribe(
       (response: any) => {
         this.cities.data.push(response)
         this.cities.paginator = this.cityPaginator;
         this.cities.sort = this.citySort;
         this.cityTable.renderRows();
-        this.resetCityForm(form);
+        this.resetAddCityForm(formDirective);
+        formDirective.resetForm();
         this.hidecityaddmodel.nativeElement.click();
         this.toastr.success('', 'City Added Successfully');
       },
       error => {
-        form.form.reset();
         this.toastr.error('', 'City Adding Error');
         console.log("Error: " + error);
       }
     );
   }
 
-  resetCityForm(form: NgForm) {
-    form.form.reset();
+  resetAddCityForm(formDirective: FormGroupDirective) {
+    formDirective.resetForm();
+    this.isAlreadyEntered = false;
     this.newCity = new City();
     this.newCity.dateAdded = new Date().toISOString();
     this.newCity.dateUpdated = new Date().toISOString();

@@ -292,40 +292,38 @@
     aria-labelledby="addVehicleMakerModelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form novalidate #addmakerform="ngForm" (submit)="addVehicleMaker(addmakerform)">
+            <form [formGroup]="VehicleMakerAddForm" #addmakerFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="addVehicleMaker(VehicleMakerAddForm.value, addmakerFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addVehicleMakerModelLabel">Add New Vehicle Maker</h5>
                     <button type="button" class="btn-close" #closevehiclemakermodel data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                        aria-label="Close" (click)="resetVehicleMakerForm(addmakerFormDirective)"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Display Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="displayName"
-                                    id="displayName" #displayName="ngModel" [(ngModel)]="newVehicleMaker.displayName"
-                                    [class.invalid]="displayName.invalid && displayName.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter vehicle maker name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="displayName"
+                                    id="displayName">
+                                <mat-error *ngIf="hasError('addmaker','displayName', 'required')">Maker name is
+                                    required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('addmaker','displayName', 'pattern')">Only Alphabets
+                                    letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="storageValue" class="col-form-label">Backend Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
-                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="newVehicleMaker.storageValue"
-                                    [class.invalid]="storageValue.invalid && storageValue.touched">
-                                <p class="m-0">
-                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
-                                </p>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="addmakerform.invalid" class="btn btn-primary">Add Maker</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetVehicleMakerForm(addmakerFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!VehicleMakerAddForm.valid" class="btn btn-success">Add
+                        Maker</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -336,7 +334,8 @@
     aria-labelledby="editVehicleMakerModelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form novalidate #makereditform="ngForm" (submit)="editVehicleMaker(makereditform)">
+            <form [formGroup]="VehicleMakerEditForm" #editmakerFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="editVehicleMaker(VehicleMakerEditForm.value, editmakerFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editVehicleMakerModelLabel">Edit Vehicle Maker</h5>
                     <button type="button" class="btn-close" #hidevehiclemakereditmodel data-bs-dismiss="modal"
@@ -345,30 +344,24 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Display Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="displayName"
-                                    id="displayName" #displayName="ngModel"
-                                    [(ngModel)]="editVehicleMakerObj.displayName"
-                                    [class.invalid]="displayName.invalid && displayName.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter vehicle maker name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="displayName"
+                                    id="displayName">
+                                <mat-error *ngIf="hasError('editmaker','displayName', 'required')">Maker
+                                    name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('editmaker','displayName', 'pattern')">Only Alphabets
+                                    letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
-                        <!-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="storageValue" class="col-form-label">Backend Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
-                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="editVehicleMakerObj.storageValue"
-                                    [class.invalid]="storageValue.invalid && storageValue.touched">
-                                <p class="m-0">
-                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
-                                </p>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="makereditform.invalid" class="btn btn-primary">Update</button>
+                    <button type="submit" [disabled]="!VehicleMakerEditForm.valid"
+                        class="btn btn-success">Update</button>
                 </div>
             </form>
         </div>
@@ -415,7 +408,8 @@
     aria-labelledby="addVehicleModelModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form novalidate #addmodelform="ngForm" (submit)="addVehicleModel(addmodelform)">
+            <form [formGroup]="vehicleModelAddForm" #addModelFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="addVehicleModel(vehicleModelAddForm.value, addModelFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addVehicleModelModelLabel">Add New Vehicle Model</h5>
                     <button type="button" class="btn-close" #closevehiclemodelmodel data-bs-dismiss="modal"
@@ -425,40 +419,59 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Select Maker:</label>
+                                <!-- <label for="displayName" class="col-form-label">Select Maker:</label>
                                 <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
                                     [(ngModel)]="newVehicleModel.makerId"
                                     [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
                                     <option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
                                         {{maker.displayName}}</option>
-                                </select>
+                                </select> -->
+
+
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Choose Maker</mat-label>
+                                    <mat-select matNativeControl formControlName="makerId" required>
+                                        <mat-option>---Select Maker---</mat-option>
+                                        <!-- <mat-option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
+                                            {{maker.displayName}}
+                                        </mat-option> -->
+
+                                        <mat-option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
+                                            {{maker.displayName}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                                    <mat-error *ngIf="hasError('addmodel','makerId', 'required')">
+                                        Please select any maker
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label for="displayName" class="col-form-label">Model Name:</label>
                                 <input required maxlength="100" type="text" class="form-control" name="displayName"
                                     id="displayName" #displayName="ngModel" [(ngModel)]="newVehicleModel.displayName"
                                     [class.invalid]="displayName.invalid && displayName.touched">
-                            </div>
+                            </div> -->
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter vehicle maker name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="displayName"
+                                    id="displayName">
+                                <mat-error *ngIf="hasError('addmodel','displayName', 'required')">Maker
+                                    name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('addmodel','displayName', 'pattern')">Only Alphabets
+                                    letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
-
-                        <!-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="storageValue" class="col-form-label">Backend Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
-                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="newVehicleModel.storageValue"
-                                    [class.invalid]="storageValue.invalid && storageValue.touched">
-                                <p class="m-0">
-                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
-                                </p>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="addmodelform.invalid" class="btn btn-primary">Add Model</button>
+                    <button type="submit" [disabled]="!vehicleModelAddForm.valid" class="btn btn-primary">Add
+                        Model</button>
                 </div>
             </form>
         </div>
@@ -471,7 +484,8 @@
     aria-labelledby="editVehicleModelModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form novalidate #modeleditform="ngForm" (submit)="editVehicleModel(modeleditform)">
+            <form [formGroup]="vehicleModelEditForm" #editModelFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="editVehicleModel(vehicleModelEditForm.value, editModelFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editVehicleModelModelLabel">Edit Vehicle Model</h5>
                     <button type="button" class="btn-close" #hidevehiclemodeleditmodel data-bs-dismiss="modal"
@@ -480,42 +494,40 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Select Maker:</label>
-                                <select required class="form-control" name="makerId" id="makerId" #makerId="ngModel"
-                                    [(ngModel)]="editVehicleModelObj.makerId"
-                                    [class.invalid]="{'invalid-textbox' : makerId.invalid && makerId.touched }">
-                                    <option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
-                                        {{maker.displayName}}</option>
-                                </select>
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Maker</mat-label>
+                                <mat-select matNativeControl formControlName="makerId" required>
+                                    <mat-option>---Select Maker---</mat-option>
+                                    <mat-option *ngFor="let maker of vehicleMakers?.data" [value]="maker.id">
+                                        {{maker.displayName}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('editmodel','makerId', 'required')">
+                                    Please select any maker
+                                </mat-error>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="displayName" class="col-form-label">Model Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="displayName"
-                                    id="displayName" #displayName="ngModel"
-                                    [(ngModel)]="editVehicleModelObj.displayName"
-                                    [class.invalid]="displayName.invalid && displayName.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter vehicle maker name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="displayName"
+                                    id="displayName">
+                                <mat-error *ngIf="hasError('editmodel','displayName', 'required')">Maker
+                                    name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('editmodel','displayName', 'pattern')">Only Alphabets
+                                    letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
 
-                        <!-- <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="storageValue" class="col-form-label">Backend Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="storageValue"
-                                    id="storageValue" #storageValue="ngModel" [(ngModel)]="editVehicleModelObj.storageValue"
-                                    [class.invalid]="storageValue.invalid && storageValue.touched">
-                                <p class="m-0">
-                                    <small>Only enter small latters and do not cotains (space, -, _)</small>
-                                </p>
-                            </div>
-                        </div> -->
+
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="modeleditform.invalid" class="btn btn-primary">Update</button>
+                    <button type="submit" [disabled]="!vehicleModelEditForm.valid"
+                        class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>
@@ -561,27 +573,35 @@
     aria-labelledby="addCityModelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form novalidate #addCityform="ngForm" (submit)="addCity(addCityform)">
+            <form [formGroup]="cityAddForm" #addCityFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="addCity(cityAddForm.value, addCityFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCityModelLabel">Add New City</h5>
-                    <button type="button" class="btn-close" #Hidecityaddmodel data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" #Hidecityaddmodel data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetAddCityForm(addCityFormDirective)"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="cityName" class="col-form-label">City Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="cityName"
-                                    id="cityName" #cityName="ngModel" [(ngModel)]="newCity.cityName"
-                                    [class.invalid]="cityName.invalid && cityName.touched">
-                            </div>
+
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter city name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="cityName"
+                                    id="cityName">
+                                <mat-error *ngIf="hasError('addCity','cityName', 'required')">City name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('addCity','cityName', 'pattern')">Only Alphabets letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
+                            <p *ngIf="isAlreadyEntered" style="font-size: 75%;margin: 0;margin-left: 12px;"
+                                [ngClass]="{'mat-error':isAlreadyEntered}">This city is already entered</p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="addCityform.invalid" class="btn btn-primary">Add City</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetAddCityForm(addCityFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!cityAddForm.valid" class="btn btn-primary">Add City</button>
                 </div>
             </form>
         </div>
@@ -621,27 +641,34 @@
     aria-labelledby="editCityModelLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form novalidate #editCityform="ngForm" (submit)="editCity(editCityform)">
+            <form [formGroup]="cityEditForm" #editCityFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="editCity(cityEditForm.value, editCityFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editCityModelLabel">EditCity</h5>
                     <button type="button" class="btn-close" #hidecityeditmodel data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                        aria-label="Close" (click)="resetEditCityForm(editCityFormDirective)"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="cityName" class="col-form-label">City Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="cityName"
-                                    id="cityName" #cityName="ngModel" [(ngModel)]="editCityObj.cityName"
-                                    [class.invalid]="cityName.invalid && cityName.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter city name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="cityName"
+                                    id="cityName">
+                                <mat-error *ngIf="hasError('editCity','cityName', 'required')">City name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('editCity','cityName', 'pattern')">Only Alphabets letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
+                            <p *ngIf="isAlreadyEntered" style="font-size: 75%;margin: 0;margin-left: 12px;"
+                                [ngClass]="{'mat-error':isAlreadyEntered}">This city is already entered</p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="editCityform.invalid" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetEditCityForm(editCityFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!cityEditForm.valid" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>
