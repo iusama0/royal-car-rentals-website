@@ -131,6 +131,7 @@ export class AdminSettingComponent implements OnInit {
   });
 
 
+  public isLoading: boolean = false;
   public isAlreadyEntered: boolean = false;
   public counts: any;
 
@@ -176,10 +177,9 @@ export class AdminSettingComponent implements OnInit {
     this.commonService.settingCounts().subscribe(
       (response: any) => {
         this.counts = response;
-        console.log(this.counts)
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     )
   }
@@ -193,12 +193,26 @@ export class AdminSettingComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
 
   addVehicleMaker(formValue: any, formDirective: FormGroupDirective) {
+    this.isLoading = true;
+
+
+    var _data = this.vehicleMakers.data.filter(x => x.displayName.toLowerCase() == formValue.displayName.toLowerCase());
+    if (_data.length > 0) {
+      this.isLoading = false;
+      this.isAlreadyEntered = true;
+      return;
+    } else {
+      this.isAlreadyEntered = false;
+    }
+
+
+
     this.newVehicleMaker.displayName = formValue.displayName;
     this.vehicleMakerService.add(this.newVehicleMaker).subscribe(
       (response: any) => {
@@ -210,15 +224,19 @@ export class AdminSettingComponent implements OnInit {
         formDirective.resetForm();
         this.closevehiclemakermodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Maker Added Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Vehicle Maker Adding Error');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
 
   resetVehicleMakerForm(formDirective: FormGroupDirective) {
+    this.isLoading = false;
+    this.isAlreadyEntered = false;
     formDirective.resetForm();
     this.newVehicleMaker = new VehicleMaker();
     this.newVehicleMaker.dateAdded = new Date().toISOString();
@@ -232,6 +250,17 @@ export class AdminSettingComponent implements OnInit {
   }
 
   editVehicleMaker(formValue: any, formDirective: FormGroupDirective) {
+    this.isLoading = true;
+
+    var _data = this.vehicleMakers.data.filter(x => x.displayName.toLowerCase() == formValue.displayName.toLowerCase());
+    if (_data.length > 0) {
+      this.isLoading = false;
+      this.isAlreadyEntered = true;
+      return;
+    } else {
+      this.isAlreadyEntered = false;
+    }
+
     this.editVehicleMakerObj.displayName = formValue.displayName;
     this.vehicleMakerService.edit(this.editVehicleMakerObj).subscribe(
       (response: any) => {
@@ -244,27 +273,36 @@ export class AdminSettingComponent implements OnInit {
         this.vehicleMakers.sort = this.vehicleMakerSort;
         this.vehicleMakerTable.renderRows();
 
-        formDirective.resetForm();
+        this.resetVehicleMakerEditForm(formDirective);
+
 
         this.hidevehiclemakereditmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Maker Updated Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Vehicle Maker Updating Error');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
 
   }
 
+  resetVehicleMakerEditForm(formDirective: FormGroupDirective) {
+    formDirective.resetForm();
+    this.isAlreadyEntered = false;
+    this.isLoading = false;
+    this.editVehicleMakerObj = new VehicleMaker();
+  }
+
   deleteVehicleMaker(data: any) {
-    // console.log(data)
     this.deleteVehicleMakerObj = data;
     this.showvehiclemakermodel.nativeElement.click();
   }
 
   confirmDeleteVehicleMaker() {
-    // console.log("deleteVehicleMakerObj: " + this.deleteVehicleMakerObj)
+    this.isLoading = true;
     this.vehicleMakerService.delete(this.deleteVehicleMakerObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.vehicleMakers.data.length; i++) {
@@ -278,10 +316,12 @@ export class AdminSettingComponent implements OnInit {
 
         this.hidedeletemakermodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Maker Deleted Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Error Vehicle Maker Deleting');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -301,7 +341,18 @@ export class AdminSettingComponent implements OnInit {
   }
 
   addVehicleModel(formValue: any, formDirective: FormGroupDirective) {
-    console.log(formValue)
+    this.isLoading = true;
+
+
+    var _data = this.vehicleModels.data.filter(x => x.makerId == formValue.makerId && x.displayName.toLowerCase() == formValue.displayName.toLowerCase());
+    if (_data.length > 0) {
+      this.isLoading = false;
+      this.isAlreadyEntered = true;
+      return;
+    } else {
+      this.isAlreadyEntered = false;
+    }
+
     this.newVehicleModel.makerId = formValue.makerId;
     this.newVehicleModel.displayName = formValue.displayName;
     this.vehicleModelService.add(this.newVehicleModel).subscribe(
@@ -315,14 +366,17 @@ export class AdminSettingComponent implements OnInit {
         this.toastr.success('', 'Vehicle Model Updated Successfully');
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Vehicle Model Updating Error');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
 
   resetVehicleAddModelForm(formDirective: FormGroupDirective) {
     formDirective.resetForm();
+    this.isLoading = false;
+    this.isAlreadyEntered = false;
     this.newVehicleModel = new VehicleModel();
     this.newVehicleModel.dateAdded = new Date().toISOString();
     this.newVehicleModel.dateUpdated = new Date().toISOString();
@@ -336,17 +390,30 @@ export class AdminSettingComponent implements OnInit {
 
   resetVehicleEditModelForm(formDirective: FormGroupDirective) {
     formDirective.resetForm();
+    this.isLoading = false;
+    this.isAlreadyEntered = false;
     this.editVehicleModelObj = new VehicleModel();
   }
 
   editVehicleModel(formValue: any, formDirective: FormGroupDirective) {
+    this.isLoading = true;
+
+    var _data = this.vehicleModels.data.filter(x => x.makerId == formValue.makerId && x.displayName.toLowerCase() == formValue.displayName.toLowerCase());
+    if (_data.length > 0) {
+      this.isLoading = false;
+      this.isAlreadyEntered = true;
+      return;
+    } else {
+      this.isAlreadyEntered = false;
+    }
+
     this.editVehicleModelObj.makerId = formValue.makerId;
     this.editVehicleModelObj.displayName = formValue.displayName;
     this.vehicleModelService.edit(this.editVehicleModelObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.vehicleModels.data.length; i++) {
           if (this.vehicleModels.data[i].id == this.editVehicleModelObj.id) {
-            this.vehicleModels.data[i] = this.editVehicleModelObj;
+            this.vehicleModels.data[i] = response;
           }
         }
 
@@ -357,22 +424,23 @@ export class AdminSettingComponent implements OnInit {
         this.resetVehicleEditModelForm(formDirective);
         this.hidevehiclemodeleditmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Model Added Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Vehicle Model Adding Error');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
 
   deleteVehicleModel(data: any) {
-    console.log(data)
     this.deleteVehicleModelObj = data;
     this.showvehiclemodelmodel.nativeElement.click();
   }
 
   confirmDeleteVehicleModel() {
-    // console.log("deleteVehicleModelObj: " + this.deleteVehicleModelObj)
+    this.isLoading = true;
     this.vehicleModelService.delete(this.deleteVehicleModelObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.vehicleModels.data.length; i++) {
@@ -385,10 +453,12 @@ export class AdminSettingComponent implements OnInit {
         this.vehicleModelTable.renderRows();
         this.hidedeletemodelmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Model Deleted Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Error Vehicle Model Deleting');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -403,7 +473,7 @@ export class AdminSettingComponent implements OnInit {
         this.cities.sort = this.citySort;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -416,9 +486,10 @@ export class AdminSettingComponent implements OnInit {
   }
 
   editCity(formValue: any, formDirective: FormGroupDirective) {
+    this.isLoading = true;
     var _data = this.cities.data.filter(x => x.cityName.toLowerCase() == formValue.cityName.toLowerCase());
-    console.log(_data)
     if (_data.length > 0) {
+      this.isLoading = false;
       this.isAlreadyEntered = true;
       return;
     } else {
@@ -440,24 +511,29 @@ export class AdminSettingComponent implements OnInit {
         this.hidecityeditmodel.nativeElement.click();
         this.toastr.success('', 'City Updated Successfully');
         this.isAlreadyEntered = false;
+        this.isLoading = false;
       },
       error => {
+        this.isAlreadyEntered = false;
+        this.isLoading = false;
         this.toastr.error('', 'City Updating Error');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
 
   resetEditCityForm(formDirective: FormGroupDirective) {
     formDirective.resetForm();
+    this.isLoading = false;
     this.isAlreadyEntered = false;
     this.editCityObj = new City();
   }
 
   addCity(formValue: any, formDirective: FormGroupDirective) {
+    this.isLoading = true;
     var _data = this.cities.data.filter(x => x.cityName.toLowerCase() == formValue.cityName.toLowerCase());
-    console.log(_data)
     if (_data.length > 0) {
+      this.isLoading = false;
       this.isAlreadyEntered = true;
       return;
     } else {
@@ -475,10 +551,12 @@ export class AdminSettingComponent implements OnInit {
         formDirective.resetForm();
         this.hidecityaddmodel.nativeElement.click();
         this.toastr.success('', 'City Added Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'City Adding Error');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -486,6 +564,7 @@ export class AdminSettingComponent implements OnInit {
   resetAddCityForm(formDirective: FormGroupDirective) {
     formDirective.resetForm();
     this.isAlreadyEntered = false;
+    this.isLoading = false;
     this.newCity = new City();
     this.newCity.dateAdded = new Date().toISOString();
     this.newCity.dateUpdated = new Date().toISOString();
@@ -497,6 +576,7 @@ export class AdminSettingComponent implements OnInit {
   }
 
   confirmDeleteCity() {
+    this.isLoading = true;
     this.cityService.delete(this.deleteCityObj).subscribe(
       (response: any) => {
         for (var i = 0; i < this.cities.data.length; i++) {
@@ -510,10 +590,12 @@ export class AdminSettingComponent implements OnInit {
 
         this.hidecitydeletemodel.nativeElement.click();
         this.toastr.success('', 'City Deleted Successfully');
+        this.isLoading = false;
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Error City Deleting');
-        console.log("Error: " + error);
+        console.log("Error: ", error);
       }
     );
   }

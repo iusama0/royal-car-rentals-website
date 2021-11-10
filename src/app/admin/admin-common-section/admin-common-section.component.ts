@@ -37,7 +37,7 @@ export class AdminCommonSectionComponent implements OnInit {
     this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         this.currentPage = e.url;
-        console.log(this.currentPage)
+        // console.log(this.currentPage)
       }
     });
   }

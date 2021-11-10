@@ -28,3 +28,18 @@ table {
 .cdk-overlay-container {
     z-index: 9999 !important;
 }
+
+.alreday-added-error {
+    font-size: 75%;
+    margin: 0;
+    margin-left: 12px;
+    margin-top: -20px;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    display: none;
+}
+
+input {
+    -moz-appearance: textfield;
+}

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Vehicle } from 'src/app/Models/vehicle.model';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NavigationExtras, Router } from '@angular/router';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -25,6 +25,21 @@ export class AdminVehicleComponent implements OnInit {
   @ViewChild('closebutton') closebutton: any;
   @ViewChild('showdeletemodel') showdeletemodel: any;
   @ViewChild('hidedeletemodel') hidedeletemodel: any;
+
+  public isLoading: boolean = false;
+
+  public addVehicleForm = new FormGroup({
+    makerId: new FormControl('', [Validators.required]),
+    modelId: new FormControl('', [Validators.required]),
+    cityId: new FormControl('', [Validators.required]),
+    modelYear: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4})$")]),
+    registrationNumber: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
+    color: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4,5})$")]),
+    availability: new FormControl('', [Validators.required]),
+    status: new FormControl('', [Validators.required]),
+    imagesPath: new FormControl('')
+  });
 
   newVehicle: Vehicle = {
     id: 0,
@@ -80,11 +95,14 @@ export class AdminVehicleComponent implements OnInit {
     this.getCities();
   }
 
+  public hasError = (controlName: string, errorName: string) => {
+    return this.addVehicleForm.controls[controlName].hasError(errorName);
+  }
+
   getCounts() {
     this.vehicleService.counts().subscribe(
       (response: any) => {
         this.counts = response;
-        console.log(this.counts)
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -110,8 +128,6 @@ export class AdminVehicleComponent implements OnInit {
     this.vehicleMakerService.gets().subscribe(
       (response: any) => {
         this.vehicleMakers = response;
-        this.newVehicle.makerId = this.vehicleMakers[0].id;
-        //this.changeVehicleMacker(this.newVehicle.makerId);
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -123,8 +139,6 @@ export class AdminVehicleComponent implements OnInit {
     this.vehicleModelService.gets().subscribe(
       (response: any) => {
         this.vehicleModels = response;
-        this.newVehicle.modelId = this.vehicleModels[0].id;
-        this.changeVehicleMacker(this.newVehicle.makerId);
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -136,7 +150,6 @@ export class AdminVehicleComponent implements OnInit {
     this.cityService.gets().subscribe(
       (response: any) => {
         this.cities = response;
-        this.newVehicle.cityId = this.cities[0].id;
       },
       (error: any) => {
         console.log("Error: " + error);
@@ -155,11 +168,21 @@ export class AdminVehicleComponent implements OnInit {
       }
     } else {
       this.fileMessage = "You can select only 3 files"
-      // this.uploadImagesInput.nativeElement.value = '';
     }
   }
 
-  addVehicle(form: NgForm) {
+  addVehicle(formValue: any, formDirective: FormGroupDirective) {
+    this.isLoading = true;
+    this.newVehicle.makerId = formValue.makerId;
+    this.newVehicle.modelId = formValue.modelId;
+    this.newVehicle.cityId = formValue.cityId;
+    this.newVehicle.modelYear = formValue.modelYear;
+    this.newVehicle.registrationNumber = formValue.registrationNumber;
+    this.newVehicle.color = formValue.color;
+    this.newVehicle.price = formValue.price;
+    this.newVehicle.availability = formValue.availability;
+    this.newVehicle.status = formValue.status;
+
     const formData = new FormData();
 
     for (var i = 0; i < 3; i++) {
@@ -174,29 +197,22 @@ export class AdminVehicleComponent implements OnInit {
         this.vehicles.paginator = this.vehiclePaginator;
         this.vehicles.sort = this.vehicleSort;
         this.vehicleTable.renderRows();
-        this.resetForm(form);
+        this.resetForm(formDirective);
         this.closebutton.nativeElement.click();
         this.toastr.success('', 'Vehicle Added Successfully');
       },
       error => {
-        form.form.reset();
+        this.isLoading = false;
         this.toastr.error('', 'Vehicle Adding Error');
         console.log("Error: " + error);
       }
     );
   }
 
-  resetForm(form: NgForm) {
-    form.form.reset();
-    // this.uploadImagesInput.nativeElement.value = '';
+  resetForm(formDirective: FormGroupDirective) {
+    this.isLoading = false;
+    formDirective.resetForm();
     this.newVehicle = new Vehicle();
-    this.newVehicle.makerId = this.vehicleMakers[0].id;
-    this.changeVehicleMacker(this.newVehicle.makerId);
-    // this.newVehicle.modelId = this.vehicleModels[0].id;
-    this.newVehicle.availability = false;
-    this.newVehicle.status = 'pending';
-    this.newVehicle.dateAdded = new Date().toISOString();
-    this.newVehicle.dateUpdated = new Date().toISOString();
     this.files = [];
   }
 
@@ -205,24 +221,16 @@ export class AdminVehicleComponent implements OnInit {
     this.router.navigate(["admin/vehicle-detail"], { queryParams: { _data } });
   }
 
-  editVehicle(data: any) {
-    // console.log("editVehicle")
-    // console.log(data)
-  }
-
   deleteVehicle(data: any) {
-    // console.log(data)
     this.deleteVehicleInfo = data;
     this.showdeletemodel.nativeElement.click();
 
   }
 
   confirmDeleteVehicle() {
-    // console.log("confirmDeleteVehicle: " + this.deleteVehicleInfo)
+    this.isLoading = true;
     this.vehicleService.deleteVehicle(this.deleteVehicleInfo).subscribe(
       (response: any) => {
-
-        // this.vehicles.(); remove vehicle
         for (var i = 0; i < this.vehicles.data.length; i++) {
           if (this.vehicles.data[i].id == this.deleteVehicleInfo.id) {
             this.vehicles.data.splice(i, 1);
@@ -231,11 +239,12 @@ export class AdminVehicleComponent implements OnInit {
         this.vehicles.paginator = this.vehiclePaginator;
         this.vehicles.sort = this.vehicleSort;
         this.vehicleTable.renderRows();
-
+        this.isLoading = false;
         this.hidedeletemodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Deleted Successfully');
       },
       error => {
+        this.isLoading = false;
         this.toastr.error('', 'Error Vehicle Deleting');
         console.log("Error: " + error);
       }

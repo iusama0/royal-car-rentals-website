@@ -51,7 +51,8 @@
             Drivers
             <!-- Button Trigger Add Modal -->
             <div class="float-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModel">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModel"
+                    (click)="setFocus()">
                     Add New Driver
                 </button>
             </div>
@@ -188,108 +189,136 @@
     aria-labelledby="addDriverModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form novalidate #form="ngForm" (submit)="addDriver(form)">
+            <form [formGroup]="addDriverForm" #addDriverFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="addDriver(addDriverForm.value, addDriverFormDirective)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addDriverModelLabel">Add New Driver</h5>
-                    <button type="button" class="btn-close" #hideaddmodel data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" #hideaddmodel data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetForm(addDriverFormDirective)"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="firstName" class="col-form-label">First Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="firstName"
-                                    id="firstName" #firstName="ngModel" [(ngModel)]="newDriver.firstName"
-                                    [class.invalid]="firstName.invalid && firstName.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>First Name</mat-label>
+                                <input #firstname required matInput type="text" placeholder="Placeholder"
+                                    formControlName="firstName" id="firstName">
+                                <mat-error *ngIf="hasError('firstName', 'required')">
+                                    First Name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('firstName', 'pattern')">Only Alphabets
+                                    letters
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="lastName" class="col-form-label">Last Name:</label>
-                                <input required maxlength="100" type="text" class="form-control" name="lastName"
-                                    id="lastName" #lastName="ngModel" [(ngModel)]="newDriver.lastName"
-                                    [class.invalid]="lastName.invalid && lastName.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Last Name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder"
+                                    formControlName="lastName" id="lastName">
+                                <mat-error *ngIf="hasError('lastName', 'required')">Last Name is required</mat-error>
+                                <mat-error *ngIf="hasError('lastName', 'pattern')">Only Alphabets letters without space
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="email" class="col-form-label">Email:</label>
-                                <input required type="email" class="form-control" name="email" id="email"
-                                    #email="ngModel" [(ngModel)]="newDriver.email"
-                                    [class.invalid]="email.invalid && email.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Email</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="email"
+                                    id="email">
+                                <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
+                                <mat-error *ngIf="hasError('email', 'pattern')">Enter valid email address </mat-error>
+                            </mat-form-field>
+                            <p *ngIf="isAlreadyEntered" class="alreday-added-error"
+                                [ngClass]="{'mat-error':isAlreadyEntered}">This email is already entered</p>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="password" class="col-form-label">Password:</label>
-                                <input required type="text" class="form-control" name="password" id="password"
-                                    #password="ngModel" [(ngModel)]="newDriver.password"
-                                    [class.invalid]="password.invalid && password.touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="phoneNumber" class="col-form-label">Phone Number:</label>
-                                <input required type="text" class="form-control" name="phoneNumber" id="phoneNumber"
-                                    #phoneNumber="ngModel" [(ngModel)]="newDriver.phoneNumber"
-                                    [class.invalid]="phoneNumber.invalid && phoneNumber.touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="address" class="col-form-label">Address:</label>
-                                <input required type="text" class="form-control" name="address" id="address"
-                                    #address="ngModel" [(ngModel)]="newDriver.address"
-                                    [class.invalid]="address.invalid && address.touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="availability" class="col-form-label">Choose Availability:</label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter your password</mat-label>
+                                <input required matInput [type]="hide ? 'password' : 'text'" formControlName="password"
+                                    id="password">
+                                <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
+                            </mat-form-field>
 
-                                <select class="form-control" name="availability" id="availability"
-                                    #availability="ngModel" [(ngModel)]="newDriver.availability"
-                                    [class.invalid]="availability.invalid && availability.touched">
-                                    <option value="true">True</option>
-                                    <option selected value="false">False</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="isActive" class="col-form-label">Choose Status:</label>
 
-                                <select class="form-control" name="isActive" id="isActive" #isActive="ngModel"
-                                    [(ngModel)]="newDriver.isActive"
-                                    [class.invalid]="isActive.invalid && isActive.touched">
-                                    <option value="true">True</option>
-                                    <option selected value="false">False</option>
-                                </select>
-                            </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="licenceNo" class="col-form-label">licenceNo:</label>
-                                <input required type="text" class="form-control" name="licenceNo" id="licenceNo"
-                                    #licenceNo="ngModel" [(ngModel)]="newDriver.licenceNo"
-                                    [class.invalid]="licenceNo.invalid && licenceNo.touched">
-                            </div>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter Phone Number</mat-label>
+                                <input required matInput type="number" placeholder="Placeholder"
+                                    formControlName="phoneNumber" id="phoneNumber">
+                                <mat-error *ngIf="hasError('phoneNumber', 'required')">Phone number is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('phoneNumber', 'pattern')">
+                                    Enter valid phone number (0092 or 92 or 03) 025613316
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter Address</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="address"
+                                    id="address">
+                                <mat-error *ngIf="hasError('address', 'required')">Address is required</mat-error>
+                                <mat-error *ngIf="hasError('address', 'pattern')">Only Alphabets letters without space
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Availability</mat-label>
+                                <mat-select matNativeControl formControlName="availability" required>
+                                    <mat-option>---Select Availability---</mat-option>
+                                    <mat-option value="true">True</mat-option>
+                                    <mat-option value="false">False</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('availability', 'required')">
+                                    Please select availability
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Active Status</mat-label>
+                                <mat-select matNativeControl formControlName="isActive" required>
+                                    <mat-option>---Select Active Status---</mat-option>
+                                    <mat-option value="true">True</mat-option>
+                                    <mat-option value="false">False</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('isActive', 'required')">
+                                    Please select active status
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Licence No</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder"
+                                    formControlName="licenceNo" id="licenceNo">
+                                <mat-error *ngIf="hasError('licenceNo', 'required')">Licence no is required</mat-error>
+                                <mat-error *ngIf="hasError('licenceNo', 'pattern')">Only Alphabets letters without space
+                                    between 2 to 30 characters</mat-error>
+                            </mat-form-field>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="profilePicture" class="col-form-label">Choose Profile Picture:</label>
-
-                                <input #profilePicture="ngModel" name="profilePicture" id="profilePicture" type="file"
-                                    class="form-control" (change)="onFileChange($event)"
-                                    [(ngModel)]="newDriver.profilePicture" accept="image/*">
+                                <input formControlName="profilePicture" id="profilePicture" type="file"
+                                    class="form-control" (change)="onFileChange($event)" accept="image/*">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Add Driver</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetForm(addDriverFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!addDriverForm.valid || isLoading" class="btn btn-success">
+                        {{ ( isLoading ? 'Loading...' : 'Add Driver') }}
+                    </button>
                 </div>
             </form>
         </div>

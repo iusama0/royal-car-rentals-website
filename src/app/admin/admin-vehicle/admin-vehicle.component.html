@@ -188,7 +188,160 @@
     aria-labelledby="addVehicleModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form novalidate #addvehicleform="ngForm" (submit)="addVehicle(addvehicleform)">
+
+
+
+            <form [formGroup]="addVehicleForm" #addVehicleFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="addVehicle(addVehicleForm.value, addVehicleFormDirective)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleModelLabel">Add New Vehicle</h5>
+                    <button type="button" class="btn-close" #closebutton data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetForm(addVehicleFormDirective)"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Selct maker Name</mat-label>
+                                <mat-select (selectionChange)="changeVehicleMacker($event.value)" matNativeControl
+                                    formControlName="makerId" required>
+                                    <mat-option>---Select Maker---</mat-option>
+                                    <mat-option *ngFor="let maker of vehicleMakers" [value]="maker.id">
+                                        {{maker.displayName}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('makerId', 'required')">
+                                    Please select maker
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Selct model Name</mat-label>
+                                <mat-select matNativeControl formControlName="modelId" required>
+                                    <mat-option>---Select Model---</mat-option>
+                                    <mat-option *ngFor="let model of vehicleModelsFilter" [value]="model.id">
+                                        {{model.displayName}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('modelId', 'required')">
+                                    Please select model
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Selct city name</mat-label>
+                                <mat-select matNativeControl formControlName="cityId" required>
+                                    <mat-option>---Select City---</mat-option>
+                                    <mat-option *ngFor="let city of cities" [value]="city.id">
+                                        {{city.cityName}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('cityId', 'required')">
+                                    Please select city
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter model year</mat-label>
+                                <input required matInput type="number" placeholder="YYYY" formControlName="modelYear"
+                                    id="modelYear">
+                                <mat-error *ngIf="hasError('modelYear', 'required')">Model year is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('modelYear', 'pattern')">
+                                    Please enter valid year (format:YYYY)
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Registration No</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder"
+                                    formControlName="registrationNumber" id="registrationNumber">
+                                <mat-error *ngIf="hasError('registrationNumber', 'required')">
+                                    Registration no is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('registrationNumber', 'pattern')">
+                                    Enter letters between 2 to 30 characters
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Color</mat-label>
+                                <mat-select matNativeControl formControlName="color" required>
+                                    <mat-option>---Select Color---</mat-option>
+                                    <mat-option value="res">Red</mat-option>
+                                    <mat-option value="green">Green</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('color', 'required')">
+                                    Please select color
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter price/day</mat-label>
+                                <input required matInput type="number" placeholder="4000" formControlName="price"
+                                    id="price">
+                                <mat-error *ngIf="hasError('price', 'required')">Price is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('price', 'pattern')">
+                                    Price must be greater than 999 and less than 99,999
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Availability</mat-label>
+                                <mat-select matNativeControl formControlName="availability" required>
+                                    <mat-option>---Select Availability---</mat-option>
+                                    <mat-option value="true">True</mat-option>
+                                    <mat-option value="false">False</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('availability', 'required')">
+                                    Please select availability
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Status</mat-label>
+                                <mat-select matNativeControl formControlName="status" required>
+                                    <mat-option>---Select Status---</mat-option>
+                                    <mat-option value="pending">Pending</mat-option>
+                                    <mat-option value="approved">Approved</mat-option>
+                                    <mat-option value="blocked">Blocked</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('status', 'required')">
+                                    Please select status
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="imagesPath" class="col-form-label">Choose Profile Picture:</label>
+                                <input formControlName="imagesPath" id="imagesPath" type="file" multiple
+                                    class="form-control" (change)="onFileChange($event)" accept="image/*">
+                                <p *ngIf="fileMessage!=''">{{fileMessage}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetForm(addVehicleFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!addVehicleForm.valid || isLoading" class="btn btn-success">
+                        {{ ( isLoading ? 'Loading...' : 'Add Vehicle') }}
+                    </button>
+                </div>
+            </form>
+
+
+            <!-- <form novalidate #addvehicleform="ngForm" (submit)="addVehicle(addvehicleform)">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addVehicleModelLabel">Add New Vehicle</h5>
                     <button type="button" class="btn-close" #closebutton data-bs-dismiss="modal"
@@ -218,7 +371,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="cityId" class="col-form-label">Selct City Name:</label>
@@ -230,7 +382,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="modelYear" class="col-form-label">Model Year:</label>
@@ -299,7 +450,7 @@
                     <button type="submit" [disabled]="addvehicleform.invalid" class="btn btn-primary">Add
                         Vehicle</button>
                 </div>
-            </form>
+            </form> -->
         </div>
     </div>
 </div>
@@ -319,7 +470,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="confirmDeleteVehicle()">Delete</button>
+                <button [disabled]="isLoading" type="submit" class="btn btn-primary" (click)="confirmDeleteVehicle()">
+                    {{ ( isLoading ? 'Loading...' : 'Delete') }}
+                </button>
             </div>
         </div>
     </div>

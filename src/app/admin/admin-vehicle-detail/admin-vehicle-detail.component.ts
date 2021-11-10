@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { City } from 'src/app/Models/city.model';
 import { VehicleMaker } from 'src/app/Models/vehicle-maker.model';
 import { VehicleModel } from 'src/app/Models/vehicle-model.model';
 import { Vehicle } from 'src/app/Models/vehicle.model';
+import { CityService } from 'src/app/services/city.service';
 import { VehicleMakerService } from 'src/app/services/vehicle-maker.service';
 import { VehicleModelService } from 'src/app/services/vehicle-model.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -16,11 +18,26 @@ import { VehicleService } from 'src/app/services/vehicle.service';
   styleUrls: ['./admin-vehicle-detail.component.css']
 })
 export class AdminVehicleDetailComponent implements OnInit {
+  @ViewChild('modelYear', { static: true }) modelYear: any;
   @ViewChild('hideeditmodel') hideeditmodel: any;
   @ViewChild('showpicturemodel') showpicturemodel: any;
   @ViewChild('hidepicturemodel') hidepicturemodel: any;
   @ViewChild('hideuploadpicturemodel') hideuploadpicturemodel: any;
-  // @ViewChild('uploadImages') uploadImagesInput: ElementRef;
+
+  public isLoading: boolean = false;
+
+  public editVehicleForm = new FormGroup({
+    makerId: new FormControl('', [Validators.required]),
+    modelId: new FormControl('', [Validators.required]),
+    cityId: new FormControl('', [Validators.required]),
+    modelYear: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4})$")]),
+    registrationNumber: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
+    color: new FormControl('', [Validators.required]),
+    price: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4,5})$")]),
+    availability: new FormControl('', [Validators.required]),
+    status: new FormControl('', [Validators.required])
+  });
+
   vehicle: Vehicle;
   editVehicleObj: Vehicle;
   images: string[] = [];
@@ -29,15 +46,28 @@ export class AdminVehicleDetailComponent implements OnInit {
   deletePictureName: string;
   fileMessage = '';
 
+  public cities: City[];
   public vehicleMakers: VehicleMaker[];
   public vehicleModels: VehicleModel[];
   public vehicleModelsFilter: VehicleModel[];
+
+  public optionsValue = [
+    {
+      value: true,
+      text: "True"
+    },
+    {
+      value: false,
+      text: "False"
+    }
+  ];
 
   constructor(
     public vehicleMakerService: VehicleMakerService,
     public vehicleModelService: VehicleModelService,
     public vehicleService: VehicleService,
     public activatedRoute: ActivatedRoute,
+    public cityService: CityService,
     private toastr: ToastrService,
     private router: Router
   ) { }
@@ -52,6 +82,32 @@ export class AdminVehicleDetailComponent implements OnInit {
 
     this.getVehicleMakers();
     this.getVehicleModels();
+    this.getCities();
+  }
+
+  public hasError = (controlName: string, errorName: string) => {
+    return this.editVehicleForm.controls[controlName].hasError(errorName);
+  }
+
+  showEditModel() {
+    this.editVehicleObj = Object.assign({}, this.vehicle);
+
+    this.editVehicleForm.setValue({
+      makerId: this.editVehicleObj.makerId,
+      modelId: this.editVehicleObj.modelId,
+      cityId: this.editVehicleObj.cityId,
+      modelYear: this.editVehicleObj.modelYear,
+      registrationNumber: this.editVehicleObj.registrationNumber,
+      color: this.editVehicleObj.color,
+      price: this.editVehicleObj.price,
+      availability: this.editVehicleObj.availability,
+      status: this.editVehicleObj.status
+    });
+
+    // this.showeditmodel.nativeElement.click();
+    setTimeout(() => {
+      this.modelYear.nativeElement.focus();
+    }, 600);
   }
 
   getVehicleMakers() {
@@ -77,17 +133,47 @@ export class AdminVehicleDetailComponent implements OnInit {
     );
   }
 
-  editVehicle() {
-    // console.log(this.editVehicleObj)
+  getCities() {
+    this.cityService.gets().subscribe(
+      (response: any) => {
+        this.cities = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
+  resetForm(formDirective: FormGroupDirective) {
+    this.isLoading = false;
+    formDirective.resetForm();
+    this.editVehicleObj = new Vehicle();
+  }
+
+  editVehicle(formValue: any, formDirective: FormGroupDirective) {
+
+    this.isLoading = true;
+    this.editVehicleObj.makerId = formValue.makerId;
+    this.editVehicleObj.modelId = formValue.modelId;
+    this.editVehicleObj.cityId = formValue.cityId;
+    this.editVehicleObj.modelYear = formValue.modelYear;
+    this.editVehicleObj.registrationNumber = formValue.registrationNumber;
+    this.editVehicleObj.color = formValue.color;
+    this.editVehicleObj.price = formValue.price;
+    this.editVehicleObj.availability = formValue.availability;
+    this.editVehicleObj.status = formValue.status;
+
+    console.log(this.editVehicleObj)
 
     this.vehicleService.editVehicle(this.editVehicleObj).subscribe(
       (response: any) => {
-        this.vehicle = this.editVehicleObj;
+        this.vehicle = Object.assign({}, this.editVehicleObj);
+        this.resetForm(formDirective);
         this.hideeditmodel.nativeElement.click();
         this.toastr.success('', 'Vehicle Updated Successfully');
       },
       error => {
-        //form.form.reset();
+        this.isLoading = false;
         this.toastr.error('', 'Vehicle Updating Error');
         console.log("Error: " + error);
       }
