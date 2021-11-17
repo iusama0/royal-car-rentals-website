@@ -6,7 +6,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { City } from 'src/app/Models/city.model';
 import { Driver } from 'src/app/Models/driver.model';
+import { CityService } from 'src/app/services/city.service';
 import { DriverService } from 'src/app/services/driver.service';
 
 @Component({
@@ -28,6 +30,7 @@ export class AdminDriverComponent implements OnInit {
   public deleteInfo: Driver;
   public newDriver: Driver = {
     id: 0,
+    cityId: 0,
     firstName: '',
     lastName: '',
     email: '',
@@ -43,9 +46,11 @@ export class AdminDriverComponent implements OnInit {
   };
   file: string = '';
   public counts: any;
+  public cities: City[];
   public isAlreadyEntered: boolean = false;
   public isLoading: boolean = false;
   public hide = true;
+
   public addDriverForm = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.pattern("^([a-zA-Z.]+((['.][a-zA-Z])?[a-zA-Z]*)*){2,30}$")]),
     lastName: new FormControl('', [Validators.required, Validators.pattern("^([a-zA-Z]+((['.][a-zA-Z])?[a-zA-Z]*)*){2,30}$")]),
@@ -54,15 +59,17 @@ export class AdminDriverComponent implements OnInit {
     phoneNumber: new FormControl('', [Validators.required, Validators.pattern("^((\\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$")]),
     isActive: new FormControl('', [Validators.required]),
     availability: new FormControl('', [Validators.required]),
-    address: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
+    address: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-., ]{2,30}$")]),
     licenceNo: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
-    profilePicture: new FormControl('')
+    profilePicture: new FormControl(''),
+    cityId: new FormControl('', [Validators.required]),
   });
 
 
 
   constructor(
     public driverService: DriverService,
+    public cityService: CityService,
     private toastr: ToastrService,
     private router: Router
   ) { }
@@ -70,6 +77,7 @@ export class AdminDriverComponent implements OnInit {
   ngOnInit(): void {
     this.getCounts();
     this.getDrivers();
+    this.getCities();
   }
 
   setFocus() {
@@ -81,6 +89,17 @@ export class AdminDriverComponent implements OnInit {
   
   public hasError = (controlName: string, errorName: string) => {
     return this.addDriverForm.controls[controlName].hasError(errorName);
+  }
+
+  getCities() {
+    this.cityService.gets().subscribe(
+      (response: any) => {
+        this.cities = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
   }
 
   getCounts() {
@@ -178,6 +197,7 @@ export class AdminDriverComponent implements OnInit {
     this.newDriver.availability = formValue.availability;
     this.newDriver.isActive = formValue.isActive;
     this.newDriver.licenceNo = formValue.licenceNo;
+    this.newDriver.cityId = formValue.cityId;
 
     console.log(this.newDriver)
 

@@ -183,8 +183,8 @@
                         <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Enter model year</mat-label>
-                                <input #modelYear required matInput type="number" placeholder="YYYY" formControlName="modelYear"
-                                    id="modelYear">
+                                <input #modelYear required matInput type="number" placeholder="YYYY"
+                                    formControlName="modelYear" id="modelYear">
                                 <mat-error *ngIf="hasError('modelYear', 'required')">Model year is required
                                 </mat-error>
                                 <mat-error *ngIf="hasError('modelYear', 'pattern')">
@@ -208,7 +208,12 @@
 
                         <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Choose Color</mat-label>
+                                <mat-label>Enter Color</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder" formControlName="color">
+                                <mat-error *ngIf="hasError('color', 'required')">Color is required</mat-error>
+                                <mat-error *ngIf="hasError('color', 'pattern')">Only Alphabets letters between 2 to
+                                    30 characters</mat-error>
+                                <!-- <mat-label>Choose Color</mat-label>
                                 <mat-select matNativeControl formControlName="color" required>
                                     <mat-option>---Select Color---</mat-option>
                                     <mat-option value="res">Red</mat-option>
@@ -216,7 +221,7 @@
                                 </mat-select>
                                 <mat-error *ngIf="hasError('color', 'required')">
                                     Please select color
-                                </mat-error>
+                                </mat-error> -->
                             </mat-form-field>
                         </div>
                         <div class="col-md-4">
@@ -386,7 +391,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="confirmDeletePicture()">Delete</button>
+                <button type="submit" class="btn btn-primary" (click)="confirmDeletePicture()" [disabled]="isLoading">
+                    {{ ( isLoading ? 'Loading...' : 'Delete') }}
+                </button>
             </div>
         </div>
     </div>
@@ -420,8 +427,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button (click)="UploadPicture()" type="button" [disabled]="files.length==0"
-                    class="btn btn-primary">Update</button>
+                <button (click)="UploadPicture()" type="button" [disabled]="files.length==0 || isLoading"
+                    class="btn btn-primary">
+                    {{ ( isLoading ? 'Loading...' : 'Update') }}
+                </button>
             </div>
             <!-- </form> -->
         </div>

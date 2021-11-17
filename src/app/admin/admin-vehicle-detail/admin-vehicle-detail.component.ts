@@ -32,7 +32,8 @@ export class AdminVehicleDetailComponent implements OnInit {
     cityId: new FormControl('', [Validators.required]),
     modelYear: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4})$")]),
     registrationNumber: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
-    color: new FormControl('', [Validators.required]),
+    color: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
+    // color: new FormControl('', [Validators.required]),
     price: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4,5})$")]),
     availability: new FormControl('', [Validators.required]),
     status: new FormControl('', [Validators.required])
@@ -186,6 +187,7 @@ export class AdminVehicleDetailComponent implements OnInit {
   }
 
   confirmDeletePicture() {
+    this.isLoading = true;
     // console.log(this.deletePictureName)
     this.imagesCopy = this.images;
     let index = this.imagesCopy.findIndex(d => d === this.deletePictureName); //find index in your array
@@ -194,11 +196,13 @@ export class AdminVehicleDetailComponent implements OnInit {
     this.vehicle.imagesPath = this.imagesCopy.join();
     this.vehicleService.editVehicle(this.vehicle).subscribe(
       (response: any) => {
+        this.isLoading = false;
         this.images = this.imagesCopy;
         this.hidepicturemodel.nativeElement.click();
         this.toastr.success('', 'Deleted Successfully');
       },
       error => {
+        this.isLoading = false;
         this.vehicle.imagesPath = this.images.join();
         this.toastr.error('', 'Deleting Error');
         console.log("Error: " + error);
@@ -223,12 +227,16 @@ export class AdminVehicleDetailComponent implements OnInit {
   }
 
   UploadPicture() {
+    this.isLoading = true;
+    this.editVehicleObj = Object.assign({}, this.vehicle);
     this.vehicleService.uploadVehiclePicture(this.editVehicleObj, this.files).subscribe(
       (response) => {
+        this.isLoading = false;
         let _data = JSON.stringify(response);
         this.router.navigate(["admin/vehicle-detail"], { queryParams: { _data } });
       },
       error => {
+        this.isLoading = false;
         console.log("Error: " + error);
       }
     );

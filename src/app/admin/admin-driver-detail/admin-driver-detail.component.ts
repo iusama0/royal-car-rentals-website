@@ -2,7 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { City } from 'src/app/Models/city.model';
 import { Driver } from 'src/app/Models/driver.model';
+import { CityService } from 'src/app/services/city.service';
 import { DriverService } from 'src/app/services/driver.service';
 
 @Component({
@@ -18,6 +20,7 @@ export class AdminDriverDetailComponent implements OnInit {
 
   public driver: Driver;
   public editDriverObj: Driver;
+  public cities: City[];
   public file: string = '';
   public isLoading: boolean = false;
   public hide = true;
@@ -31,7 +34,8 @@ export class AdminDriverDetailComponent implements OnInit {
     availability: new FormControl('', [Validators.required]),
     address: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
     licenceNo: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
-    profilePicture: new FormControl('')
+    profilePicture: new FormControl(''),
+    cityId: new FormControl('', [Validators.required])
   });
 
   optionsValue = [
@@ -48,14 +52,16 @@ export class AdminDriverDetailComponent implements OnInit {
   // profilePicture: new FormControl('')
   constructor(
     public driverService: DriverService,
-    private toastr: ToastrService,
     public activatedRoute: ActivatedRoute,
+    public cityService: CityService,
+    private toastr: ToastrService,
     private router: Router
   ) {
     this.driver = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
   }
 
   ngOnInit(): void {
+    this.getCities();
     // console.log(this.editDriverObj)
   }
 
@@ -67,9 +73,20 @@ export class AdminDriverDetailComponent implements OnInit {
     this.file = event.target.files[0];
   }
 
+  getCities() {
+    this.cityService.gets().subscribe(
+      (response: any) => {
+        this.cities = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    );
+  }
+
   showDriverEditModel() {
     this.editDriverObj = Object.assign({}, this.driver);
-     
+
     this.editDriverForm.setValue({
       firstName: this.editDriverObj.firstName,
       lastName: this.editDriverObj.lastName,
@@ -80,6 +97,7 @@ export class AdminDriverDetailComponent implements OnInit {
       availability: this.editDriverObj.availability,
       address: this.editDriverObj.address,
       licenceNo: this.editDriverObj.licenceNo,
+      cityId: this.editDriverObj.cityId,
       profilePicture: null
     });
     // console.log(this.editDriverForm.value)
@@ -101,6 +119,7 @@ export class AdminDriverDetailComponent implements OnInit {
     this.editDriverObj.availability = formValue.availability;
     this.editDriverObj.isActive = formValue.isActive;
     this.editDriverObj.licenceNo = formValue.licenceNo;
+    this.editDriverObj.cityId = formValue.cityId;
 
 
     const formData = new FormData();

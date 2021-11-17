@@ -305,6 +305,20 @@
                             </mat-form-field>
                         </div>
                         <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Selct city name</mat-label>
+                                <mat-select matNativeControl formControlName="cityId" required>
+                                    <mat-option>---Select City---</mat-option>
+                                    <mat-option *ngFor="let city of cities" [value]="city.id">
+                                        {{city.cityName}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('cityId', 'required')">
+                                    Please select city
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="profilePicture" class="col-form-label">Choose Profile Picture:</label>
                                 <input formControlName="profilePicture" id="profilePicture" type="file"

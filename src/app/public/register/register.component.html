@@ -1,37 +1,71 @@
 <div class="">
     <section class="h-100" style="min-height: 100vh;">
         <div class="container py-5 h-100">
-            <form *ngIf="showSignInForm" novalidate #form="ngForm" (submit)="signIn(form)">
+            <form *ngIf="showSignInForm" [formGroup]="signInForm" #signInFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="signIn(signInForm.value, signInFormDirective)">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-md-8 col-lg-6 col-xl-5">
                         <div class="card shadow-2-strong" style="border-radius: 1rem;">
                             <div class="card-body p-5 pb-4">
                                 <h2 class="mb-5 text-center">Sign In</h2>
 
-                                <div class="form-outline mb-4">
+                                <!-- <div class="form-outline mb-4">
                                     <label class="form-label" for="email">Email</label>
                                     <input required maxlength="100" type="email" name="email"
                                         class="form-control form-control-lg" #email="ngModel" [(ngModel)]="cred.email"
                                         [class.invalid]="email.invalid && email.touched" />
+                                </div> -->
+
+                                <div class="col-md-12">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Email</mat-label>
+                                        <input required matInput type="text" placeholder="Placeholder"
+                                            formControlName="email">
+                                        <!-- <mat-hint>You cannot change your email address</mat-hint> -->
+                                        <mat-error *ngIf="hasError('signin','email', 'required')">Email is required
+                                        </mat-error>
+                                        <mat-error *ngIf="hasError('signin','email', 'pattern')">Enter valid email
+                                            address
+                                        </mat-error>
+                                    </mat-form-field>
                                 </div>
 
-                                <div class="form-outline mb-4">
+                                <div class="col-md-12">
+                                    <mat-form-field appearance="outline" class="w-100">
+                                        <mat-label>Password</mat-label>
+                                        <input required matInput [type]="hide ? 'password' : 'text'"
+                                            formControlName="password" id="password">
+                                        <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                        </button>
+                                        <mat-error *ngIf="hasError('signin','password', 'required')">Password is
+                                            required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- <div class="col-md-12">
+                                    <mat-checkbox formControlName="isRemember">Remember password</mat-checkbox>
+                                </div> -->
+
+                                <!-- <div class="form-outline mb-4">
                                     <label class="form-label" for="password">Password</label>
                                     <input required maxlength="100" type="password" name="password"
                                         class="form-control form-control-lg" #password="ngModel"
                                         [(ngModel)]="cred.password"
                                         [class.invalid]="password.invalid && password.touched" />
-                                </div>
+                                </div> -->
 
-                                <div class="form-check d-flex justify-content-start mb-4">
+                                <!-- <div class="form-check d-flex justify-content-start mb-4">
                                     <input class="form-check-input" type="checkbox" #isRemember="ngModel"
                                         [(ngModel)]="cred.isRemember" name="isRemember" />
                                     <label class="form-check-label ps-2" for="isRemember"> Remember password
                                     </label>
-                                </div>
+                                </div> -->
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-success p-3" type="submit" [disabled]="form.invalid">
-                                        Sign in
+                                    <button class="btn btn-success p-3" type="submit" [disabled]="!signInForm.valid">
+                                        {{ ( isLoading ? 'Loading...' : 'Sign in') }}
                                     </button>
                                 </div>
 
@@ -47,63 +81,126 @@
                 </div>
             </form>
 
-            <form *ngIf="!showSignInForm" novalidate #form="ngForm" (submit)="signUp(form)">
+            <form *ngIf="!showSignInForm" [formGroup]="signUpForm" #signUpFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="signUp(signUpForm.value, signUpFormDirective)">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="card shadow-2-strong" style="border-radius: 1rem;">
                             <div class="card-body p-5 pb-4">
                                 <h2 class="mb-5 text-center">Sign Up </h2>
-
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="firstName">First Name</label>
                                             <input required maxlength="100" type="text" name="firstName"
                                                 class="form-control form-control-lg" #firstName="ngModel"
                                                 [(ngModel)]="newregisterCustomer.firstName"
                                                 [class.invalid]="firstName.invalid && firstName.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>First Name</mat-label>
+                                            <input #firstname required matInput type="text" placeholder="Placeholder"
+                                                formControlName="firstName">
+                                            <mat-error *ngIf="hasError('signup','firstName', 'required')">
+                                                First Name is required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('signup','firstName', 'pattern')">Only Alphabets
+                                                letters between 2 to 30 characters</mat-error>
+                                        </mat-form-field>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="lastName">Last Name</label>
                                             <input required maxlength="100" type="text" name="lastName"
                                                 class="form-control form-control-lg" #lastName="ngModel"
                                                 [(ngModel)]="newregisterCustomer.lastName"
                                                 [class.invalid]="lastName.invalid && lastName.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Last Name</mat-label>
+                                            <input required matInput type="text" placeholder="Placeholder"
+                                                formControlName="lastName">
+                                            <mat-error *ngIf="hasError('signup','lastName', 'required')">Last Name is
+                                                required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('signup','lastName', 'pattern')">Only Alphabets
+                                                letters
+                                                without space between 2 to 30 characters</mat-error>
+                                        </mat-form-field>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="email">Email</label>
                                             <input required maxlength="100" type="email" name="email"
                                                 class="form-control form-control-lg" #email="ngModel"
                                                 [(ngModel)]="newregisterCustomer.email"
                                                 [class.invalid]="email.invalid && email.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Email</mat-label>
+                                            <input required matInput type="text" placeholder="Placeholder"
+                                                formControlName="email">
+                                            <mat-error *ngIf="hasError('signup','email', 'required')">Email is required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('signup','email', 'pattern')">Enter valid email
+                                                address
+                                            </mat-error>
+                                        </mat-form-field>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="phoneNumber">Phone Number</label>
                                             <input required maxlength="100" type="tel" name="phoneNumber"
                                                 class="form-control form-control-lg" #phoneNumber="ngModel"
                                                 [(ngModel)]="newregisterCustomer.phoneNumber"
                                                 [class.invalid]="phoneNumber.invalid && phoneNumber.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Enter Phone Number</mat-label>
+                                            <input required matInput type="number" placeholder="Placeholder"
+                                                formControlName="phoneNumber" id="phoneNumber">
+                                            <mat-error *ngIf="hasError('signup','phoneNumber', 'required')">Phone number
+                                                is
+                                                required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('signup','phoneNumber', 'pattern')">
+                                                Enter valid phone number (0092 or 92 or 03) 025613316
+                                            </mat-error>
+                                        </mat-form-field>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="licenceNo">Licence No</label>
                                             <input required maxlength="100" type="text" name="licenceNo"
                                                 class="form-control form-control-lg" #licenceNo="ngModel"
                                                 [(ngModel)]="newregisterCustomer.licenceNo"
                                                 [class.invalid]="licenceNo.invalid && licenceNo.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Licence No</mat-label>
+                                            <input required matInput type="text" placeholder="Placeholder"
+                                                formControlName="licenceNo">
+                                            <mat-error *ngIf="hasError('signup','licenceNo', 'required')">Licence no is
+                                                required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('signup','licenceNo', 'pattern')">Only Alphabets
+                                                letters
+                                                without space
+                                                between 2 to 30 characters</mat-error>
+                                        </mat-form-field>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="form-check d-flex justify-content-start mb-4">
-                                            <label class="form-label" for="gender">Gender</label>
-                                            
+                                    <div class="col-6 d-flex align-items-center">
+                                        <div>
+                                            <label>Gender: </label>
+                                            <mat-radio-group formControlName="gender">
+                                                <mat-radio-button value="male">Male</mat-radio-button>
+                                                <mat-radio-button value="female">Female</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+
+                                        <!-- <div class="form-check d-flex justify-content-start mb-4">
+                                            <label class="form-label" for="gender"></label>
+
                                             <div>
                                                 <input id="male" class="form-radio-input" value="male" type="radio"
                                                     #gender="ngModel" [(ngModel)]="newregisterCustomer.gender"
@@ -114,30 +211,57 @@
                                                     name="gender" />
                                                 <label class="form-check-label ps-2" for="female"> Female </label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="password">Password</label>
                                             <input required maxlength="100" type="password" name="password"
                                                 class="form-control form-control-lg" #password="ngModel"
                                                 [(ngModel)]="newregisterCustomer.password"
                                                 [class.invalid]="password.invalid && password.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Password</mat-label>
+                                            <input required matInput [type]="hide ? 'password' : 'text'"
+                                                formControlName="password" id="password">
+                                            <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                            <mat-error *ngIf="hasError('signup','password', 'required')">Password is
+                                                required
+                                            </mat-error>
+                                        </mat-form-field>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-outline mb-4">
+                                        <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="confirmPassword">Confirm Password</label>
                                             <input required maxlength="100" type="password" name="confirmPassword"
                                                 class="form-control form-control-lg" #confirmPassword="ngModel"
                                                 [(ngModel)]="newregisterCustomer.confirmPassword"
                                                 [class.invalid]="confirmPassword.invalid && confirmPassword.touched" />
-                                        </div>
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Confirm Password</mat-label>
+                                            <input required matInput [type]="hideConfirm ? 'password' : 'text'"
+                                                formControlName="confirmPassword" id="confirmPassword">
+                                            <button type="button" mat-icon-button matSuffix
+                                                (click)="hideConfirm = !hideConfirm"
+                                                [attr.aria-label]="'Hide confirmPassword'"
+                                                [attr.aria-pressed]="hideConfirm">
+                                                <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                            <mat-error *ngIf="hasError('signup','confirmPassword', 'required')">Confirm
+                                                password is
+                                                required
+                                            </mat-error>
+                                        </mat-form-field>
                                     </div>
                                 </div>
 
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-success p-3" type="submit" [disabled]="form.invalid">
+                                    <button class="btn btn-success p-3" type="submit" [disabled]="!signUpForm.valid">
                                         Sign Up
                                     </button>
                                 </div>

@@ -51,6 +51,7 @@ export class CommonSectionComponent implements OnInit {
 
 
     this.router.events.subscribe(e => {
+      this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
       if (e instanceof NavigationEnd) {
         if (this.registerCustomer) {
           this.customerService.isAuthenticatedCustomer.emit(true);

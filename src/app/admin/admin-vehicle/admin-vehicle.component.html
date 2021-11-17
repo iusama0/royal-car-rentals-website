@@ -271,15 +271,20 @@
 
                         <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Choose Color</mat-label>
-                                <mat-select matNativeControl formControlName="color" required>
+                                <mat-label>Enter Color</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder"
+                                    formControlName="color">
+                                <mat-error *ngIf="hasError('color', 'required')">Color is required</mat-error>
+                                <mat-error *ngIf="hasError('color', 'pattern')">Only Alphabets letters between 2 to
+                                    30 characters</mat-error>
+                                <!-- <mat-select matNativeControl formControlName="color" required>
                                     <mat-option>---Select Color---</mat-option>
                                     <mat-option value="res">Red</mat-option>
                                     <mat-option value="green">Green</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="hasError('color', 'required')">
                                     Please select color
-                                </mat-error>
+                                </mat-error> -->
                             </mat-form-field>
                         </div>
                         <div class="col-md-4">

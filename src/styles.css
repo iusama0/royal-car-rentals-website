@@ -43,3 +43,13 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 input {
     -moz-appearance: textfield;
 }
+
+
+.carousel-control-next-icon, .carousel-control-prev-icon {     
+    background-position: center !important;
+    background-size: 70% 70% !important;
+    background-color: #000 !important; 
+    border-radius: 50% !important;
+    color: #fff !important;
+    padding: 30px !important;
+}
