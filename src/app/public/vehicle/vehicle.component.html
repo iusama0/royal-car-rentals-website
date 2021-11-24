@@ -55,41 +55,31 @@
                                 <td>Maker Name</td>
                                 <td> : </td>
                                 <td>{{vehicle?.maker?.displayName}}</td>
-                            </tr>
-                            <tr>
                                 <td>Model Name</td>
                                 <td> : </td>
                                 <td>{{vehicle?.model?.displayName}}</td>
-
                             </tr>
                             <tr>
                                 <td>Model Year </td>
                                 <td>: </td>
                                 <td>{{vehicle?.modelYear}}</td>
-
-                            </tr>
-                            <tr>
                                 <td>City Name </td>
                                 <td>: </td>
                                 <td>{{vehicle?.city?.cityName}}</td>
-
                             </tr>
                             <tr>
                                 <td>Registration# </td>
                                 <td>:</td>
                                 <td>{{vehicle?.registrationNumber}}</td>
-                            </tr>
-                            <tr>
-                                <td>Color </td>
-                                <td>:</td>
-                                <td>{{vehicle?.color}}</td>
-                            </tr>
-                            <tr>
                                 <td>Price/Day </td>
                                 <td>:</td>
                                 <td> {{vehicle?.price}}</td>
                             </tr>
                             <tr>
+
+                                <td>Color </td>
+                                <td>:</td>
+                                <td>{{vehicle?.color}}</td>
                                 <td>Availability </td>
                                 <td>:</td>
                                 <td>
@@ -102,9 +92,86 @@
 
                         </tbody>
                     </table>
-                    <div class="d-grid gap-2 d-block">
+
+
+
+                    <form [formGroup]="addBookingForm" #addBookingFormDirective="ngForm" autocomplete="off" novalidate
+                        (ngSubmit)="confirmBook(addBookingForm.value, addBookingFormDirective)" fxLayout="column wrap"
+                        fxLayoutAlign="center center" fxLayoutGap="10px" class="row g-3">
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Select Start Date</mat-label>
+                                <input matInput [matDatepicker]="picker2" [min]="startMinDate"
+                                    formControlName="startDate" (dateChange)="changeStartDate($event)">
+                                <mat-datepicker-toggle matSuffix [for]="picker2">
+                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                                <mat-error *ngIf="hasError('startDate', 'required')">
+                                    Enter valid date
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Choose Start Time</mat-label>
+                                <mat-select matNativeControl formControlName="startTime" required>
+                                    <mat-option>---Select Time---</mat-option>
+                                    <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot.id">
+                                        {{timeSlot.text}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('startTime', 'required')">
+                                    Please select time
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Select End Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" [min]="endMinDate" formControlName="endDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker1">
+                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error *ngIf="hasError('endDate', 'required')">
+                                    Enter valid date
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Select End Time</mat-label>
+                                <mat-select matNativeControl formControlName="endTime" required>
+                                    <mat-option>---Select Time---</mat-option>
+                                    <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot.id">
+                                        {{timeSlot.text}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('startTime', 'required')">
+                                    Please select time
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+
+                        <div class="col-12">
+                            <button type="submit" [disabled]="!addBookingForm.valid"
+                                class="btn btn-success w-100 py-3 fw-bold">
+                                Confirm Booking
+                            </button>
+                        </div>
+                    </form>
+
+
+
+
+
+
+
+                    <!-- <div class="d-grid gap-2 d-block">
                         <button class="btn btn-success" type="button" (click)="confirmBook()">Confirm Book</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
