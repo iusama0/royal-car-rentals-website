@@ -9,11 +9,10 @@ export class Booking {
     driverId: number;
     withDriver: boolean;
     status: string;
-    startTime: string;
-    endTime: string;
+    startDate: string;
+    startTime: number;
+    endDate: string;
+    endTime: number;
     dateAdded: string;
     dateUpdated: string;
-    customer: Customer;
-    driver: Driver;
-    vehicle: Vehicle;
 }

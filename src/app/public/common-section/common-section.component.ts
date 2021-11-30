@@ -35,12 +35,12 @@ export class CommonSectionComponent implements OnInit {
     this.getVehicleModels();
 
     this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
-
+    console.log(this.registerCustomer)
 
     if (this.registerCustomer) {
       this.customerService.isAuthenticatedCustomer.emit(true);
       this.isAuthenticated = true;
-    } else if (this.router.url == "/public/booking") {
+    } else if (this.router.url == "/public/bookings") {
       localStorage.removeItem("signincustomerinfo");
       this.customerService.isAuthenticatedCustomer.emit(false);
       this.router.navigateByUrl("public/register");
@@ -56,7 +56,7 @@ export class CommonSectionComponent implements OnInit {
         if (this.registerCustomer) {
           this.customerService.isAuthenticatedCustomer.emit(true);
           this.isAuthenticated = true;
-        } else if (e.url == "/public/booking") {
+        } else if (e.url == "/public/bookings") {
           localStorage.removeItem("signincustomerinfo");
           this.customerService.isAuthenticatedCustomer.emit(false);
           this.router.navigateByUrl("public/register");
