@@ -5,6 +5,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
+import { Customer } from 'src/app/Models/customer.model';
 import { BookingService } from 'src/app/services/booking.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class BookingComponent implements OnInit {
   @ViewChild('BookingPaginator', { static: true }) bookingPaginator: MatPaginator;
   @ViewChild('BookingSort', { static: true }) bookingSort: MatSort;
   public counts: any;
-  
+
   timeSlots = [
     {
       id: 1, text: '12:00 AM'
@@ -94,6 +95,7 @@ export class BookingComponent implements OnInit {
       id: 24, text: '11:00 PM'
     }
   ];
+  registerCustomer: Customer;
 
   constructor(
     public bookingService: BookingService,
@@ -102,11 +104,24 @@ export class BookingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
+    this.getCounts();
     this.getBookings();
   }
 
+  getCounts() {
+    this.bookingService.customerBookingsCounts(this.registerCustomer.id).subscribe(
+      (response: any) => {
+        this.counts = response;
+      },
+      (error: any) => {
+        console.log("Error: " + error);
+      }
+    )
+  }
+
   getBookings() {
-    this.bookingService.gets().subscribe(
+    this.bookingService.getCustomerBookings(this.registerCustomer.id).subscribe(
       (response: any) => {
         this.bookings = new MatTableDataSource(response);
         this.bookings.paginator = this.bookingPaginator;

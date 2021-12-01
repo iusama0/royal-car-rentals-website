@@ -29,7 +29,15 @@ export class BookingService {
     return this.http.get(this.baseUrl);
   }
 
-  counts(){
-    return this.http.get(this.baseUrl + "/counts");
+  counts() {
+    return this.http.get(this.baseUrl + "/allcounts");
+  }
+
+  customerBookingsCounts(id: number) {
+    return this.http.get(this.baseUrl + "/customercounts" + "/" + id);
+  }
+
+  getCustomerBookings(id: number) {
+    return this.http.get(this.baseUrl + "/customerbookings" + "/" + id);
   }
 }

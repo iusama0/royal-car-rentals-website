@@ -132,8 +132,8 @@
 
                     <!-- Price Column -->
                     <ng-container matColumnDef="price">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
-                        <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Price (PKR) </th>
+                        <td mat-cell *matCellDef="let row"> {{row.price | currency:' '}} </td>
                     </ng-container>
 
                     <!-- Date Added Column -->

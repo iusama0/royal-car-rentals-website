@@ -98,11 +98,14 @@ export class VehicleComponent implements OnInit {
     }
   ]
 
+  timeSlotsFilter: any;
+
   public addBookingForm = new FormGroup({
     startDate: new FormControl('', [Validators.required]),
     startTime: new FormControl('', [Validators.required]),
     endDate: new FormControl('', [Validators.required]),
-    endTime: new FormControl('', [Validators.required])
+    endTime: new FormControl('', [Validators.required]),
+    withDriver: new FormControl(false)
   });
 
   bookingObj: Booking = {
@@ -110,7 +113,7 @@ export class VehicleComponent implements OnInit {
     customerId: 0,
     vehicleId: 0,
     driverId: 1,
-    withDriver: true,
+    withDriver: false,
     status: 'pending',
     startDate: '',
     startTime: 0,
@@ -142,6 +145,17 @@ export class VehicleComponent implements OnInit {
     if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
       this.images = this.vehicle.imagesPath.split(',');
     }
+
+    // let todayDate = new Date();
+    // todayDate.setDate(todayDate.getDate() + 1)
+    this.addBookingForm.setValue({
+      startDate: new Date(),
+      startTime: 10,
+      endDate: new Date(),
+      endTime: 11,
+      withDriver: false
+    });
+    this.changeEndTime(10);
   }
 
   public hasError = (controlName: string, errorName: string) => {
@@ -160,13 +174,31 @@ export class VehicleComponent implements OnInit {
   confirmBook(formValue: any, formDirective: FormGroupDirective) {
 
     if (this.registerCustomer) {
+      if (this.registerCustomer.verificationStatus == "pending" || this.registerCustomer.verificationStatus == "blocked") {
+        this.toastr.error('Your verification status is pending. So you cannot booked vehicle right now.', 'Try again later!');
+        return;
+      }
+
+      if (new Date(formValue.startDate).getDate() === new Date(formValue.endDate).getDate() && formValue.startTime == formValue.endTime) {
+        this.toastr.error('', 'Select different start and end date time!');
+        return;
+      }
+
+      if (!this.vehicle.availability) {
+        this.toastr.error('This vehicle is already booked.', 'Try again later!');
+        return;
+      }
+
       this.bookingObj.customerId = this.registerCustomer.id;
       this.bookingObj.vehicleId = this.vehicle.id;
       this.bookingObj.startDate = formValue.startDate;
       this.bookingObj.startTime = formValue.startTime;
       this.bookingObj.endDate = formValue.endDate;
       this.bookingObj.endTime = formValue.endTime;
+      this.bookingObj.withDriver = formValue.withDriver;
       console.log(this.bookingObj)
+
+
 
       this.bookingService.add(this.bookingObj).subscribe(
         (response: any) => {
@@ -182,6 +214,11 @@ export class VehicleComponent implements OnInit {
       this.router.navigateByUrl("public/register");
     }
 
+  }
+
+  changeEndTime(data: number) {
+    console.log(data)
+    this.timeSlotsFilter = this.timeSlots.filter(x => x.id > data);
   }
 
 }
