@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
         // console.log(this.vehicles)
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

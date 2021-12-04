@@ -39,7 +39,7 @@ export class VehiclesComponent implements OnInit {
         });
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

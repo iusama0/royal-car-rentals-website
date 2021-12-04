@@ -335,7 +335,7 @@ export class AdminSettingComponent implements OnInit {
         // this.vehicleModelTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

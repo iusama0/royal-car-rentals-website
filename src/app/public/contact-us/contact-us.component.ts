@@ -70,7 +70,7 @@ export class ContactUsComponent implements OnInit {
       },
       error => {
         this.toastr.error('', 'Message Sending Error');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

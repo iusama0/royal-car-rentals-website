@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
+import { ChangePassword } from '../Models/change-password.model';
 import { Customer } from '../Models/customer.model';
 import { Signin } from '../Models/signin.model';
 
@@ -20,6 +21,10 @@ export class CustomerService {
     return this.http.put(this.baseUrl + "/" + id, data);
   }
 
+  changePassword(id: number, data: ChangePassword) {
+    return this.http.put(this.baseUrl + "/changepassword/" + id, data);
+  }
+
   delete(data: Customer) {
     return this.http.delete(this.baseUrl + "/" + data.id);
   }
@@ -32,15 +37,15 @@ export class CustomerService {
     return this.http.get(this.baseUrl);
   }
 
-  counts(){
+  counts() {
     return this.http.get(this.baseUrl + "/counts");
   }
 
-  signIn(data: Signin){
+  signIn(data: Signin) {
     return this.http.post(this.baseUrl + "/signin", data);
   }
 
-  signUp(data: Customer){
+  signUp(data: Customer) {
     return this.http.post(this.baseUrl + "/signup", data);
   }
 }

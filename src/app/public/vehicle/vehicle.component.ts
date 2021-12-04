@@ -6,6 +6,7 @@ import { data } from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
 import { Customer } from 'src/app/Models/customer.model';
+import { Driver } from 'src/app/Models/driver.model';
 import { Vehicle } from 'src/app/Models/vehicle.model';
 import { BookingService } from 'src/app/services/booking.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -99,6 +100,8 @@ export class VehicleComponent implements OnInit {
   ]
 
   timeSlotsFilter: any;
+  totaldays: number = 0;
+  totalPrice: number = 0;
 
   public addBookingForm = new FormGroup({
     startDate: new FormControl('', [Validators.required]),
@@ -120,7 +123,10 @@ export class VehicleComponent implements OnInit {
     endDate: '',
     endTime: 0,
     dateAdded: new Date().toISOString(),
-    dateUpdated: new Date().toISOString()
+    dateUpdated: new Date().toISOString(),
+    customer: new Customer,
+    driver: new Driver,
+    vehicle: new Vehicle
   };
 
 
@@ -136,22 +142,21 @@ export class VehicleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.activatedRoute.snapshot.queryParams.info);
 
     this.vehicle = JSON.parse(this.activatedRoute.snapshot.queryParams.info);
     this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
-    console.log(this.registerCustomer)
 
     if (this.vehicle.imagesPath != "" && this.vehicle.imagesPath != null) {
       this.images = this.vehicle.imagesPath.split(',');
     }
 
-    // let todayDate = new Date();
-    // todayDate.setDate(todayDate.getDate() + 1)
+    let todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+
     this.addBookingForm.setValue({
-      startDate: new Date(),
+      startDate: todayDate,
       startTime: 10,
-      endDate: new Date(),
+      endDate: todayDate,
       endTime: 11,
       withDriver: false
     });
@@ -168,7 +173,41 @@ export class VehicleComponent implements OnInit {
     var date = event.value?.getDate()!;
     var day = event.value?.getDay()!;
 
+
     this.endMinDate = new Date(year, month, date);
+
+    if (new Date(this.addBookingForm.value.startDate).getDate() > new Date(this.addBookingForm.value.endDate).getDate()) {
+      let setDate = new Date(this.endMinDate);
+      setDate.setHours(0, 0, 0, 0);
+
+      this.addBookingForm.controls.endDate.setValue(setDate);
+    }
+
+    // To calculate the time difference of two dates
+    var Difference_In_Time = new Date(this.addBookingForm.value.endDate).getTime() - new Date(this.addBookingForm.value.startDate).getTime();
+
+    // To calculate the no. of days between two dates
+    this.totaldays = Difference_In_Time / (1000 * 3600 * 24);
+
+    if (this.totaldays == 0) {
+      this.totaldays = 1;
+    }
+
+    this.totalPrice = this.totaldays * this.vehicle.price;
+  }
+
+  changeEndDate(event: MatDatepickerInputEvent<Date>) {
+    this.changeEndTime(this.addBookingForm.value.endTime);
+
+    // To calculate the time difference of two dates
+    var Difference_In_Time = new Date(this.addBookingForm.value.endDate).getTime() - new Date(this.addBookingForm.value.startDate).getTime();
+
+    // To calculate the no. of days between two dates
+    this.totaldays = Difference_In_Time / (1000 * 3600 * 24);
+    if (this.totaldays == 0) {
+      this.totaldays = 1;
+    }
+    this.totalPrice = this.totaldays * this.vehicle.price;
   }
 
   confirmBook(formValue: any, formDirective: FormGroupDirective) {
@@ -196,9 +235,17 @@ export class VehicleComponent implements OnInit {
       this.bookingObj.endDate = formValue.endDate;
       this.bookingObj.endTime = formValue.endTime;
       this.bookingObj.withDriver = formValue.withDriver;
-      console.log(this.bookingObj)
+      // console.log(this.bookingObj)
 
+      // To calculate the time difference of two dates
+      var Difference_In_Time = new Date(formValue.endDate).getTime() - new Date(formValue.startDate).getTime();
 
+      // To calculate the no. of days between two dates
+      this.totaldays = Difference_In_Time / (1000 * 3600 * 24);
+      if (this.totaldays == 0) {
+        this.totaldays = 1;
+      }
+      this.totalPrice = this.totaldays * this.vehicle.price;
 
       this.bookingService.add(this.bookingObj).subscribe(
         (response: any) => {
@@ -206,7 +253,7 @@ export class VehicleComponent implements OnInit {
         },
         error => {
           this.toastr.error('', 'Try again! Vehicle Booking Error');
-          console.log("Error: " + error);
+          console.log("Error: " , error);
         }
       );
     }
@@ -217,8 +264,23 @@ export class VehicleComponent implements OnInit {
   }
 
   changeEndTime(data: number) {
-    console.log(data)
-    this.timeSlotsFilter = this.timeSlots.filter(x => x.id > data);
+
+    if (new Date(this.addBookingForm.value.startDate).getDate() === new Date(this.addBookingForm.value.endDate).getDate()) {
+      this.timeSlotsFilter = this.timeSlots.filter(x => x.id > data);
+    }
+    else {
+      this.timeSlotsFilter = this.timeSlots;
+    }
+
+    // To calculate the time difference of two dates
+    var Difference_In_Time = new Date(this.addBookingForm.value.endDate).getTime() - new Date(this.addBookingForm.value.startDate).getTime();
+
+    // To calculate the no. of days between two dates
+    this.totaldays = Difference_In_Time / (1000 * 3600 * 24);
+    if (this.totaldays == 0) {
+      this.totaldays = 1;
+    }
+    this.totalPrice = this.totaldays * this.vehicle.price;
   }
 
 }

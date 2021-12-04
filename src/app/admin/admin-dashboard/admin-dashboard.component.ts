@@ -24,7 +24,7 @@ export class AdminDashboardComponent implements OnInit {
         console.log(this.counts)
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     )
   }

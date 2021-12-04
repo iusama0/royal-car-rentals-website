@@ -50,7 +50,7 @@ export class AdminCustomerDetailComponent implements OnInit {
       error => {
         form.form.reset();
         this.toastr.error('', 'Status Updating Error');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

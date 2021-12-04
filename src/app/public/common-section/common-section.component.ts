@@ -40,7 +40,7 @@ export class CommonSectionComponent implements OnInit {
     if (this.registerCustomer) {
       this.customerService.isAuthenticatedCustomer.emit(true);
       this.isAuthenticated = true;
-    } else if (this.router.url == "/public/bookings") {
+    } else if (this.router.url == "/public/bookings" || this.router.url == "/public/profile") {
       localStorage.removeItem("signincustomerinfo");
       this.customerService.isAuthenticatedCustomer.emit(false);
       this.router.navigateByUrl("public/register");
@@ -56,7 +56,7 @@ export class CommonSectionComponent implements OnInit {
         if (this.registerCustomer) {
           this.customerService.isAuthenticatedCustomer.emit(true);
           this.isAuthenticated = true;
-        } else if (e.url == "/public/bookings") {
+        } else if (this.router.url == "/public/bookings" || e.url == "/public/profile") {
           localStorage.removeItem("signincustomerinfo");
           this.customerService.isAuthenticatedCustomer.emit(false);
           this.router.navigateByUrl("public/register");
@@ -82,7 +82,7 @@ export class CommonSectionComponent implements OnInit {
         this.vehicleMakers = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -93,7 +93,7 @@ export class CommonSectionComponent implements OnInit {
         this.vehicleModels = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

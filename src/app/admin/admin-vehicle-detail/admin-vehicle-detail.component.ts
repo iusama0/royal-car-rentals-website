@@ -117,7 +117,7 @@ export class AdminVehicleDetailComponent implements OnInit {
         this.vehicleMakers = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -129,7 +129,7 @@ export class AdminVehicleDetailComponent implements OnInit {
         this.changeVehicleMacker(this.editVehicleObj.makerId);
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -140,7 +140,7 @@ export class AdminVehicleDetailComponent implements OnInit {
         this.cities = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -176,7 +176,7 @@ export class AdminVehicleDetailComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Vehicle Updating Error');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -205,7 +205,7 @@ export class AdminVehicleDetailComponent implements OnInit {
         this.isLoading = false;
         this.vehicle.imagesPath = this.images.join();
         this.toastr.error('', 'Deleting Error');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
 
@@ -237,7 +237,7 @@ export class AdminVehicleDetailComponent implements OnInit {
       },
       error => {
         this.isLoading = false;
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

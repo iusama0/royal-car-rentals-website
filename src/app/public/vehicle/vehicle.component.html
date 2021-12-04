@@ -2,7 +2,7 @@
     <section class="m-5">
         <div class="mt-4">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12 mb-3">
                     <div>
                         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-indicators">
@@ -18,7 +18,11 @@
                             <div class="carousel-inner">
                                 <div [ngClass]="{'active': i===0}" class="carousel-item"
                                     *ngFor="let image of images; index as i">
-                                    <img [src]="'assets/adminUploads/vehicles/'+ image" class="d-block w-100" alt="...">
+                                    <div [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ image +')'}"
+                                        style="width: 100%;height: 70vh;background-position: center;
+                                                background-repeat: no-repeat;background-size: cover;">
+                                    </div>
+                                    <!-- <img [src]="'assets/adminUploads/vehicles/'+ image" class="d-block w-100" alt="..."> -->
                                 </div>
                             </div>
                             <button class="carousel-control-prev" type="button"
@@ -32,152 +36,160 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
-
-                        <!-- <div class="delete-picture-wapper" *ngFor="let image of images">
-                            <div [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ image +')'}"
-                                style="
-                            width: 300px;
-                            height: 200px;                    
-                            background-position: center;
-                            background-repeat: no-repeat;
-                            background-size: cover;">
-                            </div>
-                        </div> -->
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h2>{{vehicle?.maker?.displayName +" "+ vehicle?.model?.displayName}}</h2>
-                    <table class="table caption-top">
-                        <tbody>
-                            <tr>
-                                <td>Maker Name</td>
-                                <td> : </td>
-                                <td>{{vehicle?.maker?.displayName}}</td>
-                                <td>Model Name</td>
-                                <td> : </td>
-                                <td>{{vehicle?.model?.displayName}}</td>
-                            </tr>
-                            <tr>
-                                <td>Model Year </td>
-                                <td>: </td>
-                                <td>{{vehicle?.modelYear}}</td>
-                                <td>City Name </td>
-                                <td>: </td>
-                                <td>{{vehicle?.city?.cityName}}</td>
-                            </tr>
-                            <tr>
-                                <td>Registration# </td>
-                                <td>:</td>
-                                <td>{{vehicle?.registrationNumber}}</td>
-                                <td>Price/Day </td>
-                                <td>:</td>
-                                <td> {{vehicle?.price | currency:'PKR'}}</td>
-                            </tr>
-                            <tr>
-                                <td>Color </td>
-                                <td>:</td>
-                                <td>{{vehicle?.color}}</td>
-                                <td>Availability </td>
-                                <td>:</td>
-                                <td>
-                                    <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                        [ngStyle]="{'background-color': vehicle?.availability ? '#198754' : '#dc3545' }">
-                                        {{ vehicle?.availability }}
-                                    </span>
-                                </td>
-                            </tr>
+                    <div class="h-100" style="border: 2px solid #dedede;
+                    border-radius: 12px;padding: 2em;">
+                        <h2>Vehicle Details</h2>
+                        <!-- <h2>{{vehicle?.maker?.displayName +" "+ vehicle?.model?.displayName}}</h2> -->
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Maker Name</td>
+                                    <td> : </td>
+                                    <td>{{vehicle?.maker?.displayName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Model Name</td>
+                                    <td> : </td>
+                                    <td>{{vehicle?.model?.displayName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Model Year </td>
+                                    <td>: </td>
+                                    <td>{{vehicle?.modelYear}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Available in City </td>
+                                    <td>: </td>
+                                    <td>{{vehicle?.city?.cityName}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Registration No </td>
+                                    <td>:</td>
+                                    <td>{{vehicle?.registrationNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Price Per Day </td>
+                                    <td>:</td>
+                                    <td> {{vehicle?.price | currency:'PKR'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Color </td>
+                                    <td>:</td>
+                                    <td>{{vehicle?.color}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Availability </td>
+                                    <td>:</td>
+                                    <td [ngStyle]="{'color':vehicle?.availability? 'black' : 'red'}">
+                                        {{ vehicle?.availability? 'Available for booking': 'Vehicle is not available for bookig.'}}
+                                        <!-- <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                            [ngStyle]="{'background-color': vehicle?.availability ? '#198754' : '#dc3545' }">
+                                            {{ vehicle?.availability }}
+                                        </span> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div style="border: 2px solid #dedede;
+                    border-radius: 12px;padding: 2em;">
+                        <h2 class="mb-4">Booking Details</h2>
+                        <form [formGroup]="addBookingForm" #addBookingFormDirective="ngForm" autocomplete="off"
+                            novalidate (ngSubmit)="confirmBook(addBookingForm.value, addBookingFormDirective)"
+                            fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="10px" class="row g-3">
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Select Start Date</mat-label>
+                                    <input matInput [matDatepicker]="picker2" [min]="startMinDate"
+                                        formControlName="startDate" (dateChange)="changeStartDate($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker2">
+                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                    <mat-error *ngIf="hasError('startDate', 'required')">
+                                        Enter valid date
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Choose Start Time</mat-label>
+                                    <mat-select matNativeControl formControlName="startTime" required
+                                        (selectionChange)="changeEndTime($event.value)">
+                                        <mat-option>---Select Time---</mat-option>
+                                        <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot.id">
+                                            {{timeSlot.text}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="hasError('startTime', 'required')">
+                                        Please select time
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Select End Date</mat-label>
+                                    <input matInput [matDatepicker]="picker1" [min]="endMinDate"
+                                        formControlName="endDate" (dateChange)="changeEndDate($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1">
+                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                    </mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                    <mat-error *ngIf="hasError('endDate', 'required')">
+                                        Enter valid date
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                                <mat-form-field appearance="outline" class="w-100">
+                                    <mat-label>Select End Time</mat-label>
+                                    <mat-select matNativeControl formControlName="endTime" required>
+                                        <mat-option>---Select Time---</mat-option>
+                                        <mat-option *ngFor="let timeSlot of timeSlotsFilter" [value]="timeSlot.id">
+                                            {{timeSlot.text}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="hasError('startTime', 'required')">
+                                        Please select time
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-6 m-0 ps-3">
+                                <mat-checkbox color="primary" formControlName="withDriver">Book vehicle with Driver?
+                                </mat-checkbox>
+                            </div>
 
-                        </tbody>
-                    </table>
+                            <table class="table caption-top">
+                                <tbody>
+                                    <tr></tr>
+                                    <tr>
+                                        <th>Days</th>
+                                        <th>Price Per Day</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{totaldays}}</td>
+                                        <td>{{vehicle?.price | currency:'PKR'}}</td>
+                                        <td>{{totalPrice | currency:'PKR'}}</td>
+                                    </tr>
 
-
-
-                    <form [formGroup]="addBookingForm" #addBookingFormDirective="ngForm" autocomplete="off" novalidate
-                        (ngSubmit)="confirmBook(addBookingForm.value, addBookingFormDirective)" fxLayout="column wrap"
-                        fxLayoutAlign="center center" fxLayoutGap="10px" class="row g-3">
-                        <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Select Start Date</mat-label>
-                                <input matInput [matDatepicker]="picker2" [min]="startMinDate"
-                                    formControlName="startDate" (dateChange)="changeStartDate($event)">
-                                <mat-datepicker-toggle matSuffix [for]="picker2">
-                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
-                                <mat-error *ngIf="hasError('startDate', 'required')">
-                                    Enter valid date
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Choose Start Time</mat-label>
-                                <mat-select matNativeControl formControlName="startTime" required
-                                    (selectionChange)="changeEndTime($event.value)">
-                                    <mat-option>---Select Time---</mat-option>
-                                    <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot.id">
-                                        {{timeSlot.text}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="hasError('startTime', 'required')">
-                                    Please select time
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Select End Date</mat-label>
-                                <input matInput [matDatepicker]="picker1" [min]="endMinDate" formControlName="endDate">
-                                <mat-datepicker-toggle matSuffix [for]="picker1">
-                                    <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-                                </mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                                <mat-error *ngIf="hasError('endDate', 'required')">
-                                    Enter valid date
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6">
-                            <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Select End Time</mat-label>
-                                <mat-select matNativeControl formControlName="endTime" required>
-                                    <mat-option>---Select Time---</mat-option>
-                                    <mat-option *ngFor="let timeSlot of timeSlotsFilter" [value]="timeSlot.id">
-                                        {{timeSlot.text}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="hasError('startTime', 'required')">
-                                    Please select time
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-6 m-0 ps-3">
-                            <mat-checkbox color="primary" formControlName="withDriver">Book vehicle with Driver?
-                            </mat-checkbox>
-                        </div>
-
-
-                        <div class="col-12">
-                            <button type="submit" [disabled]="!addBookingForm.valid"
-                                class="btn btn-success w-100 py-3 fw-bold">
-                                Confirm Booking
-                            </button>
-                        </div>
-                    </form>
-
-
-
-
-
-
-
-                    <!-- <div class="d-grid gap-2 d-block">
-                        <button class="btn btn-success" type="button" (click)="confirmBook()">Confirm Book</button>
-                    </div> -->
+                                </tbody>
+                            </table>
+                            <div class="col-12">
+                                <button type="submit" [disabled]="!addBookingForm.valid"
+                                    class="btn btn-success w-100 py-3 fw-bold">
+                                    Confirm Booking
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <section style="padding: 4em 0;"></section>
 </div>

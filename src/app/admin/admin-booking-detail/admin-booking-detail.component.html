@@ -1,0 +1,130 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Booking Information</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">admin/booking-detail</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            Booking Information
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookingModel">
+                    Change Booking Status
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table caption-top">
+                <tbody>
+                    <tr>
+                        <td>Booking Id </td>
+                        <td>: </td>
+                        <td>{{booking?.id}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Vehicle Id </td>
+                        <td>: </td>
+                        <td>{{booking?.vehicleId}}</td>
+                        <td>Vehicle Name</td>
+                        <td>:</td>
+                        <!-- <td>{{booking?.vehicle?.firstName + " "+booking?.vehicle?.lastName}}</td> -->
+                    </tr>
+                    <tr>
+                        <td>Customer Id </td>
+                        <td>: </td>
+                        <td>{{booking?.customerId}}</td>
+                        <td>Customer Name</td>
+                        <td>:</td>
+                        <td>{{booking?.customer?.firstName + " "+booking?.customer?.lastName}}</td>
+                    </tr>
+
+
+                    <tr>
+                        <td> With Driver </td>
+                        <td>:</td>
+                        <td>
+                            {{ booking?.withDriver }}
+                        </td>
+                        <td>Booking Status </td>
+                        <td>:</td>
+                        <td>
+                            <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                [ngStyle]="{'background-color': booking.status === 'pending' ? '#ffc107' : (booking.status === 'approved' ? '#198754' : '#dc3545') }">
+                                {{ booking?.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Start Time </td>
+                        <td>:</td>
+                        <td> {{ (booking.startDate | date:'shortDate') +" "+
+                            bookingService.timeSlots[booking.startTime-1].text}}</td>
+                        <td>End Time </td>
+                        <td>:</td>
+                        <td> {{ (booking.endDate | date:'shortDate') +" "+
+                            bookingService.timeSlots[booking.endTime-1].text}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date Added </td>
+                        <td>:</td>
+                        <td>{{booking?.dateAdded | date:'short'}}</td>
+                        <td>Date Updated </td>
+                        <td>:</td>
+                        <td>{{booking?.dateUpdated | date:'short'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Booking Report
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Start Edit Booking Modal -->
+<div class="modal fade" id="editBookingModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editBookingModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form novalidate #form="ngForm" (submit)="changeStatus(form)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBookingModelLabel">Change Booking Status</h5>
+                    <button type="button" class="btn-close" #hideeditmodel data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="status" class="col-form-label">Select Booking
+                                    Status:</label>
+                                <select class="form-control" name="status" id="status" #status="ngModel"
+                                    [(ngModel)]="editBookingObj.status"
+                                    [class.invalid]="status.invalid && status.touched">
+                                    <option selected value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="calcelled">Calcelled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Edit Booking Modal -->

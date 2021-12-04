@@ -38,7 +38,7 @@ export class AdminCustomerComponent implements OnInit {
         console.log(this.counts)
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     )
   }
@@ -52,7 +52,7 @@ export class AdminCustomerComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

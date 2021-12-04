@@ -97,7 +97,7 @@ export class AdminDriverComponent implements OnInit {
         this.cities = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -108,7 +108,7 @@ export class AdminDriverComponent implements OnInit {
         this.counts = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     )
   }
@@ -122,7 +122,7 @@ export class AdminDriverComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -165,7 +165,7 @@ export class AdminDriverComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Error Driver Deleting');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -218,7 +218,7 @@ export class AdminDriverComponent implements OnInit {
       error => {
         this.isAlreadyEntered = false;
         this.toastr.error('', 'Driver Adding Error');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

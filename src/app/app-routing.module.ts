@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminBookingDetailComponent } from './admin/admin-booking-detail/admin-booking-detail.component';
 import { AdminBookingsComponent } from './admin/admin-bookings/admin-bookings.component';
 import { AdminCommonSectionComponent } from './admin/admin-common-section/admin-common-section.component';
 import { AdminCustomerDetailComponent } from './admin/admin-customer-detail/admin-customer-detail.component';
@@ -17,6 +18,7 @@ import { AboutUsComponent } from './public/about-us/about-us.component';
 import { BookingComponent } from './public/booking/booking.component';
 import { CommonSectionComponent } from './public/common-section/common-section.component';
 import { ContactUsComponent } from './public/contact-us/contact-us.component';
+import { CustomerProfileComponent } from './public/customer-profile/customer-profile.component';
 import { HomeComponent } from './public/home/home.component';
 import { RegisterComponent } from './public/register/register.component';
 import { ServicesComponent } from './public/services/services.component';
@@ -49,7 +51,8 @@ const routes: Routes = [
       { path: 'services', component: ServicesComponent },
       { path: 'vehicles', component: VehiclesComponent },
       { path: 'vehicle', component: VehicleComponent },
-      { path: 'register', component: RegisterComponent }
+      { path: 'register', component: RegisterComponent },
+      { path: 'profile', component: CustomerProfileComponent }
     ],
   },
   {
@@ -57,6 +60,7 @@ const routes: Routes = [
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'bookings', component: AdminBookingsComponent },
+      { path: 'booking-detail', component: AdminBookingDetailComponent },
       { path: 'vehicles', component: AdminVehicleComponent },
       { path: 'vehicle-detail', component: AdminVehicleDetailComponent },
       { path: 'drivers', component: AdminDriverComponent },

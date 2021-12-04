@@ -45,7 +45,7 @@ export class AdminInquiryComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -73,7 +73,7 @@ export class AdminInquiryComponent implements OnInit {
       },
       error => {
         this.toastr.error('', 'Error Driver Deleting');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

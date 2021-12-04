@@ -17,6 +17,7 @@
 
                         </div>
                         <h4>{{vehicle.maker?.displayName +" "+ vehicle.model?.displayName+" "+vehicle.modelYear}}</h4>
+                        <p class="m-0 fw-normal">Only Available in {{vehicle?.city?.cityName}}</p>
                         <table class="w-100">
                             <tbody>
                                 <tr>
@@ -33,8 +34,9 @@
                             <!-- <button class="btn btn-info w-100" type="button" routerLink="../vehicle"
                                 [queryParams]="{id: vehicle.id}">More
                                 Detail</button> -->
-                            <button class="btn btn-info w-100" type="button" (click)="viewVehicle(vehicle)">More
-                                Detail</button>
+                            <button class="btn btn-info w-100" type="button" (click)="viewVehicle(vehicle)">
+                                Book Now
+                            </button>
                         </div>
                     </div>
                 </div>

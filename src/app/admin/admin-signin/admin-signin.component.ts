@@ -46,7 +46,7 @@ export class AdminSigninComponent implements OnInit {
       error => {
         form.form.reset();
         this.toastr.error('', 'Incorrect Email and Password!');
-        console.log("Error: "+ error);
+        console.log("Error: ", error);
       }
     );
   }

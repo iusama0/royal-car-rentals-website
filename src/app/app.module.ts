@@ -72,6 +72,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RegisterComponent } from './public/register/register.component';
 import { AdminCustomerDetailComponent } from './admin/admin-customer-detail/admin-customer-detail.component';
 import { AdminBookingsComponent } from './admin/admin-bookings/admin-bookings.component';
+import { CustomerProfileComponent } from './public/customer-profile/customer-profile.component';
+import { AdminBookingDetailComponent } from './admin/admin-booking-detail/admin-booking-detail.component';
 
 //====================
 @NgModule({
@@ -99,7 +101,9 @@ import { AdminBookingsComponent } from './admin/admin-bookings/admin-bookings.co
     AdminReportComponent,
     RegisterComponent,
     AdminCustomerDetailComponent,
-    AdminBookingsComponent
+    AdminBookingsComponent,
+    CustomerProfileComponent,
+    AdminBookingDetailComponent
   ],
   imports: [
     BrowserModule,

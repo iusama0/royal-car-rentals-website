@@ -1,0 +1,312 @@
+<div class="container">
+    <section class="m-5">
+        <h1 class="mt-4">Customer Profile</h1>
+        <div class="card mb-4">
+            <div class="card-header">
+                Personal Information
+                <div class="float-end">
+                    <!-- Button edit modal -->
+                    <button type="button" class="btn btn-primary" (click)="showDEditModel()">
+                        Edit Information
+                    </button>
+                    <!-- Button edit modal -->
+                    <!-- Button change modal -->
+                    <button type="button" class="ms-3 btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#changePasswordModel">
+                        Change Password
+                    </button>
+                    <!-- Button change modal -->
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table caption-top">
+                    <tbody>
+                        <tr>
+                            <td>Name </td>
+                            <td>: </td>
+                            <td>{{signInCustomer?.firstName+" "+ signInCustomer?.lastName}}</td>
+                            <td rowspan="4" colspan="3">
+                                <div class="delete-picture-wapper" (click)="removePicture()">
+                                    <div class="picture-inner-wapper"
+                                        [ngStyle]="{'background-image': 'url('+'assets/adminUploads/customers/'+ ( signInCustomer?.profilePicture !='' ? signInCustomer?.profilePicture :'dumy-car.jpg') +')'}">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Email</td>
+                            <td> : </td>
+                            <td>{{signInCustomer?.email}}</td>
+
+                        </tr>
+                        <tr>
+                            <td>Phone Number </td>
+                            <td>: </td>
+                            <td>{{signInCustomer?.phoneNumber}}</td>
+
+                        </tr>
+                        <tr>
+                            <td>Licence No </td>
+                            <td>:</td>
+                            <td>{{signInCustomer?.licenceNo}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>:</td>
+                            <td>{{signInCustomer?.address}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>:</td>
+                            <td>{{signInCustomer?.gender | uppercase}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Active Status </td>
+                            <td>:</td>
+                            <td class="fw-bold text-capitalize"
+                                [ngStyle]="{'color':signInCustomer?.isActive ? '#198754' : '#dc3545'}">
+                                {{ signInCustomer?.isActive }}
+                            </td>
+                            <td>Verification Status </td>
+                            <td>:</td>
+                            <td class="fw-bold text-capitalize"
+                                [ngStyle]="{'color':signInCustomer?.verificationStatus ? '#198754' : '#dc3545'}">
+                                {{ signInCustomer?.verificationStatus }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date Added </td>
+                            <td>:</td>
+                            <td>{{signInCustomer?.dateAdded | date:'short'}}</td>
+                            <td>Date Updated </td>
+                            <td>:</td>
+                            <td>{{signInCustomer?.dateUpdated | date:'short'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!-- Start Edit Customer Modal -->
+<div class="modal fade" id="editDriverModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editDriverModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form [formGroup]="customerNewInfoForm" #customerNewInfoFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="updateCustomerNewInfo(customerNewInfoForm.value, customerNewInfoFormDirective)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDriverModelLabel">Edit Information</h5>
+                    <button type="button" class="btn-close" #hideeditmodel data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetForm(customerNewInfoFormDirective)"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>First Name</mat-label>
+                                <input #firstname required matInput type="text" placeholder="Placeholder"
+                                    formControlName="firstName">
+                                <mat-error *ngIf="hasError('firstName', 'required')">
+                                    First Name is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('firstName', 'pattern')">Only Alphabets
+                                    letters between 2 to 30 characters</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Last Name</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder"
+                                    formControlName="lastName">
+                                <mat-error *ngIf="hasError('lastName', 'required')">Last Name is
+                                    required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('lastName', 'pattern')">Only Alphabets
+                                    letters
+                                    without space between 2 to 30 characters</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Email</mat-label>
+                                <input readonly required matInput type="text" placeholder="Placeholder"
+                                    formControlName="email">
+                                <mat-hint>You cannot change your email address</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter Phone Number</mat-label>
+                                <input required matInput type="number" placeholder="Placeholder"
+                                    formControlName="phoneNumber" id="phoneNumber">
+                                <mat-error *ngIf="hasError('phoneNumber', 'required')">Phone number
+                                    is
+                                    required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('phoneNumber', 'pattern')">
+                                    Enter valid phone number (0092 or 92 or 03) 025613316
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter Address</mat-label>
+                                <input required matInput type="text"
+                                    placeholder="House#11, Street#5, Satellite Town Rawalpindi"
+                                    formControlName="address" id="address">
+                                <mat-error *ngIf="hasError('address', 'required')">
+                                    Address is required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('address', 'pattern')">
+                                    Only Alphabets letters without space between 2 to 30 characters
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Licence No</mat-label>
+                                <input required matInput type="text" placeholder="Placeholder"
+                                    formControlName="licenceNo">
+                                <mat-error *ngIf="hasError('licenceNo', 'required')">Licence no is
+                                    required
+                                </mat-error>
+                                <mat-error *ngIf="hasError('licenceNo', 'pattern')">
+                                    Only Alphabets letters without space between 2 to 30 characters
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <div>
+                                <label class="col-form-label">Gender: </label>
+                                <br>
+                                <mat-radio-group formControlName="gender">
+                                    <mat-radio-button value="male">Male</mat-radio-button>
+                                    <mat-radio-button value="female">Female</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="profilePicture" class="col-form-label">Choose Profile
+                                Picture:</label>
+                            <input formControlName="profilePicture" id="profilePicture" type="file" class="form-control"
+                                (change)="onFileChange($event)" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetForm(customerNewInfoFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!customerNewInfoForm.valid || isLoading" class="btn btn-success">
+                        {{ ( isLoading ? 'Loading...' : 'Update Customer') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<button hidden type="button" class="btn btn-primary" #showeditmodel data-bs-toggle="modal"
+    data-bs-target="#editDriverModel">
+    Edit
+</button>
+<!-- End Edit Customer Modal -->
+
+
+<!-- End Password Change Modal -->
+<div class="modal fade" id="changePasswordModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="changePasswordModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="changePasswordForm" #changePasswordFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="changePassword(changePasswordForm.value, changePasswordFormDirective)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModelLabel">Change Password</h5>
+                    <button type="button" class="btn-close" #hidepasswordmodel data-bs-dismiss="modal"
+                        aria-label="Close" (click)="resetForm(changePasswordFormDirective)"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Old Password</mat-label>
+                                <input required matInput [type]="oldHide ? 'password' : 'text'" formControlName="oldpassword"
+                                    id="oldpassword">
+                                <button type="button" mat-icon-button matSuffix (click)="oldHide = !oldHide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="oldHide">
+                                    <mat-icon>{{oldHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="hasErrorPassword('oldpassword', 'required')">
+                                    Password is required
+                                </mat-error>
+                                <mat-error *ngIf="hasErrorPassword('oldpassword', 'pattern')">
+                                    Only use a-z,A-Z, 0-9, @, ., _ or - these characters.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>New Password</mat-label>
+                                <input required matInput [type]="newHide ? 'password' : 'text'" formControlName="newpassword"
+                                    id="newpassword">
+                                <button type="button" mat-icon-button matSuffix (click)="newHide = !newHide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="newHide">
+                                    <mat-icon>{{newHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="hasErrorPassword('newpassword', 'required')">
+                                    Password is required
+                                </mat-error>
+                                <mat-error *ngIf="hasErrorPassword('newpassword', 'pattern')">
+                                    Only use a-z,A-Z, 0-9, @, ., _ or - these characters.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Confirm Password</mat-label>
+                                <input required matInput [type]="confirmHide ? 'password' : 'text'"
+                                    formControlName="confirmPassword" id="confirmPassword">
+                                <button type="button" mat-icon-button matSuffix (click)="confirmHide = !confirmHide"
+                                    [attr.aria-label]="'Hide confirmPassword'" [attr.aria-pressed]="confirmHide">
+                                    <mat-icon>{{confirmHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <mat-error *ngIf="hasErrorPassword('confirmPassword', 'required')">
+                                    Confirm password is required
+                                </mat-error>
+                                <mat-error *ngIf="hasErrorPassword('confirmPassword', 'pattern')">
+                                    Only use a-z,A-Z, 0-9, @, ., _ or - these characters.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetForm(changePasswordFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!changePasswordForm.valid || isLoading" class="btn btn-success">
+                        {{ ( isLoading ? 'Loading...' : 'Change Password') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- <button hidden type="button" class="btn btn-primary" #showpasswordmodel data-bs-toggle="modal"
+    data-bs-target="#changePasswordModel">
+    Edit
+</button> -->
+<!-- End Password Change Modal -->

@@ -79,7 +79,7 @@ export class AdminDriverDetailComponent implements OnInit {
         this.cities = response;
       },
       (error: any) => {
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }
@@ -143,7 +143,7 @@ export class AdminDriverDetailComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Driver Updating Error');
-        console.log("Error: " + error);
+        console.log("Error: " , error);
       }
     );
   }

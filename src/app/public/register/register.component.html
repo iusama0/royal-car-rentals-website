@@ -168,6 +168,24 @@
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
+                                    <div class="col-12">
+                                        <!-- <div class="form-outline mb-4">
+                                            <label class="form-label" for="phoneNumber">Phone Number</label>
+                                            <input required maxlength="100" type="tel" name="phoneNumber"
+                                                class="form-control form-control-lg" #phoneNumber="ngModel"
+                                                [(ngModel)]="newregisterCustomer.phoneNumber"
+                                                [class.invalid]="phoneNumber.invalid && phoneNumber.touched" />
+                                        </div> -->
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Enter Address</mat-label>
+                                            <input required matInput type="text"
+                                                placeholder="House#11, Street#5, Satellite Town Rawalpindi"
+                                                formControlName="address" id="address">
+                                            <mat-error *ngIf="hasError('signup','address', 'required')">
+                                                Address is required
+                                            </mat-error>                                           
+                                        </mat-form-field>
+                                    </div>
                                     <div class="col-6">
                                         <!-- <div class="form-outline mb-4">
                                             <label class="form-label" for="licenceNo">Licence No</label>

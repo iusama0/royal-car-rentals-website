@@ -15,4 +15,7 @@ export class Booking {
     endTime: number;
     dateAdded: string;
     dateUpdated: string;
+    customer: Customer;
+    driver: Driver;
+    vehicle: Vehicle;
 }

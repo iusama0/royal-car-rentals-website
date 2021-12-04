@@ -8,6 +8,7 @@ export class Customer {
     phoneNumber: string;
     isActive: boolean;
     licenceNo: string;
+    address: string;
     verificationStatus: string;
     profilePicture: string;
     gender: string;
