@@ -7,6 +7,7 @@ export class Booking {
     vehicleId: number;
     customerId: number;
     driverId: number;
+    cityId: number;
     withDriver: boolean;
     status: string;
     startDate: string;

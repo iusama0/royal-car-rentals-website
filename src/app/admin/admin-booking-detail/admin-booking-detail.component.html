@@ -8,9 +8,11 @@
             Booking Information
             <div class="float-end">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookingModel">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookingModel"
+                    (click)="showEditModel()">
                     Change Booking Status
                 </button>
+                <!-- Button trigger modal -->
             </div>
         </div>
         <div class="card-body">
@@ -81,10 +83,68 @@
     </div>
     <div class="card mb-4">
         <div class="card-header">
-            Booking Report
+            Payment Details
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPaymentModel"
+                    (click)="showEditPaymentModel()">
+                    Update Payment
+                </button>
+                <!-- Button trigger modal -->
+            </div>
         </div>
         <div class="card-body">
+            <table *ngIf="paymentObj" class="table caption-top">
+                <tbody>
+                    <tr></tr>
+                    <tr>
+                        <th>Charges</th>
+                        <th>Days</th>
+                        <th>Price Per Day</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr>
+                        <td>Vehicle</td>
+                        <td>{{totaldays}}</td>
+                        <td>{{booking.vehicle?.price | currency:'PKR'}}</td>
+                        <td>{{totalPrice | currency:'PKR'}}</td>
+                    </tr>
+                    <tr *ngIf="booking.withDriver">
+                        <td>Driver</td>
+                        <td>{{totaldays}}</td>
+                        <td>{{1000 | currency:'PKR'}}</td>
+                        <td>{{(totaldays*1000) | currency:'PKR'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Grand Total</th>
+                        <td></td>
+                        <td></td>
+                        <th *ngIf="!booking.withDriver">{{(totalPrice) | currency:'PKR'}}
+                        </th>
+                        <th *ngIf="booking.withDriver">{{(totaldays*1000 + totalPrice) |
+                            currency:'PKR'}}</th>
+                    </tr>
+                    <tr>
+                        <th>Paid Amount</th>
+                        <td></td>
+                        <td></td>
+                        <td>{{paymentObj.paidAmount | currency:'PKR'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Discounted Amount</th>
+                        <td></td>
+                        <td></td>
+                        <td>{{paymentObj.discountAmount | currency:'PKR'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Remaining Amount</th>
+                        <td></td>
+                        <td></td>
+                        <th>{{(totalPrice - paymentObj.paidAmount - paymentObj.discountAmount) | currency:'PKR'}}</th>
+                    </tr>
 
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -95,36 +155,160 @@
     aria-labelledby="editBookingModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form novalidate #form="ngForm" (submit)="changeStatus(form)">
+            <form [formGroup]="editBookingForm" #editBookingFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="changeStatus(editBookingForm.value, editBookingFormDirective)">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editBookingModelLabel">Change Booking Status</h5>
-                    <button type="button" class="btn-close" #hideeditmodel data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <h5 class="modal-title" id="addVehicleModelLabel">Add New Vehicle</h5>
+                    <button type="button" class="btn-close" #hideeditmodel data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetForm(editBookingFormDirective)"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="status" class="col-form-label">Select Booking
-                                    Status:</label>
-                                <select class="form-control" name="status" id="status" #status="ngModel"
-                                    [(ngModel)]="editBookingObj.status"
-                                    [class.invalid]="status.invalid && status.touched">
-                                    <option selected value="pending">Pending</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="calcelled">Calcelled</option>
-                                </select>
-                            </div>
+                        <div hidden class="col-md-12">
+                            <table class="table caption-top">
+                                <tbody>
+                                    <tr></tr>
+                                    <tr>
+                                        <th>Charges</th>
+                                        <th>Days</th>
+                                        <th>Price Per Day</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Vehicle</td>
+                                        <td>{{totaldays}}</td>
+                                        <td>{{booking.vehicle?.price | currency:'PKR'}}</td>
+                                        <td>{{totalPrice | currency:'PKR'}}</td>
+                                    </tr>
+                                    <tr *ngIf="booking.withDriver">
+                                        <td>Driver</td>
+                                        <td>{{totaldays}}</td>
+                                        <td>{{1000 | currency:'PKR'}}</td>
+                                        <td>{{(totaldays*1000) | currency:'PKR'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Grand Total</th>
+                                        <td></td>
+                                        <td></td>
+                                        <td *ngIf="!booking.withDriver">{{(totalPrice) | currency:'PKR'}}
+                                        </td>
+                                        <td *ngIf="booking.withDriver">{{(totaldays*1000 + totalPrice) |
+                                            currency:'PKR'}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div [ngClass]="booking.withDriver ? 'col-md-6' : 'col-md-12'">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Select Booking Status</mat-label>
+                                <mat-select #bookingstatus matNativeControl formControlName="status" required>
+                                    <mat-option>---Select Status---</mat-option>
+                                    <mat-option value="pending">Pending</mat-option>
+                                    <mat-option value="approved">Approved</mat-option>
+                                    <mat-option value="Completed">Completed</mat-option>
+                                    <mat-option value="Calcelled">Calcelled</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('status', 'required')">
+                                    Select Booking Status
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6" *ngIf="booking.withDriver">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Selct Driver</mat-label>
+                                <mat-select matNativeControl formControlName="driverId" required>
+                                    <mat-option>---Select Driver---</mat-option>
+                                    <mat-option *ngFor="let driver of drivers" [value]="driver.id">
+                                        {{driver.firstName +" "+ driver.lastName}}
+                                        (0{{driver.phoneNumber}})
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="hasError('driverId', 'required')">
+                                    Please Select Driver
+                                </mat-error>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetForm(editBookingFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!editBookingForm.valid || isLoading" class="btn btn-success">
+                        {{ ( isLoading ? 'Loading...' : 'Update Booking') }}
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- End Edit Booking Modal -->
+
+
+
+
+<!-- Start Edit Payment Modal -->
+<div class="modal fade" id="editPaymentModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editPaymentModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form [formGroup]="editPaymentForm" #editPaymentFormDirective="ngForm" autocomplete="off"
+                (ngSubmit)="updatePayment(editPaymentForm.value, editPaymentFormDirective)">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVehicleModelLabel">Add New Vehicle</h5>
+                    <button type="button" class="btn-close" #hideeditpaymentmodel data-bs-dismiss="modal"
+                        aria-label="Close" (click)="resetForm(editPaymentFormDirective)"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Total Amount</mat-label>
+                                <input readonly required matInput type="number" placeholder="4000"
+                                    formControlName="totalAmount" id="totalAmount">
+                                <mat-error *ngIf="hasErrorPayment('totalAmount', 'required')">
+                                    Total amount is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter Paid Amount</mat-label>
+                                <input #paidamount required matInput type="number" placeholder="0"
+                                    formControlName="paidAmount" id="paidAmount">
+                                <mat-error *ngIf="hasErrorPayment('paidAmount', 'required')">
+                                    Paid amount is required
+                                </mat-error>
+                                <mat-error *ngIf="hasErrorPayment('paidAmount', 'pattern')">
+                                    Paid amount must be greater than or equal to 0
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Enter Discounted Amount</mat-label>
+                                <input required matInput type="number" placeholder="0"
+                                    formControlName="discountAmount" id="discountAmount">
+                                <mat-error *ngIf="hasErrorPayment('discountAmount', 'required')">
+                                    Discounted amount is required
+                                </mat-error>
+                                <mat-error *ngIf="hasErrorPayment('discountAmount', 'pattern')">
+                                    Discounted amount must be greater than or equal to 0
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        (click)="resetForm(editPaymentFormDirective)">Cancel</button>
+                    <button type="submit" [disabled]="!editPaymentForm.valid || isLoading" class="btn btn-success">
+                        {{ ( isLoading ? 'Loading...' : 'Update Booking') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Edit Payment Modal -->

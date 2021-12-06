@@ -3,6 +3,7 @@ import { Admin } from '../Models/admin.model';
 import { HttpClient } from '@angular/common/http';
 import { Signin } from '../Models/signin.model';
 import { EventEmitter } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { EventEmitter } from '@angular/core';
 export class AdminService {
   isAuthenticated = new EventEmitter<boolean>();
 
-  readonly baseUrl = "http://localhost:25271/api/Admin/";
+  readonly baseUrl = environment.apiUrl + "Admin/";
   constructor(private http: HttpClient) { }
 
   authentication(data: Signin) {

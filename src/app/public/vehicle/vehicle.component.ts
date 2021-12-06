@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ActivatedRoute, Router } from '@angular/router';
 import { data } from 'jquery';
@@ -7,8 +8,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
 import { Customer } from 'src/app/Models/customer.model';
 import { Driver } from 'src/app/Models/driver.model';
+import { Payment } from 'src/app/Models/payment.model';
 import { Vehicle } from 'src/app/Models/vehicle.model';
 import { BookingService } from 'src/app/services/booking.service';
+import { PaymentService } from 'src/app/services/payment.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
 
 @Component({
@@ -24,80 +27,6 @@ export class VehicleComponent implements OnInit {
   startMinDate: Date;
   endMinDate: Date;
   disabledvalue = "hjk";
-  timeSlots = [
-    {
-      id: 1, text: '12:00 AM'
-    },
-    {
-      id: 2, text: '01:00 AM'
-    },
-    {
-      id: 3, text: '02:00 AM'
-    },
-    {
-      id: 4, text: '03:00 AM'
-    },
-    {
-      id: 5, text: '04:00 AM'
-    },
-    {
-      id: 6, text: '05:00 AM'
-    },
-    {
-      id: 7, text: '06:00 AM'
-    },
-    {
-      id: 8, text: '07:00 AM'
-    },
-    {
-      id: 9, text: '08:00 AM'
-    },
-    {
-      id: 10, text: '09:00 AM'
-    },
-    {
-      id: 11, text: '10:00 AM'
-    },
-    {
-      id: 12, text: '11:00 AM'
-    },
-    {
-      id: 13, text: '12:00 PM'
-    },
-    {
-      id: 14, text: '01:00 PM'
-    },
-    {
-      id: 15, text: '02:00 PM'
-    },
-    {
-      id: 16, text: '03:00 PM'
-    },
-    {
-      id: 17, text: '04:00 PM'
-    },
-    {
-      id: 18, text: '05:00 PM'
-    },
-    {
-      id: 19, text: '06:00 PM'
-    },
-    {
-      id: 20, text: '07:00 PM'
-    },
-    {
-      id: 21, text: '08:00 PM'
-    },
-    {
-      id: 22, text: '09:00 PM'
-    },
-    {
-      id: 23, text: '10:00 PM'
-    },
-    {
-      id: 24, text: '11:00 PM'
-    }
-  ]
 
   timeSlotsFilter: any;
   totaldays: number = 0;
@@ -115,7 +44,8 @@ export class VehicleComponent implements OnInit {
     id: 0,
     customerId: 0,
     vehicleId: 0,
-    driverId: 1,
+    driverId: 0,
+    cityId: 0,
     withDriver: false,
     status: 'pending',
     startDate: '',
@@ -133,8 +63,9 @@ export class VehicleComponent implements OnInit {
   constructor(
     public vehicleService: VehicleService,
     public bookingService: BookingService,
-    private toastr: ToastrService,
     public activatedRoute: ActivatedRoute,
+    public paymentService: PaymentService,
+    private toastr: ToastrService,
     private router: Router
   ) {
     this.startMinDate = new Date();
@@ -230,12 +161,14 @@ export class VehicleComponent implements OnInit {
 
       this.bookingObj.customerId = this.registerCustomer.id;
       this.bookingObj.vehicleId = this.vehicle.id;
+      this.bookingObj.cityId = this.vehicle.cityId;
       this.bookingObj.startDate = formValue.startDate;
       this.bookingObj.startTime = formValue.startTime;
       this.bookingObj.endDate = formValue.endDate;
       this.bookingObj.endTime = formValue.endTime;
       this.bookingObj.withDriver = formValue.withDriver;
-      // console.log(this.bookingObj)
+      // this.bookingObj.driver =;
+      console.log(this.bookingObj)
 
       // To calculate the time difference of two dates
       var Difference_In_Time = new Date(formValue.endDate).getTime() - new Date(formValue.startDate).getTime();
@@ -249,11 +182,38 @@ export class VehicleComponent implements OnInit {
 
       this.bookingService.add(this.bookingObj).subscribe(
         (response: any) => {
+          console.log(response)
+          var payment = new Payment();
+
+          payment.id = 0;
+          payment.bookingId = response.id;
+
+          if (this.bookingObj.withDriver) {
+            payment.totalAmount = (this.totaldays * 1000) + this.totalPrice;
+          }
+          else {
+            payment.totalAmount = this.totalPrice;
+          }
+
+          payment.paidAmount = 0;
+          payment.discountAmount = 0;
+          payment.dateAdded = new Date().toISOString();
+          payment.dateUpdated = new Date().toISOString();
+
+          this.paymentService.add(payment).subscribe(
+            (response: any) => {
+              console.log(response)
+            },
+            (error: any) => {
+              console.log("Error: ", error);
+            }
+          );
+
           this.router.navigateByUrl("public/bookings");
         },
         error => {
           this.toastr.error('', 'Try again! Vehicle Booking Error');
-          console.log("Error: " , error);
+          console.log("Error: ", error);
         }
       );
     }
@@ -266,10 +226,10 @@ export class VehicleComponent implements OnInit {
   changeEndTime(data: number) {
 
     if (new Date(this.addBookingForm.value.startDate).getDate() === new Date(this.addBookingForm.value.endDate).getDate()) {
-      this.timeSlotsFilter = this.timeSlots.filter(x => x.id > data);
+      this.timeSlotsFilter = this.bookingService.timeSlots.filter(x => x.id > data);
     }
     else {
-      this.timeSlotsFilter = this.timeSlots;
+      this.timeSlotsFilter = this.bookingService.timeSlots;
     }
 
     // To calculate the time difference of two dates
@@ -281,6 +241,10 @@ export class VehicleComponent implements OnInit {
       this.totaldays = 1;
     }
     this.totalPrice = this.totaldays * this.vehicle.price;
+  }
+
+  onChangeDemo(ob: MatCheckboxChange) {
+    console.log("checked: " + ob.checked);
   }
 
 }

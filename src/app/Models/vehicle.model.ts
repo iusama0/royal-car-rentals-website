@@ -14,8 +14,8 @@ export class Vehicle {
     availability: boolean;
     price: number;
     imagesPath: string;
-    dateAdded: string = new Date().toISOString();
-    dateUpdated: string = new Date().toISOString();
+    dateAdded: string;
+    dateUpdated: string;
     images: string[];
     maker: VehicleMaker;
     model: VehicleModel;

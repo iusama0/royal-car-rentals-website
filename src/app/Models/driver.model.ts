@@ -11,6 +11,6 @@ export class Driver {
     availability: boolean;
     licenceNo: string;
     profilePicture: string;
-    dateAdded: string = new Date().toISOString();
-    dateUpdated: string = new Date().toISOString();
+    dateAdded: string;
+    dateUpdated: string;
 }

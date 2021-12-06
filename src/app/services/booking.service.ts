@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Booking } from '../Models/booking.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  readonly baseUrl = "http://localhost:25271/api/Booking";
+  readonly baseUrl = environment.apiUrl +  "Booking";
   public timeSlots = [
     {
       id: 1, text: '12:00 AM'

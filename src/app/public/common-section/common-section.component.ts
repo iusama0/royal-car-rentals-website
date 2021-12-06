@@ -28,14 +28,15 @@ export class CommonSectionComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     private router: Router,
     toastr: ToastrService
-  ) { }
+  ) {
+    this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
+    console.log(this.registerCustomer)
+    this.getCustomer();
+  }
 
   ngOnInit(): void {
     this.getVehicleMakers();
     this.getVehicleModels();
-
-    this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
-    console.log(this.registerCustomer)
 
     if (this.registerCustomer) {
       this.customerService.isAuthenticatedCustomer.emit(true);
@@ -51,7 +52,7 @@ export class CommonSectionComponent implements OnInit {
 
 
     this.router.events.subscribe(e => {
-      this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
+      this.registerCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');      
       if (e instanceof NavigationEnd) {
         if (this.registerCustomer) {
           this.customerService.isAuthenticatedCustomer.emit(true);
@@ -82,7 +83,7 @@ export class CommonSectionComponent implements OnInit {
         this.vehicleMakers = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -93,7 +94,7 @@ export class CommonSectionComponent implements OnInit {
         this.vehicleModels = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -102,6 +103,18 @@ export class CommonSectionComponent implements OnInit {
     localStorage.removeItem("signincustomerinfo");
     this.customerService.isAuthenticatedCustomer.emit(false);
     this.router.navigateByUrl("public/register");
+  }
+
+  getCustomer() {
+    this.customerService.get(this.registerCustomer).subscribe(
+      (response: any) => {
+        this.registerCustomer = Object.assign({}, response);
+        localStorage.setItem('signincustomerinfo', JSON.stringify(response));
+      },
+      (error: any) => {
+        console.log("Error: ", error);
+      }
+    );
   }
 
 }

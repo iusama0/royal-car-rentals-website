@@ -54,10 +54,11 @@ export class CustomerProfileComponent implements OnInit {
     private router: Router
   ) {
     this.signInCustomer = JSON.parse(localStorage.getItem('signincustomerinfo') || 'null');
+    this.getCustomer();
   }
 
   ngOnInit(): void {
-
+   
   }
 
   public hasError = (controlName: string, errorName: string) => {
@@ -66,6 +67,18 @@ export class CustomerProfileComponent implements OnInit {
 
   public hasErrorPassword = (controlName: string, errorName: string) => {
     return this.changePasswordForm.controls[controlName].hasError(errorName)
+  }
+
+  getCustomer() {
+    this.customerService.get(this.signInCustomer).subscribe(
+      (response: any) => {
+        this.signInCustomer = Object.assign({}, response);
+        localStorage.setItem('signincustomerinfo', JSON.stringify(response));
+      },
+      (error: any) => {
+        console.log("Error: ", error);
+      }
+    );
   }
 
   onFileChange(event: any) {
@@ -130,7 +143,7 @@ export class CustomerProfileComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Customer Updating Error');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }

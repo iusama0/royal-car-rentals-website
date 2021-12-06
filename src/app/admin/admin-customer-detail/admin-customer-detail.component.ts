@@ -40,17 +40,14 @@ export class AdminCustomerDetailComponent implements OnInit {
 
     this.customerService.edit(this.editCustomerObj.id, formData).subscribe(
       (response: any) => {
-        // console.log(response)
-
-        this.customer = this.editCustomerObj;
-
+        this.customer = Object.assign({}, this.editCustomerObj);
         this.hideeditmodel.nativeElement.click();
         this.toastr.success('', 'Status Updated Successfully');
       },
       error => {
         form.form.reset();
         this.toastr.error('', 'Status Updating Error');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }

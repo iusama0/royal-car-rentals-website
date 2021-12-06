@@ -5,11 +5,14 @@
 }
 .picture-inner-wapper{
     width: 300px;
+    width: 200px;
     height: 200px;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
     margin: 0 auto;
+    border: 2px solid #000;
+    border-radius: 50%;
 }
 
 .delete-picture {

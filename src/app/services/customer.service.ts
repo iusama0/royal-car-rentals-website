@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { ChangePassword } from '../Models/change-password.model';
 import { Customer } from '../Models/customer.model';
 import { Signin } from '../Models/signin.model';
@@ -10,7 +11,7 @@ import { Signin } from '../Models/signin.model';
 export class CustomerService {
   isAuthenticatedCustomer = new EventEmitter<boolean>();
 
-  readonly baseUrl = "http://localhost:25271/api/Customer";
+  readonly baseUrl = environment.apiUrl + "Customer";
   constructor(private http: HttpClient) { }
 
   add(data: FormData) {

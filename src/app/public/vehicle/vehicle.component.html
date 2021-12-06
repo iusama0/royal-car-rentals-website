@@ -20,7 +20,7 @@
                                     *ngFor="let image of images; index as i">
                                     <div [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ image +')'}"
                                         style="width: 100%;height: 70vh;background-position: center;
-                                                background-repeat: no-repeat;background-size: cover;">
+                                                background-repeat: no-repeat;background-size: contain;">
                                     </div>
                                     <!-- <img [src]="'assets/adminUploads/vehicles/'+ image" class="d-block w-100" alt="..."> -->
                                 </div>
@@ -84,7 +84,8 @@
                                     <td>Availability </td>
                                     <td>:</td>
                                     <td [ngStyle]="{'color':vehicle?.availability? 'black' : 'red'}">
-                                        {{ vehicle?.availability? 'Available for booking': 'Vehicle is not available for bookig.'}}
+                                        {{ vehicle?.availability? 'Available for booking': 'Vehicle is not available for
+                                        bookig.'}}
                                         <!-- <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
                                             [ngStyle]="{'background-color': vehicle?.availability ? '#198754' : '#dc3545' }">
                                             {{ vehicle?.availability }}
@@ -122,7 +123,7 @@
                                     <mat-select matNativeControl formControlName="startTime" required
                                         (selectionChange)="changeEndTime($event.value)">
                                         <mat-option>---Select Time---</mat-option>
-                                        <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot.id">
+                                        <mat-option *ngFor="let timeSlot of bookingService.timeSlots" [value]="timeSlot.id">
                                             {{timeSlot.text}}
                                         </mat-option>
                                     </mat-select>
@@ -160,7 +161,8 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-md-6 m-0 ps-3">
-                                <mat-checkbox color="primary" formControlName="withDriver">Book vehicle with Driver?
+                                <mat-checkbox color="primary" formControlName="withDriver"
+                                    (change)="onChangeDemo($event)">Book vehicle with Driver?
                                 </mat-checkbox>
                             </div>
 
@@ -168,14 +170,31 @@
                                 <tbody>
                                     <tr></tr>
                                     <tr>
+                                        <th>Charges</th>
                                         <th>Days</th>
                                         <th>Price Per Day</th>
                                         <th>Total</th>
                                     </tr>
                                     <tr>
+                                        <td>Vehicle</td>
                                         <td>{{totaldays}}</td>
                                         <td>{{vehicle?.price | currency:'PKR'}}</td>
                                         <td>{{totalPrice | currency:'PKR'}}</td>
+                                    </tr>
+                                    <tr *ngIf="addBookingForm.value.withDriver">
+                                        <td>Driver</td>
+                                        <td>{{totaldays}}</td>
+                                        <td>{{1000 | currency:'PKR'}}</td>
+                                        <td>{{(totaldays*1000) | currency:'PKR'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Grand Total</th>
+                                        <td></td>
+                                        <td></td>
+                                        <td *ngIf="!addBookingForm.value.withDriver">{{(totalPrice) | currency:'PKR'}}
+                                        </td>
+                                        <td *ngIf="addBookingForm.value.withDriver">{{(totaldays*1000 + totalPrice) |
+                                            currency:'PKR'}}</td>
                                     </tr>
 
                                 </tbody>

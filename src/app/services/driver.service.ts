@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Driver } from '../Models/driver.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DriverService {
-  readonly baseUrl = "http://localhost:25271/api/Driver";
+  readonly baseUrl = environment.apiUrl + "Driver";
   constructor(private http: HttpClient) { }
 
   add(data: FormData) {
@@ -25,11 +26,15 @@ export class DriverService {
     return this.http.get(this.baseUrl + "/" + data.id);
   }
 
+  searchByCityId(cityId: number) {
+    return this.http.get(this.baseUrl + "/searchbycity/" + cityId);
+  }
+
   gets() {
     return this.http.get(this.baseUrl);
   }
 
-  counts(){
+  counts() {
     return this.http.get(this.baseUrl + "/counts");
   }
 }

@@ -61,19 +61,15 @@
                     <tr>
                         <td>Active Status </td>
                         <td>:</td>
-                        <td>
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': customer?.isActive ? '#198754' : '#dc3545' }">
-                                {{ customer?.isActive }}
-                            </div>
+                        <td class="fw-bold text-capitalize"
+                            [ngStyle]="{'color':customer?.isActive ? '#198754' : '#dc3545'}">
+                            {{ customer?.isActive }}
                         </td>
                         <td>Verification Status </td>
                         <td>:</td>
-                        <td>
-                            <div class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': customer?.verificationStatus === 'pending' ? '#ffc107' : (customer?.verificationStatus === 'approved' ? '#198754' : '#dc3545') }">
-                                {{ customer?.verificationStatus }}
-                            </div>
+                        <td class="fw-bold text-capitalize"
+                            [ngStyle]="{'color':customer?.verificationStatus === 'pending' ? '#ffc107' : (customer?.verificationStatus === 'approved' ? '#198754' : '#dc3545') }">
+                            {{ customer?.verificationStatus }}
                         </td>
                     </tr>
                     <tr>
