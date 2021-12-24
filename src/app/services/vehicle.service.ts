@@ -67,16 +67,16 @@ export class VehicleService {
   getVehicles() {
     return this.http.get(this.baseUrl);
   }
-  
+
   getApprovedVehicles() {
     return this.http.get(this.baseUrl + "/approved");
   }
 
-  getVehiclesByMaker(makerId: number) {
-    return this.http.get(this.baseUrl + "/bymaker/" + makerId);
+  getFilterVehicles(makerId: number, modelId: number, modelYear: number) {
+    return this.http.get(this.baseUrl + "/filtervehicles/" + makerId + "/" + modelId + "/" + modelYear);
   }
 
-  counts(){
+  counts() {
     return this.http.get(this.baseUrl + "/counts");
   }
 }

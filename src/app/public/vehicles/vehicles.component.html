@@ -5,41 +5,102 @@
         <h6 class="text-center">Discover your Dream Cars for Rent at Car Rentals Pakistan. </h6>
         <div class="mt-4">
             <div class="row">
-                <div class="col-md-12 text-center" style="min-height: 40vh;" *ngIf="vehicles?.length==0">
-                    <p class="my-5 py-5"> Sorry! We could not find any results against your search model.</p>
+                <div class="col-md-3">
+                    <div class="pb-0" style="border: 1px solid darkgrey;border-radius: 9px;padding: 16px;">
+                        <form [formGroup]="filterForm" #filterFormDirective="ngForm" autocomplete="off" novalidate
+                            (ngSubmit)="filterVehicle(filterForm.value, filterFormDirective)">
+
+                            <div *ngIf="vehicleModels.length>0" class="d-grid gap-2 mb-2">
+                                <button type="submit" [disabled]="!filterForm.valid || isLoading"
+                                    class="btn btn-success w-100 py-2 fw-bold">
+                                    Apply Filter
+                                </button>
+                            </div>
+
+
+                            <div *ngIf="vehicleModels.length>0">
+                                <label class="fw-bold">Select Model:</label>
+                                <mat-radio-group class="example-radio-group" formControlName="modelId">
+                                    <mat-radio-button class="example-radio-button" value="0">
+                                        All
+                                    </mat-radio-button>
+                                    <mat-radio-button class="example-radio-button" *ngFor="let model of vehicleModels"
+                                        [value]="model.id">
+                                        {{model.displayName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div *ngIf="vehicleModels.length>0">
+                                <label class="fw-bold">Select Model:</label>
+                                <mat-radio-group class="example-radio-group" formControlName="modelYear">
+                                    <mat-radio-button class="example-radio-button" value="0">
+                                        All
+                                    </mat-radio-button>
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let year of vehicleModelsYears" [value]="year">
+                                        {{year}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-
-                <div class="col-md-4" *ngFor="let vehicle of vehicles">
-                    <div class="outer-card-box mb-3" style="cursor: pointer;" (click)="viewVehicle(vehicle)">
-                        <div class="card-box-image"
-                            [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ ( vehicle?.imagesPath !='' ? showalert(vehicle?.imagesPath) :'dumy-car.jpg') +')'}">
-
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-12 text-center mt-5" style="min-height: 40vh;"
+                            *ngIf="vehicles?.length==0 && !isLoading">
+                            <p class="my-5 py-5">
+                                Sorry! We could not find any results against your search model.
+                            </p>
                         </div>
-                        <h4>{{vehicle.maker?.displayName +" "+ vehicle.model?.displayName+" "+vehicle.modelYear}}</h4>
-                        <p class="m-0 fw-normal">Only Available in {{vehicle?.city?.cityName}}</p>
-                        <table class="w-100">
-                            <tbody>
-                                <tr>
-                                    <td>Price Per Day: </td>
-                                    <td>{{vehicle.price | currency:'PKR'}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Color:</td>
-                                    <td>{{vehicle.color}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="d-block mt-3">
-                            <!-- <button class="btn btn-info w-100" type="button" routerLink="../vehicle"
-                                [queryParams]="{id: vehicle.id}">More
-                                Detail</button> -->
-                            <button class="btn btn-info w-100" type="button" (click)="viewVehicle(vehicle)">
-                                Book Now
-                            </button>
+                        <div class="col-md-12 text-center mt-5" style="min-height: 40vh;" *ngIf="isLoading">
+                            <mat-spinner style="margin: 0 auto;"></mat-spinner>
+                        </div>
+
+                        <div class="col-md-4 pb-3" *ngFor="let vehicle of vehicles">
+                            <div class="outer-card-box" style="cursor: pointer;" (click)="viewVehicle(vehicle)">
+                                <div class="card-box-image"
+                                    [ngStyle]="{'background-image': 'url('+'assets/adminUploads/vehicles/'+ ( vehicle?.imagesPath !='' ? showalert(vehicle?.imagesPath) :'dumy-car.jpg') +')'}">
+
+                                </div>
+                                <h4>{{vehicle.maker?.displayName +" "+ vehicle.model?.displayName+"
+                                    "+vehicle.modelYear}}
+                                </h4>
+                                <p class="m-0 fw-normal">Only Available in {{vehicle?.city?.cityName}}</p>
+                                <table class="w-100">
+                                    <tbody>
+                                        <tr>
+                                            <td>Price Per Day: </td>
+                                            <td>{{vehicle.price | currency:'PKR'}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Color:</td>
+                                            <td>{{vehicle.color}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="d-block mt-3">
+                                    <!-- <button class="btn btn-info w-100" type="button" routerLink="../vehicle"
+                                        [queryParams]="{id: vehicle.id}">More
+                                        Detail</button> -->
+                                    <button class="btn btn-info w-100" type="button" (click)="viewVehicle(vehicle)">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
+
+
             </div>
         </div>
     </section>

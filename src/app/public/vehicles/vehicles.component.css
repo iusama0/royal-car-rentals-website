@@ -15,3 +15,13 @@
 .outer-card-box:hover {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+  
+  .example-radio-button {
+    margin: 5px 0;
+  }

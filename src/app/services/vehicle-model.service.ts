@@ -29,4 +29,8 @@ export class VehicleModelService {
   gets() {
     return this.http.get(this.baseUrl);
   }
+
+  getByMakerId(id: number) {
+    return this.http.get(this.baseUrl + "/getbymakerid/" + id);
+  }
 }
