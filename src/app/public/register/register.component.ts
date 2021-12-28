@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Customer } from 'src/app/Models/customer.model';
@@ -15,13 +16,23 @@ export class RegisterComponent implements OnInit {
   public isLoading: boolean = false;
   public hide = true;
   public hideConfirm = true;
+
+  @ViewChild('stepper') stepper: MatStepper;
+  showForgotPasswordForm: boolean = false;
+
+  public firstForgotPasswordForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z][-_.a-zA-Z0-9]{2,29}@(yahoo|hotmail|gmail).com$")]),
+  });
+
+  public secondForgotPasswordForm = new FormGroup({
+    code: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4})$")]),
+  });
+
   public signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z][-_.a-zA-Z0-9]{2,29}@(yahoo|hotmail|gmail).com$")]),
     password: new FormControl('', [Validators.required]),
     // isRemember: new FormControl(false),
   });
-
-
 
   public signUpForm = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.pattern("^([a-zA-Z.]+((['.][a-zA-Z])?[a-zA-Z]*)*){2,30}$")]),
@@ -61,6 +72,9 @@ export class RegisterComponent implements OnInit {
     isRemember: false
   };
   showSignInForm: boolean = true;
+
+
+
   constructor(
     public customerService: CustomerService,
     private toastr: ToastrService,
@@ -82,17 +96,27 @@ export class RegisterComponent implements OnInit {
       return this.signInForm.controls[controlName].hasError(errorName);
     } else if (formName == 'signup') {
       return this.signUpForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'first') {
+      return this.firstForgotPasswordForm.controls[controlName].hasError(errorName);
+    }
+    else if (formName == 'second') {
+      return this.secondForgotPasswordForm.controls[controlName].hasError(errorName);
     }
 
     return null;
   }
 
   toggleForm() {
+    if (this.showForgotPasswordForm) {
+      this.showForgotPasswordForm = false;
+    }
+
     if (this.showSignInForm) {
       this.showSignInForm = false;
     } else {
       this.showSignInForm = true;
     }
+
   }
 
   signIn(formValue: any, formDirective: FormGroupDirective) {
@@ -112,7 +136,7 @@ export class RegisterComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Incorrect Email and Password!');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -147,10 +171,11 @@ export class RegisterComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Incorrect Email and Password!');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
+
   resetSignInForm(formDirective: FormGroupDirective) {
     this.isLoading = false;
     formDirective.resetForm();
@@ -166,5 +191,56 @@ export class RegisterComponent implements OnInit {
     this.newregisterCustomer.verificationStatus = 'pending';
     this.newregisterCustomer.dateAdded = new Date().toISOString();
     this.newregisterCustomer.dateUpdated = new Date().toISOString();
+  }
+
+  forgotPassword() {
+    this.showForgotPasswordForm = true;
+    this.showSignInForm = false;
+  }
+
+  sendForgotPasswordCode(formValue: any) {
+    console.log(formValue.email)
+    this.isLoading = true;
+
+    this.customerService.sendForgotPasswordCode(formValue.email).subscribe(
+      response => {
+        console.log(response)
+
+        //loading button enable
+        this.isLoading = false;
+
+        // move to next step
+        this.stepper.next();
+
+      },
+      error => {
+        this.isLoading = false;
+        this.toastr.error('', 'Incorrect email address!');
+        console.log("Error: ", error);
+      }
+    );
+  }
+
+  verifyForgotPasswordCode(formValue: any) {
+    console.log(formValue.code)
+    this.isLoading = true;
+
+    var data = {
+      code: formValue.code,
+      email: 'usama@gmail.com'
+    };
+
+    this.customerService.VerifyForgotPasswordCode(data).subscribe(
+      response => {
+        console.log(response)
+        this.isLoading = false;
+
+      },
+      error => {
+        this.isLoading = false;
+        this.toastr.error('', 'Verification code incorrect!');
+        console.log("Error: ", error);
+      }
+    );
   }
 }

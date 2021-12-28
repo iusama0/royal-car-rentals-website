@@ -49,4 +49,12 @@ export class CustomerService {
   signUp(data: Customer) {
     return this.http.post(this.baseUrl + "/signup", data);
   }
+
+  sendForgotPasswordCode(email: string) {
+    return this.http.get(this.baseUrl + "/sendforgotpasswordcode/" + email);
+  }
+
+  VerifyForgotPasswordCode(data: any) {
+    return this.http.get(this.baseUrl + "/verifyforgotpasswordcode/" + data.email + "/" + data.code);
+  }
 }

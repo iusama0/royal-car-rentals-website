@@ -53,3 +53,16 @@ input {
     color: #fff !important;
     padding: 30px !important;
 }
+
+.mat-step-header.cdk-keyboard-focused, 
+.mat-step-header.cdk-program-focused, 
+.mat-step-header:hover:not([aria-disabled]), 
+.mat-step-header:hover[aria-disabled=false],
+.mat-step-header:hover,
+.mat-step-header
+{
+    background-color: white;
+}
+.mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
