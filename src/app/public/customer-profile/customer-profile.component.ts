@@ -21,7 +21,8 @@ export class CustomerProfileComponent implements OnInit {
   customerNewInfo: Customer;
   changePasswordObj: ChangePassword = {
     oldPassword: '',
-    newPassword: ''
+    newPassword: '',
+    isResetPassword: false
   }
 
   public isLoading: boolean = false;
@@ -58,7 +59,7 @@ export class CustomerProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
+
   }
 
   public hasError = (controlName: string, errorName: string) => {

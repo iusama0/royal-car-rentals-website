@@ -54,7 +54,7 @@ export class CustomerService {
     return this.http.get(this.baseUrl + "/sendforgotpasswordcode/" + email);
   }
 
-  VerifyForgotPasswordCode(data: any) {
-    return this.http.get(this.baseUrl + "/verifyforgotpasswordcode/" + data.email + "/" + data.code);
+  VerifyForgotPasswordCode(code: number, email: string) {
+    return this.http.get(this.baseUrl + "/verifyforgotpasswordcode/" + email + "/" + code);
   }
 }

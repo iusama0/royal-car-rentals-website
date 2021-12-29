@@ -101,7 +101,7 @@
 
 
             <div *ngIf="showForgotPasswordForm" class="row justify-content-center align-items-center">
-                <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="col-md-12 col-lg-10 col-xl-8">
                     <div class="card shadow-2-strong" style="border-radius: 1rem;">
                         <div class="card-body p-2 pb-4">
 
@@ -148,6 +148,50 @@
                                             <button mat-button class="btn btn-success p-3" type="button"
                                                 [disabled]="!secondForgotPasswordForm.valid || isLoading"
                                                 (click)="verifyForgotPasswordCode(secondForgotPasswordForm.value)">
+                                                {{ ( isLoading ? 'Loading...' : 'Confirm') }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </mat-step>
+                                <mat-step [stepControl]="thirdForgotPasswordForm" [editable]="false">
+                                    <form [formGroup]="thirdForgotPasswordForm">
+                                        <ng-template matStepLabel>Enter New Password</ng-template>
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>New Password</mat-label>
+                                            <input required matInput [type]="hide ? 'password' : 'text'"
+                                                formControlName="newpassword" id="newpassword">
+                                            <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                            <mat-error *ngIf="hasError('third','newpassword', 'required')">
+                                                Password is required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('third','newpassword', 'pattern')">
+                                                Only use a-z,A-Z, 0-9, @, ., _ or - these characters.
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" class="w-100">
+                                            <mat-label>Confirm Password</mat-label>
+                                            <input required matInput [type]="hideConfirm ? 'password' : 'text'"
+                                                formControlName="confirmPassword" id="confirmPassword">
+                                            <button type="button" mat-icon-button matSuffix
+                                                (click)="hideConfirm = !hideConfirm"
+                                                [attr.aria-label]="'Hide confirmPassword'"
+                                                [attr.aria-pressed]="hideConfirm">
+                                                <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                            <mat-error *ngIf="hasError('third','confirmPassword', 'required')">
+                                                Confirm password is required
+                                            </mat-error>
+                                            <mat-error *ngIf="hasError('third','confirmPassword', 'pattern')">
+                                                Only use a-z,A-Z, 0-9, @, ., _ or - these characters.
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <div class="d-grid gap-2">
+                                            <button mat-button class="btn btn-success p-3" type="button"
+                                                [disabled]="!thirdForgotPasswordForm.valid || isLoading"
+                                                (click)="changePassword(thirdForgotPasswordForm.value)">
                                                 {{ ( isLoading ? 'Loading...' : 'Confirm') }}
                                             </button>
                                         </div>

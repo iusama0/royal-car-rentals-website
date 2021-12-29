@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ChangePassword } from 'src/app/Models/change-password.model';
 import { Customer } from 'src/app/Models/customer.model';
 import { Signin } from 'src/app/Models/signin.model';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
   public hide = true;
   public hideConfirm = true;
 
+  customerInfo: Customer;
   @ViewChild('stepper') stepper: MatStepper;
   showForgotPasswordForm: boolean = false;
 
@@ -27,6 +29,17 @@ export class RegisterComponent implements OnInit {
   public secondForgotPasswordForm = new FormGroup({
     code: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4})$")]),
   });
+
+  public thirdForgotPasswordForm = new FormGroup({
+    newpassword: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-.@_ ]{2,30}$")]),
+    confirmPassword: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-.@_ ]{2,30}$")])
+  });
+
+  changePasswordObj: ChangePassword = {
+    oldPassword: '',
+    newPassword: '',
+    isResetPassword: true
+  };
 
   public signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z][-_.a-zA-Z0-9]{2,29}@(yahoo|hotmail|gmail).com$")]),
@@ -73,8 +86,6 @@ export class RegisterComponent implements OnInit {
   };
   showSignInForm: boolean = true;
 
-
-
   constructor(
     public customerService: CustomerService,
     private toastr: ToastrService,
@@ -98,9 +109,10 @@ export class RegisterComponent implements OnInit {
       return this.signUpForm.controls[controlName].hasError(errorName);
     } else if (formName == 'first') {
       return this.firstForgotPasswordForm.controls[controlName].hasError(errorName);
-    }
-    else if (formName == 'second') {
+    } else if (formName == 'second') {
       return this.secondForgotPasswordForm.controls[controlName].hasError(errorName);
+    } else if (formName == 'third') {
+      return this.thirdForgotPasswordForm.controls[controlName].hasError(errorName);
     }
 
     return null;
@@ -203,17 +215,16 @@ export class RegisterComponent implements OnInit {
     this.isLoading = true;
 
     this.customerService.sendForgotPasswordCode(formValue.email).subscribe(
-      response => {
+      (response: any) => {
         console.log(response)
-
+        this.customerInfo = response;
         //loading button enable
         this.isLoading = false;
 
         // move to next step
         this.stepper.next();
-
       },
-      error => {
+      (error: any) => {
         this.isLoading = false;
         this.toastr.error('', 'Incorrect email address!');
         console.log("Error: ", error);
@@ -222,23 +233,55 @@ export class RegisterComponent implements OnInit {
   }
 
   verifyForgotPasswordCode(formValue: any) {
-    console.log(formValue.code)
     this.isLoading = true;
 
-    var data = {
-      code: formValue.code,
-      email: 'usama@gmail.com'
-    };
+    this.customerService.VerifyForgotPasswordCode(formValue.code, this.firstForgotPasswordForm.value.email).subscribe(
+      (response: any) => {
+        this.customerInfo = response;
 
-    this.customerService.VerifyForgotPasswordCode(data).subscribe(
-      response => {
-        console.log(response)
+        //loading button enable
         this.isLoading = false;
 
+        // move to next step
+        this.stepper.next();
       },
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Verification code incorrect!');
+        console.log("Error: ", error);
+      }
+    );
+  }
+
+  changePassword(formValue: any) {
+    console.log(formValue)
+    if (formValue.newpassword != formValue.confirmPassword) {
+      this.toastr.error('New and Confirmation Password does not match.', 'Password are not Matching');
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.changePasswordObj.newPassword = formValue.newpassword;
+
+    this.customerService.changePassword(this.customerInfo.id, this.changePasswordObj).subscribe(
+      (response: any) => {
+        console.log(response)
+
+        this.isLoading = false;
+        this.showForgotPasswordForm = false;
+        this.showSignInForm = true;
+
+        this.toastr.success('', 'Password Reset Successfully');
+      },
+      error => {
+        this.isLoading = false;
+        if (error.error == "mismatch") {
+          this.toastr.error('Old and New Password does not match.', 'Password are not Matching');
+        }
+        else {
+          this.toastr.error('', 'Password Changing Error');
+        }
         console.log("Error: ", error);
       }
     );
