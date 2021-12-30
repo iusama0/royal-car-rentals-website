@@ -144,8 +144,8 @@ export class VehicleComponent implements OnInit {
   confirmBook(formValue: any, formDirective: FormGroupDirective) {
 
     if (this.registerCustomer) {
-      if (this.registerCustomer.verificationStatus == "pending" || this.registerCustomer.verificationStatus == "blocked") {
-        this.toastr.error('Your verification status is pending. So you cannot booked vehicle right now.', 'Try again later!');
+      if (!this.registerCustomer.isActive || this.registerCustomer.verificationStatus == "pending" || this.registerCustomer.verificationStatus == "blocked") {
+        this.toastr.error('Your status is not verified. So you cannot booked vehicle right now.', 'Try again later!');
         return;
       }
 

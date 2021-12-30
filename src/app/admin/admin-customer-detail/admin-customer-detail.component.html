@@ -59,13 +59,13 @@
                         <td>{{customer?.gender | titlecase}}</td>
                     </tr>
                     <tr>
-                        <td>Active Status </td>
+                        <td>Email Verification Status </td>
                         <td>:</td>
                         <td class="fw-bold text-capitalize"
                             [ngStyle]="{'color':customer?.isActive ? '#198754' : '#dc3545'}">
                             {{ customer?.isActive }}
                         </td>
-                        <td>Verification Status </td>
+                        <td>Status </td>
                         <td>:</td>
                         <td class="fw-bold text-capitalize"
                             [ngStyle]="{'color':customer?.verificationStatus === 'pending' ? '#ffc107' : (customer?.verificationStatus === 'approved' ? '#198754' : '#dc3545') }">
@@ -110,7 +110,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="isActive" class="col-form-label">Select Active Status:</label>
+                                <label for="isActive" class="col-form-label">Select Email Verification Status:</label>
                                 <select class="form-control" name="isActive" id="isActive" #isActive="ngModel"
                                     [(ngModel)]="editCustomerObj.isActive"
                                     [class.invalid]="isActive.invalid && isActive.touched">
@@ -121,8 +121,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="verificationStatus" class="col-form-label">Select Verification
-                                    Status:</label>
+                                <label for="verificationStatus" class="col-form-label">
+                                    Select Status:
+                                </label>
                                 <select class="form-control" name="verificationStatus" id="verificationStatus"
                                     #verificationStatus="ngModel" [(ngModel)]="editCustomerObj.verificationStatus"
                                     [class.invalid]="verificationStatus.invalid && verificationStatus.touched">

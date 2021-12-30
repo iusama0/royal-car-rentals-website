@@ -16,6 +16,7 @@ export class CustomerProfileComponent implements OnInit {
   @ViewChild('hideeditmodel') hideeditmodel: any;
   @ViewChild('showeditmodel') showeditmodel: any;
   @ViewChild('hidepasswordmodel') hidepasswordmodel: any;
+  @ViewChild('hideverificationmodel') hideverificationmodel: any;
 
   signInCustomer: Customer;
   customerNewInfo: Customer;
@@ -48,6 +49,10 @@ export class CustomerProfileComponent implements OnInit {
     confirmPassword: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-.@_ ]{2,30}$")])
   });
 
+  public verificationForm = new FormGroup({
+    code: new FormControl('', [Validators.required, Validators.pattern("^([0-9]{4})$")]),
+  });
+
 
   constructor(
     public customerService: CustomerService,
@@ -68,6 +73,10 @@ export class CustomerProfileComponent implements OnInit {
 
   public hasErrorPassword = (controlName: string, errorName: string) => {
     return this.changePasswordForm.controls[controlName].hasError(errorName)
+  }
+
+  public hasErrorVerification = (controlName: string, errorName: string) => {
+    return this.verificationForm.controls[controlName].hasError(errorName)
   }
 
   getCustomer() {
@@ -186,6 +195,49 @@ export class CustomerProfileComponent implements OnInit {
           this.toastr.error('', 'Password Changing Error');
         }
         console.log("Error: ", error);
+      }
+    );
+  }
+
+  verificationCode(formValue: any, formDirective: FormGroupDirective) {
+    this.customerNewInfo = Object.assign({}, this.signInCustomer);
+    console.log(formValue)
+    this.isLoading = true;
+    this.customerService.VerifyForgotPasswordCode(formValue.code, this.customerNewInfo.email).subscribe(
+      (response: any) => {
+
+
+
+        const formData = new FormData();
+        formData.append("Files", this.file);
+
+        this.customerNewInfo.isActive = true;
+        formData.append("Info", JSON.stringify(this.customerNewInfo));
+       
+        this.customerService.edit(this.customerNewInfo.id, formData).subscribe(
+          (response: any) => {
+
+            localStorage.setItem('signincustomerinfo', JSON.stringify(response));
+            this.signInCustomer = response;
+            this.hideverificationmodel.nativeElement.click();
+            this.toastr.success('', 'Account Verified Successfully');
+            this.isLoading = false;
+          },
+          error => {
+            formDirective.reset();
+            this.toastr.error('', 'Account Verifing Failed');
+            console.log("Error: ", error);
+          }
+        );
+
+
+
+      },
+      error => {
+        this.isLoading = false;
+        this.toastr.error('', 'Verification code incorrect!');
+        console.log("Error: ", error);
+        formDirective.reset();
       }
     );
   }

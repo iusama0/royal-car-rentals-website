@@ -165,7 +165,7 @@ export class RegisterComponent implements OnInit {
     this.newregisterCustomer.email = formValue.email;
     this.newregisterCustomer.password = formValue.password;
     this.newregisterCustomer.phoneNumber = formValue.phoneNumber;
-    this.newregisterCustomer.isActive = true;
+    this.newregisterCustomer.isActive = false;
     this.newregisterCustomer.licenceNo = formValue.licenceNo;
     this.newregisterCustomer.address = formValue.address;
     this.newregisterCustomer.verificationStatus = "pending";
