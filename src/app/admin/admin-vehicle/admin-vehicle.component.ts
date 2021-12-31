@@ -106,7 +106,7 @@ export class AdminVehicleComponent implements OnInit {
         this.counts = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     )
   }
@@ -120,7 +120,7 @@ export class AdminVehicleComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -131,7 +131,7 @@ export class AdminVehicleComponent implements OnInit {
         this.vehicleMakers = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -142,7 +142,7 @@ export class AdminVehicleComponent implements OnInit {
         this.vehicleModels = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -153,7 +153,7 @@ export class AdminVehicleComponent implements OnInit {
         this.cities = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -174,6 +174,15 @@ export class AdminVehicleComponent implements OnInit {
 
   addVehicle(formValue: any, formDirective: FormGroupDirective) {
     this.isLoading = true;
+  
+    var registrationNumber_already_registered = this.vehicles.data.filter(x => x.registrationNumber.toLowerCase() == formValue.registrationNumber.toLowerCase());
+
+    if (registrationNumber_already_registered.length > 0) {
+      this.isLoading = false;
+      this.toastr.error('This registration number is already registered!', 'Already Registered');
+      return;
+    }
+
     this.newVehicle.makerId = formValue.makerId;
     this.newVehicle.modelId = formValue.modelId;
     this.newVehicle.cityId = formValue.cityId;
@@ -205,7 +214,7 @@ export class AdminVehicleComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Vehicle Adding Error');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -247,7 +256,7 @@ export class AdminVehicleComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Error Vehicle Deleting');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }

@@ -1,0 +1,105 @@
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Booking Information</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">driver/booking-detail</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            Booking Information
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookingModel"
+                    (click)="showEditModel()">
+                    Change Booking Status
+                </button> -->
+                <!-- Button trigger modal -->
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table caption-top">
+                <tbody>
+                    <tr>
+                        <td>Booking Id </td>
+                        <td>: </td>
+                        <td>{{booking?.id}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Vehicle Id </td>
+                        <td>: </td>
+                        <td>{{booking?.vehicleId}}</td>
+                        <td>Vehicle Name</td>
+                        <td>:</td>
+                        <!-- <td>{{booking?.vehicle?.firstName + " "+booking?.vehicle?.lastName}}</td> -->
+                    </tr>
+                    <tr>
+                        <td>Customer Id </td>
+                        <td>: </td>
+                        <td>{{booking?.customerId}}</td>
+                        <td>Customer Name</td>
+                        <td>:</td>
+                        <td>{{booking?.customer?.firstName + " "+booking?.customer?.lastName}}</td>
+                    </tr>
+
+
+                    <tr>
+                        <td> With Driver </td>
+                        <td>:</td>
+                        <td>
+                            {{ booking?.withDriver }}
+                        </td>
+                        <td>Booking Status </td>
+                        <td>:</td>
+                        <td>
+                            <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                [ngStyle]="{'background-color': booking.status === 'pending' ? '#ffc107' : (booking.status === 'approved' ? '#198754' : '#dc3545') }">
+                                {{ booking?.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Start Time </td>
+                        <td>:</td>
+                        <td> {{ (booking.startDate | date:'shortDate') +" "+
+                            bookingService.timeSlots[booking.startTime-1].text}}</td>
+                        <td>End Time </td>
+                        <td>:</td>
+                        <td> {{ (booking.endDate | date:'shortDate') +" "+
+                            bookingService.timeSlots[booking.endTime-1].text}}</td>
+                    </tr>
+                    <tr>
+                        <td>Date Added </td>
+                        <td>:</td>
+                        <td>{{booking?.dateAdded | date:'short'}}</td>
+                        <td>Date Updated </td>
+                        <td>:</td>
+                        <td>{{booking?.dateUpdated | date:'short'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header">
+            Payment Details
+            <div class="float-end">
+                <!-- Button trigger modal -->
+                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPaymentModel"
+                    (click)="showEditPaymentModel()">
+                    Update Payment
+                </button> -->
+                <!-- Button trigger modal -->
+            </div>
+        </div>
+        <div class="card-body">
+             
+        </div>
+    </div>
+</div>
+
+
+
+
+

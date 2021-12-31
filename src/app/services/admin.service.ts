@@ -9,8 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AdminService {
-  isAuthenticated = new EventEmitter<boolean>();
-
+  isAdminAuthenticated = new EventEmitter<boolean>();
   readonly baseUrl = environment.apiUrl + "Admin/";
   constructor(private http: HttpClient) { }
 

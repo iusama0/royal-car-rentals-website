@@ -25,13 +25,11 @@ export class AdminSigninComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('signinuserinfo') || 'null');
+
     if (this.currentUser) {
-      this.adminServices.isAuthenticated.emit(true);
+      this.adminServices.isAdminAuthenticated.emit(true);
       this.router.navigateByUrl("admin/dashboard");
-
     }
-
-
   }
 
   signIn(form: NgForm) {
@@ -39,7 +37,7 @@ export class AdminSigninComponent implements OnInit {
       response => {
         localStorage.setItem('signinuserinfo', JSON.stringify(response));
         this.resetForm(form);
-        this.adminServices.isAuthenticated.emit(true);
+        this.adminServices.isAdminAuthenticated.emit(true);
         this.toastr.success('', 'Administration Login Successfully');
         this.router.navigateByUrl("admin/dashboard");
       },

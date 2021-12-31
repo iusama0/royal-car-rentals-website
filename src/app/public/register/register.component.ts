@@ -156,9 +156,10 @@ export class RegisterComponent implements OnInit {
   signUp(formValue: any, formDirective: FormGroupDirective) {
 
     if (formValue.password != formValue.confirmPassword) {
-      this.toastr.error('', 'Password did not match!');
+      this.toastr.error('', 'Confirmation password did not match!');
       return;
     }
+
     this.isLoading = true;
     this.newregisterCustomer.firstName = formValue.firstName;
     this.newregisterCustomer.lastName = formValue.lastName;
@@ -180,9 +181,18 @@ export class RegisterComponent implements OnInit {
         this.toastr.success('', 'Sign Up Successfully');
         this.router.navigateByUrl("public/profile");
       },
-      error => {
+      (error: any) => {
         this.isLoading = false;
-        this.toastr.error('', 'Incorrect Email and Password!');
+        if (error.error == "email_already_registered") {
+          this.toastr.error('This email address is already registered!', 'Already Registered');
+        } else if (error.error == "phone_already_registered") {
+          this.toastr.error('This phone number is already registered!', 'Already Registered');
+        } else if (error.error == "licenceno_already_registered") {
+          this.toastr.error('This licence number is already registered!', 'Already Registered');
+        } else {
+          this.toastr.error('We\'re sorry, but something went wrong. Please try again!', 'Registeration Failed');
+        }
+
         console.log("Error: ", error);
       }
     );

@@ -1,5 +1,5 @@
 <div class="sb-nav-fixed" [ngClass]="{'sb-sidenav-toggled': isSidebarToggle}">
-    <nav class=" sb-topnav navbar navbar-expand navbar-dark bg-dark" *ngIf="isAdminAuthenticated">
+    <nav class=" sb-topnav navbar navbar-expand navbar-dark bg-dark" *ngIf="isAuthenticated">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" routerLink="dashboard">Royal Car Rentals</a>
         <!-- Sidebar Toggle-->
@@ -25,7 +25,7 @@
     </nav>
 
     <div id="layoutSidenav">
-        <div id="layoutSidenav_nav" *ngIf="isAdminAuthenticated">
+        <div id="layoutSidenav_nav" *ngIf="isAuthenticated">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
@@ -85,17 +85,10 @@
             </nav>
         </div>
 
-        <div id="layoutSidenav_content" [ngClass]="{'is-authenticated-toggled': !isAdminAuthenticated}">
+        <div id="layoutSidenav_content" [ngClass]="{'is-authenticated-toggled': !isAuthenticated}">
             <main>
                 <router-outlet></router-outlet>
-            </main>
-            <!-- <footer class="py-4 bg-light mt-auto" *ngIf="isAdminAuthenticated">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
-                    </div>
-                </div>
-            </footer> -->
+            </main>            
         </div>
     </div>
 </div>

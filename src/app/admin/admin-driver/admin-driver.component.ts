@@ -47,7 +47,6 @@ export class AdminDriverComponent implements OnInit {
   file: string = '';
   public counts: any;
   public cities: City[];
-  public isAlreadyEntered: boolean = false;
   public isLoading: boolean = false;
   public hide = true;
 
@@ -86,7 +85,7 @@ export class AdminDriverComponent implements OnInit {
       this.firstname.nativeElement.focus();
     }, 600);
   }
-  
+
   public hasError = (controlName: string, errorName: string) => {
     return this.addDriverForm.controls[controlName].hasError(errorName);
   }
@@ -97,7 +96,7 @@ export class AdminDriverComponent implements OnInit {
         this.cities = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -108,7 +107,7 @@ export class AdminDriverComponent implements OnInit {
         this.counts = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     )
   }
@@ -122,7 +121,7 @@ export class AdminDriverComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -165,7 +164,7 @@ export class AdminDriverComponent implements OnInit {
       error => {
         this.isLoading = false;
         this.toastr.error('', 'Error Driver Deleting');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -177,14 +176,24 @@ export class AdminDriverComponent implements OnInit {
   addDriver(formValue: any, formDirective: FormGroupDirective) {
     this.isLoading = true;
 
+    var email_already_registered = this.drivers.data.filter(x => x.email.toLowerCase() == formValue.email.toLowerCase());
 
-    var _data = this.drivers.data.filter(x => x.email.toLowerCase() == formValue.email.toLowerCase());
-    if (_data.length > 0) {
+    var phone_already_registered = this.drivers.data.filter(x => x.phoneNumber == formValue.phoneNumber);
+
+    var licenceno_already_registered = this.drivers.data.filter(x => x.licenceNo.toLowerCase() == formValue.licenceNo.toLowerCase());
+
+    if (email_already_registered.length > 0) {
       this.isLoading = false;
-      this.isAlreadyEntered = true;
+      this.toastr.error('This email address is already registered!', 'Already Registered');
       return;
-    } else {
-      this.isAlreadyEntered = false;
+    } else if (phone_already_registered.length > 0) {
+      this.isLoading = false;
+      this.toastr.error('This phone number is already registered!', 'Already Registered');
+      return;
+    } else if (licenceno_already_registered.length > 0) {
+      this.isLoading = false;
+      this.toastr.error('This licence number is already registered!', 'Already Registered');
+      return;
     }
 
     console.log(formValue)
@@ -216,15 +225,13 @@ export class AdminDriverComponent implements OnInit {
         this.toastr.success('', 'Driver Added Successfully');
       },
       error => {
-        this.isAlreadyEntered = false;
-        this.toastr.error('', 'Driver Adding Error');
-        console.log("Error: " , error);
+        this.toastr.error('We\'re sorry, but something went wrong. Please try again!', 'Driver Adding Error');
+        console.log("Error: ", error);
       }
     );
   }
 
   resetForm(formDirective: FormGroupDirective) {
-    this.isAlreadyEntered = false;
     this.isLoading = false;
     formDirective.resetForm();
     this.newDriver = new Driver();

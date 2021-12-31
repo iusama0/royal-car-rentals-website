@@ -11,7 +11,7 @@ import { AdminService } from 'src/app/services/admin.service';
 })
 export class AdminCommonSectionComponent implements OnInit {
   public isSidebarToggle: boolean = false;
-  public isAuthenticated: boolean = false;
+  public isAdminAuthenticated: boolean = false;
   public currentUser: Admin;
   public currentPage: string = '/admin/dashboard';
 
@@ -24,20 +24,20 @@ export class AdminCommonSectionComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('signinuserinfo') || 'null');
 
     if (this.currentUser) {
-      this.adminServices.isAuthenticated.emit(true);
-      this.isAuthenticated = true;
+      this.adminServices.isAdminAuthenticated.emit(true);
+      this.isAdminAuthenticated = true;
     } else {
-      this.goToSignIn();
+      this.signOut();
     }
 
-    this.adminServices.isAuthenticated.subscribe(response => {
-      this.isAuthenticated = response;
+    this.adminServices.isAdminAuthenticated.subscribe(response => {
+      this.isAdminAuthenticated = response;
     });
 
     this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
         this.currentPage = e.url;
-        // console.log(this.currentPage)
+        console.log(this.currentPage)
       }
     });
   }
@@ -53,15 +53,7 @@ export class AdminCommonSectionComponent implements OnInit {
 
   signOut() {
     localStorage.removeItem("signinuserinfo");
-    this.adminServices.isAuthenticated.emit(false);
-    this.toastr.success('', 'Sign Out Successfully');
+    this.adminServices.isAdminAuthenticated.emit(false);
     this.router.navigateByUrl("admin/signin");
   }
-
-  goToSignIn() {
-    localStorage.removeItem("signinuserinfo");
-    this.adminServices.isAuthenticated.emit(false);
-    this.router.navigateByUrl("admin/signin");
-  }
-
 }

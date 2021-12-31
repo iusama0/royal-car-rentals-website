@@ -74,6 +74,11 @@ import { AdminCustomerDetailComponent } from './admin/admin-customer-detail/admi
 import { AdminBookingsComponent } from './admin/admin-bookings/admin-bookings.component';
 import { CustomerProfileComponent } from './public/customer-profile/customer-profile.component';
 import { AdminBookingDetailComponent } from './admin/admin-booking-detail/admin-booking-detail.component';
+import { DriverSigninComponent } from './driver/driver-signin/driver-signin.component';
+import { DriverCommonSectionComponent } from './driver/driver-common-section/driver-common-section.component';
+import { DriverBookingsComponent } from './driver/driver-bookings/driver-bookings.component';
+import { DriverBookingDetailComponent } from './driver/driver-booking-detail/driver-booking-detail.component';
+import { DriverDashboardComponent } from './driver/driver-dashboard/driver-dashboard.component';
 
 //====================
 @NgModule({
@@ -103,7 +108,12 @@ import { AdminBookingDetailComponent } from './admin/admin-booking-detail/admin-
     AdminCustomerDetailComponent,
     AdminBookingsComponent,
     CustomerProfileComponent,
-    AdminBookingDetailComponent
+    AdminBookingDetailComponent,
+    DriverSigninComponent,
+    DriverCommonSectionComponent,
+    DriverBookingsComponent,
+    DriverBookingDetailComponent,
+    DriverDashboardComponent
   ],
   imports: [
     BrowserModule,

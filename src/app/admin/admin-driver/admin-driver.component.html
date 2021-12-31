@@ -229,8 +229,6 @@
                                 <mat-error *ngIf="hasError('email', 'required')">Email is required</mat-error>
                                 <mat-error *ngIf="hasError('email', 'pattern')">Enter valid email address </mat-error>
                             </mat-form-field>
-                            <p *ngIf="isAlreadyEntered" class="alreday-added-error"
-                                [ngClass]="{'mat-error':isAlreadyEntered}">This email is already entered</p>
                         </div>
                         <div class="col-md-6">
                             <mat-form-field appearance="outline" class="w-100">

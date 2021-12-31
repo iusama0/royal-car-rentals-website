@@ -14,6 +14,11 @@ import { AdminSettingComponent } from './admin/admin-setting/admin-setting.compo
 import { AdminSigninComponent } from './admin/admin-signin/admin-signin.component';
 import { AdminVehicleDetailComponent } from './admin/admin-vehicle-detail/admin-vehicle-detail.component';
 import { AdminVehicleComponent } from './admin/admin-vehicle/admin-vehicle.component';
+import { DriverBookingDetailComponent } from './driver/driver-booking-detail/driver-booking-detail.component';
+import { DriverBookingsComponent } from './driver/driver-bookings/driver-bookings.component';
+import { DriverCommonSectionComponent } from './driver/driver-common-section/driver-common-section.component';
+import { DriverDashboardComponent } from './driver/driver-dashboard/driver-dashboard.component';
+import { DriverSigninComponent } from './driver/driver-signin/driver-signin.component';
 import { AboutUsComponent } from './public/about-us/about-us.component';
 import { BookingComponent } from './public/booking/booking.component';
 import { CommonSectionComponent } from './public/common-section/common-section.component';
@@ -39,6 +44,11 @@ const routes: Routes = [
   {
     path: 'admin',
     redirectTo: "admin/signin",
+    pathMatch: 'full'
+  },
+  {
+    path: 'driver',
+    redirectTo: "driver/signin",
     pathMatch: 'full'
   },
   {
@@ -71,6 +81,15 @@ const routes: Routes = [
       { path: 'reports', component: AdminReportComponent },
       { path: 'settings', component: AdminSettingComponent },
       { path: 'signin', component: AdminSigninComponent }
+    ],
+  },
+  {
+    path: 'driver', component: DriverCommonSectionComponent,
+    children: [
+      { path: 'dashboard', component: DriverDashboardComponent },
+      { path: 'bookings', component: DriverBookingsComponent },
+      { path: 'booking-detail', component: DriverBookingDetailComponent },     
+      { path: 'signin', component: DriverSigninComponent }
     ],
   }
 ];
