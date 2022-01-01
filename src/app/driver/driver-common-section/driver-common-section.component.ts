@@ -13,13 +13,15 @@ export class DriverCommonSectionComponent implements OnInit {
   public isSidebarToggle: boolean = false;
   public isAuthenticated: boolean = false;
   public currentDriver: Driver;
-  public currentPage: string = '/driver/dashboard';
+  public currentPage: string = '';
 
   constructor(
     public driverService: DriverService,
     private toastr: ToastrService,
     private router: Router
-  ) { }
+  ) {
+    this.currentPage = this.router.url;
+  }
 
   ngOnInit(): void {
     this.currentDriver = JSON.parse(localStorage.getItem('signindriverinfo') || 'null');

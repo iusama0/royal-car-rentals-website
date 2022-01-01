@@ -58,7 +58,7 @@ export class AdminDriverComponent implements OnInit {
     phoneNumber: new FormControl('', [Validators.required, Validators.pattern("^((\\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$")]),
     isActive: new FormControl('', [Validators.required]),
     availability: new FormControl('', [Validators.required]),
-    address: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-., ]{2,30}$")]),
+    address: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-.,# ]{2,30}$")]),
     licenceNo: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
     profilePicture: new FormControl(''),
     cityId: new FormControl('', [Validators.required]),

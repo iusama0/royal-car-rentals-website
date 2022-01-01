@@ -1,11 +1,11 @@
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Driver Information</h1>
+    <h1 class="mt-4">Personal Information</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">admin/driver-detail</li>
+        <li class="breadcrumb-item active">driver/profile</li>
     </ol>
     <div class="card mb-4">
         <div class="card-header">
-            Driver Information
+            Personal Information
             <div class="float-end">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" (click)="showDriverEditModel()">
@@ -20,9 +20,9 @@
             <table class="table caption-top">
                 <tbody>
                     <tr>
-                        <td>Vehicle Id </td>
+                        <td>Name </td>
                         <td>: </td>
-                        <td>{{driver?.id}}</td>
+                        <td>{{driver?.firstName+" "+ driver?.lastName}}</td>
                         <td rowspan="4" colspan="3">
                             <div class="delete-picture-wapper" (click)="removePicture()">
                                 <div class="picture-inner-wapper"
@@ -34,11 +34,6 @@
                             </div>
                             <!-- <img [src]="'assets/adminUploads/drivers/'+ driver?.profilePicture" alt=""> -->
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Name</td>
-                        <td> : </td>
-                        <td>{{driver?.firstName+" "+ driver?.lastName}}</td>
                     </tr>
                     <tr>
                         <td>Email</td>
@@ -56,11 +51,12 @@
                         <td>Licence No </td>
                         <td>:</td>
                         <td>{{driver?.licenceNo}}</td>
+                    </tr>
+                    <tr>
                         <td>Address</td>
                         <td>:</td>
                         <td>{{driver?.address}}</td>
                     </tr>
-
                     <tr>
                         <td>Is Active </td>
                         <td>:</td>
@@ -89,14 +85,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-    <div class="card mb-4">
-        <div class="card-header">
-            Driver Report
-        </div>
-        <div class="card-body">
-
         </div>
     </div>
 </div>
@@ -183,7 +171,7 @@
                                     between 2 to 30 characters</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Choose Availability</mat-label>
                                 <mat-select matNativeControl formControlName="availability" required>
@@ -196,7 +184,7 @@
                                     Please select availability
                                 </mat-error>
                             </mat-form-field>
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Choose Active Status</mat-label>
@@ -237,7 +225,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="profilePicture" class="col-form-label">Choose Profile Picture:</label>
+                                <label for="profilePicture" class="p-0 col-form-label">Choose Profile Picture:</label>
                                 <input formControlName="profilePicture" id="profilePicture" type="file"
                                     class="form-control" (change)="onFileChange($event)" accept="image/*">
                             </div>

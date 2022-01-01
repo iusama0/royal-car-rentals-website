@@ -13,12 +13,14 @@ export class AdminCommonSectionComponent implements OnInit {
   public isSidebarToggle: boolean = false;
   public isAdminAuthenticated: boolean = false;
   public currentUser: Admin;
-  public currentPage: string = '/admin/dashboard';
+  public currentPage: string = '';
 
   constructor(
     public adminServices: AdminService,
     private toastr: ToastrService,
-    private router: Router) { }
+    private router: Router) {
+      this.currentPage = this.router.url;
+     }
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('signinuserinfo') || 'null');

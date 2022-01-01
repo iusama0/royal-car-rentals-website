@@ -115,4 +115,12 @@ export class BookingService {
   getCustomerBookings(id: number) {
     return this.http.get(this.baseUrl + "/customerbookings" + "/" + id);
   }
+
+  driverBookingsCounts(id: number) {
+    return this.http.get(this.baseUrl + "/drivercounts" + "/" + id);
+  }
+
+  getDriverBookings(id: number) {
+    return this.http.get(this.baseUrl + "/driverbookings" + "/" + id);
+  }
 }

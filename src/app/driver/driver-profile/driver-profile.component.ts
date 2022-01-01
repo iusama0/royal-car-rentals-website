@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { City } from 'src/app/Models/city.model';
@@ -8,11 +8,12 @@ import { CityService } from 'src/app/services/city.service';
 import { DriverService } from 'src/app/services/driver.service';
 
 @Component({
-  selector: 'app-admin-driver-detail',
-  templateUrl: './admin-driver-detail.component.html',
-  styleUrls: ['./admin-driver-detail.component.css']
+  selector: 'app-driver-profile',
+  templateUrl: './driver-profile.component.html',
+  styleUrls: ['./driver-profile.component.css']
 })
-export class AdminDriverDetailComponent implements OnInit {
+export class DriverProfileComponent implements OnInit {
+
   @ViewChild('firstname', { static: true }) firstname: any;
   @ViewChild('hideeditmodel') hideeditmodel: any;
   @ViewChild('showeditmodel') showeditmodel: any;
@@ -31,7 +32,7 @@ export class AdminDriverDetailComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9- ]{2,30}$")]),
     phoneNumber: new FormControl('', [Validators.required, Validators.pattern("^((\\+92)?(0092)?(92)?(0)?)(3)([0-9]{9})$")]),
     isActive: new FormControl('', [Validators.required]),
-    availability: new FormControl('', [Validators.required]),
+   // availability: new FormControl('', [Validators.required]),
     address: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-.,# ]{2,30}$")]),
     licenceNo: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9-. ]{2,30}$")]),
     profilePicture: new FormControl(''),
@@ -57,7 +58,8 @@ export class AdminDriverDetailComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router
   ) {
-    this.driver = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
+    this.driver = JSON.parse(localStorage.getItem('signindriverinfo') || 'null');
+    //this.driver = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
   }
 
   ngOnInit(): void {
@@ -94,7 +96,6 @@ export class AdminDriverDetailComponent implements OnInit {
       password: this.editDriverObj.password,
       phoneNumber: this.editDriverObj.phoneNumber,
       isActive: this.editDriverObj.isActive,
-      availability: this.editDriverObj.availability,
       address: this.editDriverObj.address,
       licenceNo: this.editDriverObj.licenceNo,
       cityId: this.editDriverObj.cityId,
@@ -116,7 +117,7 @@ export class AdminDriverDetailComponent implements OnInit {
     this.editDriverObj.password = formValue.password;
     this.editDriverObj.phoneNumber = formValue.phoneNumber;
     this.editDriverObj.address = formValue.address;
-    this.editDriverObj.availability = formValue.availability;
+   // this.editDriverObj.availability = formValue.availability;
     this.editDriverObj.isActive = formValue.isActive;
     this.editDriverObj.licenceNo = formValue.licenceNo;
     this.editDriverObj.cityId = formValue.cityId;
@@ -129,9 +130,10 @@ export class AdminDriverDetailComponent implements OnInit {
 
     this.driverService.edit(this.editDriverObj.id, formData).subscribe(
       (response: any) => {
+        localStorage.setItem('signindriverinfo', JSON.stringify(response));
         if (this.file != '') {
           let _data = JSON.stringify(response);
-          this.router.navigate(["admin/driver-detail"], { queryParams: { _data } });
+          this.router.navigate(["driver/driver-detail"], { queryParams: { _data } });
         } else {
           this.driver = this.editDriverObj = response;
         }
@@ -158,5 +160,4 @@ export class AdminDriverDetailComponent implements OnInit {
   removePicture() {
 
   }
-
 }

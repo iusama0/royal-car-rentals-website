@@ -79,6 +79,8 @@ import { DriverCommonSectionComponent } from './driver/driver-common-section/dri
 import { DriverBookingsComponent } from './driver/driver-bookings/driver-bookings.component';
 import { DriverBookingDetailComponent } from './driver/driver-booking-detail/driver-booking-detail.component';
 import { DriverDashboardComponent } from './driver/driver-dashboard/driver-dashboard.component';
+import { DriverProfileComponent } from './driver/driver-profile/driver-profile.component';
+import { DriverReportComponent } from './driver/driver-report/driver-report.component';
 
 //====================
 @NgModule({
@@ -113,7 +115,9 @@ import { DriverDashboardComponent } from './driver/driver-dashboard/driver-dashb
     DriverCommonSectionComponent,
     DriverBookingsComponent,
     DriverBookingDetailComponent,
-    DriverDashboardComponent
+    DriverDashboardComponent,
+    DriverProfileComponent,
+    DriverReportComponent
   ],
   imports: [
     BrowserModule,

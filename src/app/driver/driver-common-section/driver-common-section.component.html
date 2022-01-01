@@ -30,57 +30,34 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <!-- <div class="sb-sidenav-menu-heading">Core</div> -->
-                        <a [ngClass]="{'active': currentPage== '/admin/dashboard'}" class="nav-link"
+                        <a [ngClass]="{'active': currentPage== '/driver/dashboard'}" class="nav-link"
                             routerLink="dashboard">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
 
-                        <a [ngClass]="{'active': currentPage== '/admin/customers'}" class="nav-link"
-                            routerLink="customers">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Customers
+                        <a [ngClass]="{'active': currentPage== '/driver/profile'}" class="nav-link"
+                            routerLink="profile">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Profile
                         </a>
 
-                        <a [ngClass]="{'active': currentPage== '/admin/bookings'}" class="nav-link"
+                        <a [ngClass]="{'active': currentPage== '/driver/bookings'}" class="nav-link"
                             routerLink="bookings">
                             <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
                             Bookings
                         </a>
 
-                        <a [ngClass]="{'active': currentPage== '/admin/inquiries'}" class="nav-link"
-                            routerLink="inquiries">
-                            <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
-                            Inquiries
-                        </a>
-
-                        <a [ngClass]="{'active': currentPage== '/admin/vehicles'}" class="nav-link"
-                            routerLink="vehicles">
-                            <div class="sb-nav-link-icon"><i class="fas fa-taxi"></i></div>
-                            Vehicles
-                        </a>
-
-                        <a [ngClass]="{'active': currentPage== '/admin/drivers'}" class="nav-link" routerLink="drivers">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
-                            Drivers
-                        </a>
-
-                        <a [ngClass]="{'active': currentPage== '/admin/reports'}" class="nav-link" routerLink="reports">
+                        <a [ngClass]="{'active': currentPage== '/driver/reports'}" class="nav-link"
+                            routerLink="reports">
                             <div class="sb-nav-link-icon"><i class="fas fa-scroll"></i></div>
                             Reports
                         </a>
-
-                        <a [ngClass]="{'active': currentPage== '/admin/settings'}" class="nav-link"
-                            routerLink="settings">
-                            <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
-                            Settings
-                        </a>
-                        <!-- <div class="sb-sidenav-menu-heading">Interface</div> -->
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    Administrator
+                    Driver
                 </div>
             </nav>
         </div>
@@ -88,7 +65,7 @@
         <div id="layoutSidenav_content" [ngClass]="{'is-authenticated-toggled': !isAuthenticated}">
             <main>
                 <router-outlet></router-outlet>
-            </main>            
+            </main>
         </div>
     </div>
 </div>

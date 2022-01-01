@@ -167,7 +167,8 @@ export class VehicleComponent implements OnInit {
       this.bookingObj.endDate = formValue.endDate;
       this.bookingObj.endTime = formValue.endTime;
       this.bookingObj.withDriver = formValue.withDriver;
-      // this.bookingObj.driver =;
+      // this.bookingObj.driver = new Driver();
+      // this.bookingObj.vehicle = new Vehicle();
       console.log(this.bookingObj)
 
       // To calculate the time difference of two dates

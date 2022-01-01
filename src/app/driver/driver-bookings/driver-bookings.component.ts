@@ -5,6 +5,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
+import { Driver } from 'src/app/Models/driver.model';
 import { BookingService } from 'src/app/services/booking.service';
 
 @Component({
@@ -18,19 +19,22 @@ export class DriverBookingsComponent implements OnInit {
   @ViewChild('BookingTable', { static: true }) bookingTable: MatTable<Booking>;
   @ViewChild('BookingPaginator', { static: true }) bookingPaginator: MatPaginator;
   @ViewChild('BookingSort', { static: true }) bookingSort: MatSort;
+  public driver: Driver;
 
   constructor(
     public bookingService: BookingService,
     private toastr: ToastrService,
     private router: Router
-  ) { }
+  ) { 
+    this.driver = JSON.parse(localStorage.getItem('signindriverinfo') || 'null');
+  }
 
   ngOnInit(): void {
     this.getBookings();
   }
 
   getBookings() {
-    this.bookingService.gets().subscribe(
+    this.bookingService.getDriverBookings(this.driver.id).subscribe(
       (response: any) => {
         this.bookings = new MatTableDataSource(response);
         this.bookings.paginator = this.bookingPaginator;

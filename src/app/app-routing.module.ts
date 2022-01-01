@@ -18,6 +18,8 @@ import { DriverBookingDetailComponent } from './driver/driver-booking-detail/dri
 import { DriverBookingsComponent } from './driver/driver-bookings/driver-bookings.component';
 import { DriverCommonSectionComponent } from './driver/driver-common-section/driver-common-section.component';
 import { DriverDashboardComponent } from './driver/driver-dashboard/driver-dashboard.component';
+import { DriverProfileComponent } from './driver/driver-profile/driver-profile.component';
+import { DriverReportComponent } from './driver/driver-report/driver-report.component';
 import { DriverSigninComponent } from './driver/driver-signin/driver-signin.component';
 import { AboutUsComponent } from './public/about-us/about-us.component';
 import { BookingComponent } from './public/booking/booking.component';
@@ -87,6 +89,8 @@ const routes: Routes = [
     path: 'driver', component: DriverCommonSectionComponent,
     children: [
       { path: 'dashboard', component: DriverDashboardComponent },
+      { path: 'profile', component: DriverProfileComponent },
+      { path: 'reports', component: DriverReportComponent },
       { path: 'bookings', component: DriverBookingsComponent },
       { path: 'booking-detail', component: DriverBookingDetailComponent },     
       { path: 'signin', component: DriverSigninComponent }
