@@ -65,7 +65,7 @@ export class AdminVehicleComponent implements OnInit {
   fileMessage = '';
 
   public deleteVehicleInfo: Vehicle;
-  VehicleColumns: string[] = ['id', 'makerId', 'modelId', 'registrationNumber', 'status', 'availability', 'price', 'dateAdded', 'dateUpdated', 'actions'];
+  VehicleColumns: string[] = ['makerId', 'modelId', 'registrationNumber', 'status', 'availability', 'price', 'dateAdded', 'dateUpdated', 'actions'];
   vehicles: MatTableDataSource<Vehicle>;
   @ViewChild('VehicleTable', { static: true }) vehicleTable: MatTable<Vehicle>;
   @ViewChild('VehiclePaginator', { static: true }) vehiclePaginator: MatPaginator;
@@ -174,7 +174,7 @@ export class AdminVehicleComponent implements OnInit {
 
   addVehicle(formValue: any, formDirective: FormGroupDirective) {
     this.isLoading = true;
-  
+
     var registrationNumber_already_registered = this.vehicles.data.filter(x => x.registrationNumber.toLowerCase() == formValue.registrationNumber.toLowerCase());
 
     if (registrationNumber_already_registered.length > 0) {

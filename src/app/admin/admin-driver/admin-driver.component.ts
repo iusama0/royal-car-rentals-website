@@ -22,7 +22,7 @@ export class AdminDriverComponent implements OnInit {
   @ViewChild('showdeletemodel') showdeletemodel: any;
   @ViewChild('hidedeletemodel') hidedeletemodel: any;
 
-  DriverColumns: string[] = ['id', 'firstName', 'email', 'phoneNumber', 'isActive', 'availability', 'dateAdded', 'dateUpdated', 'actions'];
+  DriverColumns: string[] = ['firstName', 'email', 'phoneNumber', 'isActive', 'availability', 'dateAdded', 'dateUpdated', 'actions'];
   drivers: MatTableDataSource<Driver>;
   @ViewChild('DriverTable', { static: true }) driverTable: MatTable<Driver>;
   @ViewChild('DriverPaginator', { static: true }) driverPaginator: MatPaginator;

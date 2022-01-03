@@ -14,7 +14,7 @@ import { BookingService } from 'src/app/services/booking.service';
   styleUrls: ['./driver-bookings.component.css']
 })
 export class DriverBookingsComponent implements OnInit {
-  BookingColumns: string[] = ['id', 'vehicleId', 'customerId', 'withDriver', 'status', 'startTime', 'endTime', 'dateAdded', 'dateUpdated', 'actions'];
+  BookingColumns: string[] = ['vehicleId', 'customerId', 'withDriver', 'status', 'startTime', 'endTime', 'dateAdded', 'dateUpdated', 'actions'];
   bookings: MatTableDataSource<Booking>;
   @ViewChild('BookingTable', { static: true }) bookingTable: MatTable<Booking>;
   @ViewChild('BookingPaginator', { static: true }) bookingPaginator: MatPaginator;

@@ -14,7 +14,7 @@ import { BookingService } from 'src/app/services/booking.service';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent implements OnInit {
-  BookingColumns: string[] = ['id', 'vehicleId', 'customerId', 'withDriver', 'status', 'startTime', 'endTime', 'dateAdded', 'dateUpdated', 'actions'];
+  BookingColumns: string[] = ['vehicleId', 'customerId', 'withDriver', 'status', 'startTime', 'endTime', 'dateAdded', 'dateUpdated', 'actions'];
   bookings: MatTableDataSource<Booking>;
   @ViewChild('BookingTable', { static: true }) bookingTable: MatTable<Booking>;
   @ViewChild('BookingPaginator', { static: true }) bookingPaginator: MatPaginator;
@@ -41,7 +41,7 @@ export class BookingComponent implements OnInit {
         this.counts = response;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     )
   }
@@ -54,7 +54,7 @@ export class BookingComponent implements OnInit {
         this.bookings.sort = this.bookingSort;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }

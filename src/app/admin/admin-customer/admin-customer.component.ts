@@ -13,7 +13,7 @@ import { CustomerService } from 'src/app/services/customer.service';
   styleUrls: ['./admin-customer.component.css']
 })
 export class AdminCustomerComponent implements OnInit {
-  CustomerColumns: string[] = ['id', 'firstName', 'email', 'phoneNumber', 'licenceNo', 'gender', 'isActive', 'verificationStatus', 'dateAdded', 'dateUpdated', 'actions'];
+  CustomerColumns: string[] = ['firstName', 'email', 'phoneNumber', 'licenceNo', 'gender', 'isActive', 'verificationStatus', 'dateAdded', 'dateUpdated', 'actions'];
   customers: MatTableDataSource<Customer>;
   @ViewChild('CustomerTable', { static: true }) customerTable: MatTable<Customer>;
   @ViewChild('CustomerPaginator', { static: true }) customerPaginator: MatPaginator;

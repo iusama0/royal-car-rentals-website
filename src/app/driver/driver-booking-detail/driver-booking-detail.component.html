@@ -3,84 +3,124 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">driver/booking-detail</li>
     </ol>
-    <div class="card mb-4">
-        <div class="card-header">
-            Booking Information
-            <div class="float-end">
-                <!-- Button trigger modal -->
-                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookingModel"
-                    (click)="showEditModel()">
-                    Change Booking Status
-                </button> -->
-                <!-- Button trigger modal -->
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Booking Information
+                    <div class="float-end">
+                        <!-- Button trigger modal -->
+                        <button *ngIf="booking?.status == 'approved'" type="button" class="btn btn-primary"
+                            (click)="completeBooking()">
+                            Complete Booking
+                        </button>
+                        <!-- Button trigger modal -->
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table caption-top">
+                        <tbody>
+                            <!-- <tr>
+                                <td>Booking Id </td>
+                                <td>: </td>
+                                <td>{{booking?.id}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr> -->
+                            <tr>
+                                <td>Vehicle No </td>
+                                <td>: </td>
+                                <td>{{booking?.vehicle?.registrationNumber}}</td>
+                                <td>Vehicle Name</td>
+                                <td>:</td>
+                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+" "+ booking?.vehicle?.modelYear}}</td>
+                            </tr>
+                            <tr>
+                                <td>Customer Name</td>
+                                <td>:</td>
+                                <td>{{booking?.customer?.firstName + " "+booking?.customer?.lastName}}</td>
+                                <td>Customer Phone# </td>
+                                <td>: </td>
+                                <td>0{{booking?.customer?.phoneNumber}}</td>
+                            </tr>
+
+
+                            <tr>
+                                <td> With Driver </td>
+                                <td>:</td>
+                                <td>
+                                    {{ booking?.withDriver }}
+                                </td>
+                                <td>Booking Status </td>
+                                <td>:</td>
+                                <td>
+                                    <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                        [ngStyle]="{'background-color': booking?.status === 'pending' ? '#ffc107' : (booking?.status === 'approved' ? '#0dcaf0' : (booking?.status === 'completed' ? '#198754' : '#dc3545'))}">
+                                        {{ booking?.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Start Time </td>
+                                <td>:</td>
+                                <td> {{ (booking.startDate | date:'shortDate') +" "+
+                                    bookingService.timeSlots[booking.startTime-1].text}}</td>
+                                <td>End Time </td>
+                                <td>:</td>
+                                <td> {{ (booking.endDate | date:'shortDate') +" "+
+                                    bookingService.timeSlots[booking.endTime-1].text}}</td>
+                            </tr>
+                            <tr>
+                                <td>Date Added </td>
+                                <td>:</td>
+                                <td>{{booking?.dateAdded | date:'short'}}</td>
+                                <td>Date Updated </td>
+                                <td>:</td>
+                                <td>{{booking?.dateUpdated | date:'short'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <div class="card-body">
-            <table class="table caption-top">
-                <tbody>
-                    <tr>
-                        <td>Booking Id </td>
-                        <td>: </td>
-                        <td>{{booking?.id}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Vehicle Id </td>
-                        <td>: </td>
-                        <td>{{booking?.vehicleId}}</td>
-                        <td>Vehicle Name</td>
-                        <td>:</td>
-                        <!-- <td>{{booking?.vehicle?.firstName + " "+booking?.vehicle?.lastName}}</td> -->
-                    </tr>
-                    <tr>
-                        <td>Customer Id </td>
-                        <td>: </td>
-                        <td>{{booking?.customerId}}</td>
-                        <td>Customer Name</td>
-                        <td>:</td>
-                        <td>{{booking?.customer?.firstName + " "+booking?.customer?.lastName}}</td>
-                    </tr>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Booking Timeline
+                </div>
+                <div class="card-body">
+                    <div>
+                        <div class="time-line-wrapper" *ngFor="let log of bookingLogs">
+                            <div class="d-flex">
+                                <div class="time-line-action text-end pe-3 pb-4"
+                                    style="border-right: 2px solid #858484;">
+                                    <p class="m-0">{{log.dateAdded | date:'shortTime'}}</p>
+                                    <p class="m-0">{{log.dateAdded | date:'mediumDate'}}</p>
+                                </div>
 
-
-                    <tr>
-                        <td> With Driver </td>
-                        <td>:</td>
-                        <td>
-                            {{ booking?.withDriver }}
-                        </td>
-                        <td>Booking Status </td>
-                        <td>:</td>
-                        <td>
-                            <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
-                                [ngStyle]="{'background-color': booking.status === 'pending' ? '#ffc107' : (booking.status === 'approved' ? '#198754' : '#dc3545') }">
-                                {{ booking?.status }}
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Start Time </td>
-                        <td>:</td>
-                        <td> {{ (booking.startDate | date:'shortDate') +" "+
-                            bookingService.timeSlots[booking.startTime-1].text}}</td>
-                        <td>End Time </td>
-                        <td>:</td>
-                        <td> {{ (booking.endDate | date:'shortDate') +" "+
-                            bookingService.timeSlots[booking.endTime-1].text}}</td>
-                    </tr>
-                    <tr>
-                        <td>Date Added </td>
-                        <td>:</td>
-                        <td>{{booking?.dateAdded | date:'short'}}</td>
-                        <td>Date Updated </td>
-                        <td>:</td>
-                        <td>{{booking?.dateUpdated | date:'short'}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                                <div class="text-start ps-3 position-relative">
+                                    <p class="m-0">
+                                        <span class="text-light fw-bold rounded-pill pb-1 px-2 text-capitalize"
+                                            [ngStyle]="{'background-color': log.action.trim() === 'pending' ? '#ffc107' : (log.action.trim() === 'approved' ? '#0dcaf0' : (log.action.trim() === 'completed' ? '#198754' : (log.action.trim() === 'created' ? '#198754' : '#dc3545')))}">
+                                            {{ log.action.trim() }}
+                                        </span>
+                                    </p>
+                                    <p class="m-0">{{log.description}}</p>
+                                    <span
+                                        [ngStyle]="{'border-color': log.action.trim() === 'pending' ? '#ffc107' : (log.action.trim() === 'approved' ? '#0dcaf0' : (log.action.trim() === 'completed' ? '#198754' : (log.action.trim() === 'created' ? '#198754' : '#dc3545')))}"
+                                        style="border: 3px solid red;padding: 4px;border-radius: 50%;min-height: 15px;min-width: 15px;display: inline-block;position: absolute;top: 8px;left: -8px;background-color: #fff;">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+   
     <div class="card mb-4">
         <div class="card-header">
             Payment Details
@@ -94,12 +134,7 @@
             </div>
         </div>
         <div class="card-body">
-             
+
         </div>
     </div>
 </div>
-
-
-
-
-

@@ -13,7 +13,7 @@ import { InquiryService } from 'src/app/services/inquiry.service';
   styleUrls: ['./admin-inquiry.component.css']
 })
 export class AdminInquiryComponent implements OnInit {
-  InquiriesColumns: string[] = ['id', 'firstName', 'email', 'message', 'dateAdded', 'dateUpdated', 'actions'];
+  InquiriesColumns: string[] = ['firstName', 'email', 'message', 'dateAdded', 'dateUpdated', 'actions'];
   inquiries: MatTableDataSource<Inquiry>;
   @ViewChild('InquiriesTable', { static: true }) inquiriesTable: MatTable<Inquiry>;
   @ViewChild('InquiriesPaginator', { static: true }) inquiriesPaginator: MatPaginator;
@@ -45,7 +45,7 @@ export class AdminInquiryComponent implements OnInit {
         // this.vehicleMakerTable.renderRows();
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }
@@ -73,7 +73,7 @@ export class AdminInquiryComponent implements OnInit {
       },
       error => {
         this.toastr.error('', 'Error Driver Deleting');
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }

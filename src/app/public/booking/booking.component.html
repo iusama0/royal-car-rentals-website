@@ -33,8 +33,8 @@
                 <div class="col-xl-3 col-md-6">
                     <div class="card bg-danger text-white mb-4">
                         <div class="card-body">
-                            Calcelled Bookings
-                            <span class="float-end">{{counts?.calcelledBookings}}</span>
+                            Cancelled Bookings
+                            <span class="float-end">{{counts?.cancelledBookings}}</span>
                         </div>
                     </div>
                 </div>
@@ -49,10 +49,10 @@
                             #BookingSort="matSort">
 
                             <!-- ID Column -->
-                            <ng-container matColumnDef="id">
+                            <!-- <ng-container matColumnDef="id">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
                                 <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-                            </ng-container>
+                            </ng-container> -->
 
                             <!-- Vehicle Name Column -->
                             <ng-container matColumnDef="vehicleId">
@@ -77,7 +77,7 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
                                 <td mat-cell *matCellDef="let row">
                                     <span class="text-light fw-bold rounded-pill py-2 px-3 text-capitalize"
-                                        [ngStyle]="{'background-color': row.status === 'pending' ? '#ffc107' : (row.status === 'approved' ? '#198754' : '#dc3545') }">
+                                        [ngStyle]="{'background-color': row.status === 'pending' ? '#ffc107' : (row.status === 'approved' ? '#0dcaf0' : (row.status === 'completed' ? '#198754' : '#dc3545'))}">
                                         {{row.status}}
                                     </span>
                                 </td>

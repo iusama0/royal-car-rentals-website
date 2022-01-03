@@ -1,0 +1,9 @@
+.time-line-wrapper:first-child .time-line-action {
+    border-image: linear-gradient(transparent 13%, #858484 0% 100%, transparent 100%) 0 1 0 0 / 2px !important;
+    margin-bottom: -3px;
+}
+
+.time-line-wrapper:last-child .time-line-action {
+    border-image: linear-gradient(transparent 0%, #858484 0% 35%, transparent 25%) 0 1 0 0 / 2px !important;
+    margin-top: -3px;
+}

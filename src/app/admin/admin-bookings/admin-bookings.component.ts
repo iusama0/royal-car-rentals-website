@@ -5,7 +5,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
+import { Bookinglogs } from 'src/app/Models/bookinglogs.model';
 import { BookingService } from 'src/app/services/booking.service';
+import { BookinglogsService } from 'src/app/services/bookinglogs.service';
 
 @Component({
   selector: 'app-admin-bookings',
@@ -13,7 +15,7 @@ import { BookingService } from 'src/app/services/booking.service';
   styleUrls: ['./admin-bookings.component.css']
 })
 export class AdminBookingsComponent implements OnInit {
-  BookingColumns: string[] = ['id', 'vehicleId', 'customerId', 'withDriver', 'status', 'startTime', 'endTime', 'dateAdded', 'dateUpdated', 'actions'];
+  BookingColumns: string[] = ['vehicleId', 'customerId', 'withDriver', 'status', 'startTime', 'endTime', 'dateAdded', 'dateUpdated', 'actions'];
   bookings: MatTableDataSource<Booking>;
   @ViewChild('BookingTable', { static: true }) bookingTable: MatTable<Booking>;
   @ViewChild('BookingPaginator', { static: true }) bookingPaginator: MatPaginator;
@@ -23,6 +25,7 @@ export class AdminBookingsComponent implements OnInit {
 
   constructor(
     public bookingService: BookingService,
+    public bookinglogsService: BookinglogsService,
     private toastr: ToastrService,
     private router: Router
   ) { }
@@ -39,7 +42,7 @@ export class AdminBookingsComponent implements OnInit {
         console.log(this.counts)
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     )
   }
@@ -51,7 +54,7 @@ export class AdminBookingsComponent implements OnInit {
         this.bookings.sort = this.bookingSort;
       },
       (error: any) => {
-        console.log("Error: " , error);
+        console.log("Error: ", error);
       }
     );
   }

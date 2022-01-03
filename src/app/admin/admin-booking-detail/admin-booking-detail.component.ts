@@ -4,9 +4,11 @@ import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
+import { Bookinglogs } from 'src/app/Models/bookinglogs.model';
 import { Driver } from 'src/app/Models/driver.model';
 import { Payment } from 'src/app/Models/payment.model';
 import { BookingService } from 'src/app/services/booking.service';
+import { BookinglogsService } from 'src/app/services/bookinglogs.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { PaymentService } from 'src/app/services/payment.service';
@@ -42,7 +44,10 @@ export class AdminBookingDetailComponent implements OnInit {
   public totaldays: number = 0;
   public totalPrice: number = 0;
 
+  public bookingLogs: Bookinglogs[] = [];
+
   constructor(
+    public bookinglogsService: BookinglogsService,
     public customerService: CustomerService,
     public bookingService: BookingService,
     public activatedRoute: ActivatedRoute,
@@ -58,6 +63,7 @@ export class AdminBookingDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getDrivers(this.booking.cityId);
     this.getPaymentByBookingId(this.booking.id)
+    this.getBookingLogs(this.booking.id);
 
     if (this.booking) {
       // To calculate the time difference of two dates
@@ -73,6 +79,18 @@ export class AdminBookingDetailComponent implements OnInit {
       this.totalPrice = this.totaldays * this.booking.vehicle.price;
     }
   }
+
+  getBookingLogs(id: number) {
+    this.bookinglogsService.getByBookingId(id).subscribe(
+      (response: any) => {
+        this.bookingLogs = response;
+      },
+      (error: any) => {
+        console.log("Error: ", error);
+      }
+    );
+  }
+
 
   public hasError = (controlName: string, errorName: string) => {
     return this.editBookingForm.controls[controlName].hasError(errorName);
@@ -114,6 +132,40 @@ export class AdminBookingDetailComponent implements OnInit {
     this.bookingService.edit(this.editBookingObj).subscribe(
       (response: any) => {
         this.booking = Object.assign({}, this.editBookingObj);
+
+        var bookinglogs = new Bookinglogs();
+        bookinglogs.bookingId = this.booking.id;
+
+        var bookinglogs = new Bookinglogs();
+        bookinglogs.bookingId = this.booking.id;
+
+        if (this.booking.status == "pending") {
+          bookinglogs.action = "pending";
+          bookinglogs.description = "booking pending";
+        }
+        else if (this.booking.status == "approved") {
+          bookinglogs.action = "approved";
+          bookinglogs.description = "booking approved";
+        }
+        else if (this.booking.status == "cancelled") {
+          bookinglogs.action = "cancelled";
+          bookinglogs.description = "booking cancelled";
+        }
+        else if (this.booking.status == "completed") {
+          bookinglogs.action = "completed";
+          bookinglogs.description = "booking completed";
+        }
+
+        this.bookinglogsService.add(bookinglogs).subscribe(
+          (response: any) => {
+            console.log(response)
+            this.bookingLogs.push(response);
+          },
+          (error: any) => {
+            console.log("Error: ", error);
+          }
+        );
+
         this.resetForm(formDirective);
         this.hideeditmodel.nativeElement.click();
         this.toastr.success('', 'Booking Status Updated Successfully');
@@ -169,7 +221,7 @@ export class AdminBookingDetailComponent implements OnInit {
 
     this.paymentService.edit(this.editPaymentObj).subscribe(
       (response: any) => {
-        this.paymentObj = Object.assign({}, this.editPaymentObj);        
+        this.paymentObj = Object.assign({}, this.editPaymentObj);
         this.resetPaymentForm(formDirective);
         this.hideeditpaymentmodel.nativeElement.click();
         this.toastr.success('', 'Payment Updated Successfully');

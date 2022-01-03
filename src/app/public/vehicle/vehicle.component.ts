@@ -9,8 +9,10 @@ import { Booking } from 'src/app/Models/booking.model';
 import { Customer } from 'src/app/Models/customer.model';
 import { Driver } from 'src/app/Models/driver.model';
 import { Payment } from 'src/app/Models/payment.model';
+import { Bookinglogs } from 'src/app/Models/bookinglogs.model';
 import { Vehicle } from 'src/app/Models/vehicle.model';
 import { BookingService } from 'src/app/services/booking.service';
+import { BookinglogsService } from 'src/app/services/bookinglogs.service';
 import { PaymentService } from 'src/app/services/payment.service';
 import { VehicleService } from 'src/app/services/vehicle.service';
 
@@ -63,6 +65,7 @@ export class VehicleComponent implements OnInit {
   constructor(
     public vehicleService: VehicleService,
     public bookingService: BookingService,
+    public bookinglogsService: BookinglogsService,
     public activatedRoute: ActivatedRoute,
     public paymentService: PaymentService,
     private toastr: ToastrService,
@@ -184,9 +187,33 @@ export class VehicleComponent implements OnInit {
       this.bookingService.add(this.bookingObj).subscribe(
         (response: any) => {
           console.log(response)
-          var payment = new Payment();
 
-          payment.id = 0;
+          var bookinglogs = new Bookinglogs();
+          bookinglogs.bookingId = response.id;
+          bookinglogs.action = "created";
+          bookinglogs.description = "new booking created";
+
+          this.bookinglogsService.add(bookinglogs).subscribe(
+            (response: any) => {
+              console.log(response)
+              bookinglogs.action = "pending";
+              bookinglogs.description = "booking status pending";
+
+              this.bookinglogsService.add(bookinglogs).subscribe(
+                (response: any) => {
+                  console.log(response)
+                },
+                (error: any) => {
+                  console.log("Error: ", error);
+                }
+              );
+            },
+            (error: any) => {
+              console.log("Error: ", error);
+            }
+          );
+
+          var payment = new Payment();
           payment.bookingId = response.id;
 
           if (this.bookingObj.withDriver) {
@@ -198,8 +225,6 @@ export class VehicleComponent implements OnInit {
 
           payment.paidAmount = 0;
           payment.discountAmount = 0;
-          payment.dateAdded = new Date().toISOString();
-          payment.dateUpdated = new Date().toISOString();
 
           this.paymentService.add(payment).subscribe(
             (response: any) => {

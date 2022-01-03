@@ -1,9 +1,8 @@
-export class Payment {
+export class Bookinglogs {
     id: number = 0;
     bookingId: number;
-    totalAmount: number = 0;
-    paidAmount: number = 0;
-    discountAmount: number = 0;
+    action: string;
+    description: string;
     dateAdded: string = new Date().toISOString();
     dateUpdated: string = new Date().toISOString();
 }

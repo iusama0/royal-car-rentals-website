@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class CommonService {
+  public bookingActions = ['created', 'pending', 'assigned', 'approved', 'cancelled', 'completed', 'feedback'];
   readonly baseUrl = environment.apiUrl + "Dashboard";
   constructor(
     private http: HttpClient
@@ -15,7 +16,7 @@ export class CommonService {
     return this.http.get(this.baseUrl + "/counts");
   }
 
-  settingCounts(){
+  settingCounts() {
     return this.http.get(this.baseUrl + "/settingcounts");
   }
 }
