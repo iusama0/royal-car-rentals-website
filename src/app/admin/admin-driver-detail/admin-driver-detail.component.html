@@ -116,7 +116,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>First Name</mat-label>
                                 <input #firstname required matInput type="text" placeholder="Placeholder"
@@ -129,7 +129,7 @@
                                     between 2 to 30 characters</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Last Name</mat-label>
                                 <input required matInput type="text" placeholder="Placeholder"
@@ -139,7 +139,7 @@
                                     between 2 to 30 characters</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Email</mat-label>
                                 <input readonly required matInput type="text" placeholder="Placeholder"
@@ -149,7 +149,7 @@
                                 <mat-error *ngIf="hasError('email', 'pattern')">Enter valid email address </mat-error> -->
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Enter your password</mat-label>
                                 <input required matInput [type]="hide ? 'password' : 'text'" formControlName="password"
@@ -161,7 +161,7 @@
                                 <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Enter Phone Number</mat-label>
                                 <input required matInput type="number" placeholder="Placeholder"
@@ -173,7 +173,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Enter Address</mat-label>
                                 <input required matInput type="text" placeholder="Placeholder"
@@ -183,7 +183,7 @@
                                     between 2 to 30 characters</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Choose Availability</mat-label>
                                 <mat-select matNativeControl formControlName="availability" required>
@@ -197,7 +197,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Choose Active Status</mat-label>
                                 <mat-select matNativeControl formControlName="isActive" required>
@@ -211,7 +211,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Licence No</mat-label>
                                 <input required matInput type="text" placeholder="Placeholder"
@@ -221,7 +221,7 @@
                                     between 2 to 30 characters</mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <mat-form-field appearance="outline" class="w-100">
                                 <mat-label>Selct city name</mat-label>
                                 <mat-select matNativeControl formControlName="cityId" required>
@@ -235,7 +235,7 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="profilePicture" class="col-form-label">Choose Profile Picture:</label>
                                 <input formControlName="profilePicture" id="profilePicture" type="file"

@@ -147,7 +147,12 @@ export class RegisterComponent implements OnInit {
       },
       error => {
         this.isLoading = false;
-        this.toastr.error('', 'Incorrect Email and Password!');
+        if (error.error == "incorrect_email") {
+          this.toastr.error('You entered incorrect email!', 'Incorrect Email');
+        } else if (error.error == "incorrect_password") {
+          this.toastr.error('You entered incorrect password!', 'Incorrect Password');
+        }
+
         console.log("Error: ", error);
       }
     );

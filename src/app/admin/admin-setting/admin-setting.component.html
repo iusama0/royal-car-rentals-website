@@ -397,7 +397,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="confirmDeleteVehicleMaker()">Delete</button>
+                <button type="submit" class="btn btn-success" (click)="confirmDeleteVehicleMaker()">Delete</button>
             </div>
         </div>
     </div>
@@ -462,7 +462,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         (click)="resetVehicleAddModelForm(addModelFormDirective)">Cancel</button>
-                    <button type="submit" [disabled]="!vehicleModelAddForm.valid || isLoading" class="btn btn-primary">
+                    <button type="submit" [disabled]="!vehicleModelAddForm.valid || isLoading" class="btn btn-success">
                         {{ ( isLoading ? 'Loading...' : 'Add Model') }}
                     </button>
                 </div>
@@ -522,7 +522,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         (click)="resetVehicleEditModelForm(editModelFormDirective)">Cancel</button>
-                    <button type="submit" [disabled]="!vehicleModelEditForm.valid || isLoading" class="btn btn-primary">
+                    <button type="submit" [disabled]="!vehicleModelEditForm.valid || isLoading" class="btn btn-success">
                         {{ ( isLoading ? 'Loading...' : 'Update') }}</button>
                 </div>
             </form>
@@ -551,7 +551,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="confirmDeleteVehicleModel()">Delete</button>
+                <button type="submit" class="btn btn-success" (click)="confirmDeleteVehicleModel()">Delete</button>
             </div>
         </div>
     </div>
@@ -597,7 +597,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         (click)="resetAddCityForm(addCityFormDirective)">Cancel</button>
-                    <button type="submit" [disabled]="!cityAddForm.valid || isLoading" class="btn btn-primary">
+                    <button type="submit" [disabled]="!cityAddForm.valid || isLoading" class="btn btn-success">
                         {{ ( isLoading ? 'Loading...' : 'Add City') }}
                     </button>
                 </div>
@@ -622,7 +622,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary" (click)="confirmDeleteCity()">Delete</button>
+                <button type="submit" class="btn btn-success" (click)="confirmDeleteCity()">Delete</button>
             </div>
         </div>
     </div>
@@ -642,7 +642,7 @@
             <form [formGroup]="cityEditForm" #editCityFormDirective="ngForm" autocomplete="off"
                 (ngSubmit)="editCity(cityEditForm.value, editCityFormDirective)">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editCityModelLabel">EditCity</h5>
+                    <h5 class="modal-title" id="editCityModelLabel">Edit City</h5>
                     <button type="button" class="btn-close" #hidecityeditmodel data-bs-dismiss="modal"
                         aria-label="Close" (click)="resetEditCityForm(editCityFormDirective)"></button>
                 </div>
@@ -666,7 +666,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         (click)="resetEditCityForm(editCityFormDirective)">Cancel</button>
-                    <button type="submit" [disabled]="!cityEditForm.valid || isLoading" class="btn btn-primary">
+                    <button type="submit" [disabled]="!cityEditForm.valid || isLoading" class="btn btn-success">
                         {{ ( isLoading ? 'Loading...' : 'Update') }}
                     </button>
                 </div>

@@ -33,13 +33,63 @@ export class DriverBookingDetailComponent implements OnInit {
   ) {
     this.booking = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
     console.log(this.booking)
-   }
+  }
 
   ngOnInit(): void {
     this.getBookingLogs(this.booking.id);
   }
 
-  completeBooking(){}
+  completeBooking(status: string) {
+    this.editBookingObj = Object.assign({}, this.booking);
+    this.editBookingObj.status = status;
+
+
+    this.bookingService.edit(this.editBookingObj).subscribe(
+      (response: any) => {
+        this.booking = Object.assign({}, this.editBookingObj);
+
+        var bookinglogs = new Bookinglogs();
+        bookinglogs.bookingId = this.booking.id;
+
+        var bookinglogs = new Bookinglogs();
+        bookinglogs.bookingId = this.booking.id;
+
+        if (this.booking.status == "pending") {
+          bookinglogs.action = "pending";
+          bookinglogs.description = "booking pending";
+        }
+        else if (this.booking.status == "approved") {
+          bookinglogs.action = "approved";
+          bookinglogs.description = "booking approved";
+        }
+        else if (this.booking.status == "cancelled") {
+          bookinglogs.action = "cancelled";
+          bookinglogs.description = "booking cancelled";
+        }
+        else if (this.booking.status == "completed") {
+          bookinglogs.action = "completed";
+          bookinglogs.description = "booking completed";
+        }
+
+        this.bookinglogsService.add(bookinglogs).subscribe(
+          (response: any) => {
+            console.log(response)
+            this.bookingLogs.push(response);
+          },
+          (error: any) => {
+            console.log("Error: ", error);
+          }
+        );
+
+        this.toastr.success('', 'Booking Status Updated Successfully');
+      },
+      error => {
+        this.isLoading = false;
+        this.toastr.error('', 'Status Updating Error');
+        console.log("Error: ", error);
+      }
+    );
+  }
 
   getBookingLogs(id: number) {
     this.bookinglogsService.getByBookingId(id).subscribe(

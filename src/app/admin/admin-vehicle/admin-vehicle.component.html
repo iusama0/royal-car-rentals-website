@@ -475,7 +475,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button [disabled]="isLoading" type="submit" class="btn btn-primary" (click)="confirmDeleteVehicle()">
+                <button [disabled]="isLoading" type="submit" class="btn btn-success" (click)="confirmDeleteVehicle()">
                     {{ ( isLoading ? 'Loading...' : 'Delete') }}
                 </button>
             </div>

@@ -22,6 +22,7 @@ import { DriverProfileComponent } from './driver/driver-profile/driver-profile.c
 import { DriverReportComponent } from './driver/driver-report/driver-report.component';
 import { DriverSigninComponent } from './driver/driver-signin/driver-signin.component';
 import { AboutUsComponent } from './public/about-us/about-us.component';
+import { BookingDetailComponent } from './public/booking-detail/booking-detail.component';
 import { BookingComponent } from './public/booking/booking.component';
 import { CommonSectionComponent } from './public/common-section/common-section.component';
 import { ContactUsComponent } from './public/contact-us/contact-us.component';
@@ -58,6 +59,7 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent, },
       { path: 'bookings', component: BookingComponent },
+      { path: 'booking-detail', component: BookingDetailComponent },
       { path: 'about-us', component: AboutUsComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'services', component: ServicesComponent },

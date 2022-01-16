@@ -81,6 +81,8 @@ import { DriverBookingDetailComponent } from './driver/driver-booking-detail/dri
 import { DriverDashboardComponent } from './driver/driver-dashboard/driver-dashboard.component';
 import { DriverProfileComponent } from './driver/driver-profile/driver-profile.component';
 import { DriverReportComponent } from './driver/driver-report/driver-report.component';
+import { BookingDetailComponent } from './public/booking-detail/booking-detail.component';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 //====================
 @NgModule({
@@ -117,7 +119,8 @@ import { DriverReportComponent } from './driver/driver-report/driver-report.comp
     DriverBookingDetailComponent,
     DriverDashboardComponent,
     DriverProfileComponent,
-    DriverReportComponent
+    DriverReportComponent,
+    BookingDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -143,6 +146,7 @@ import { DriverReportComponent } from './driver/driver-report/driver-report.comp
     MatButtonToggleModule,
     MatStepperModule,
     MatRippleModule,
+    NgxStarRatingModule,
     //MatAutocompleteModule,
     //MatBadgeModule,
     //MatBottomSheetModule,

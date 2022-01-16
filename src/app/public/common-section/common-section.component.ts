@@ -114,6 +114,7 @@ export class CommonSectionComponent implements OnInit {
         localStorage.setItem('signincustomerinfo', JSON.stringify(response));
       },
       (error: any) => {
+        this.signOut();
         console.log("Error: ", error);
       }
     );

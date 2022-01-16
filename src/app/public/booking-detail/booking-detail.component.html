@@ -9,14 +9,6 @@
             <div class="card mb-4">
                 <div class="card-header">
                     Booking Information
-                    <div class="float-end">
-                        <!-- Button trigger modal -->
-                        <button *ngIf="booking?.status == 'approved'" type="button" class="btn btn-primary"
-                            (click)="completeBooking('completed')">
-                            Complete Booking
-                        </button>
-                        <!-- Button trigger modal -->
-                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table caption-top">
@@ -35,7 +27,8 @@
                                 <td>{{booking?.vehicle?.registrationNumber}}</td>
                                 <td>Vehicle Name</td>
                                 <td>:</td>
-                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+" "+ booking?.vehicle?.modelYear}}</td>
+                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+"
+                                    "+ booking?.vehicle?.modelYear}}</td>
                             </tr>
                             <tr>
                                 <td>Customer Name</td>
@@ -120,20 +113,96 @@
             </div>
         </div>
     </div>
-   
+
     <div class="card mb-4">
         <div class="card-header">
             Payment Details
-            <div class="float-end">
-                <!-- Button trigger modal -->
-                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editPaymentModel"
-                    (click)="showEditPaymentModel()">
-                    Update Payment
-                </button> -->
-                <!-- Button trigger modal -->
-            </div>
         </div>
         <div class="card-body">
+            <table *ngIf="paymentObj" class="table caption-top">
+                <tbody>
+                    <tr></tr>
+                    <tr>
+                        <th>Charges</th>
+                        <th>Days</th>
+                        <th>Price Per Day</th>
+                        <th>Total</th>
+                    </tr>
+                    <tr>
+                        <td>Vehicle</td>
+                        <td>{{totaldays}}</td>
+                        <td>{{booking.vehicle?.price | currency:'PKR'}}</td>
+                        <td>{{totalPrice | currency:'PKR'}}</td>
+                    </tr>
+                    <tr *ngIf="booking.withDriver">
+                        <td>Driver</td>
+                        <td>{{totaldays}}</td>
+                        <td>{{1000 | currency:'PKR'}}</td>
+                        <td>{{(totaldays*1000) | currency:'PKR'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Grand Total</th>
+                        <td></td>
+                        <td></td>
+                        <th *ngIf="!booking.withDriver">{{(totalPrice) | currency:'PKR'}}
+                        </th>
+                        <th *ngIf="booking.withDriver">{{(totaldays*1000 + totalPrice) |
+                            currency:'PKR'}}</th>
+                    </tr>
+                    <tr>
+                        <th>Paid Amount</th>
+                        <td></td>
+                        <td></td>
+                        <td>{{paymentObj.paidAmount | currency:'PKR'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Discounted Amount</th>
+                        <td></td>
+                        <td></td>
+                        <td>{{paymentObj.discountAmount | currency:'PKR'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Remaining Amount</th>
+                        <td></td>
+                        <td></td>
+                        <th>{{(totalPrice - paymentObj.paidAmount - paymentObj.discountAmount) | currency:'PKR'}}</th>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Booking Feedback
+        </div>
+        <div class="card-body">
+
+            <form [formGroup]="form">
+                <div class="cont">
+                    <div class="stars">
+                        <ngx-star-rating formControlName="rating1" [id]="'rating'"></ngx-star-rating>
+                    </div>
+                    <div>Rating: {{form.value.rating1}}</div>
+                    <p>form is valid: {{ form.valid ? 'true' : 'false' }}</p>
+                </div>
+
+                <div class="cont">
+                    <div class="stars">
+                        <ngx-star-rating formControlName="rating2" [id]="'rating2'" [disabled]="true"></ngx-star-rating>
+                    </div>
+                    <div>Rating(Disabled): {{form.value.rating2}}</div>
+                </div>
+            </form>
+
+
+            <div class="cont">
+                <div class="stars">
+                    <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'"></ngx-star-rating>
+                </div>
+                <div>Rating: {{ rating3 }}</div>
+            </div>
 
         </div>
     </div>

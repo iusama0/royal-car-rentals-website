@@ -61,5 +61,6 @@ export class BookingComponent implements OnInit {
 
   viewBooking(data: any) {
     let _data = JSON.stringify(data);
+    this.router.navigate(["public/booking-detail"], { queryParams: { _data } });
   }
 }

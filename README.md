@@ -43,9 +43,7 @@ ng g class Models/name --type=model --skipTests
 
 ## Pending FYP Tasks 
 
-1. Save bookings logs
-2. Driver have access to cancelled booking
-3. Proper documention in readme
-4. Feedback from customer on booking
-5. inquires response via email
-6. Driver Email verification
+-. Driver have access to cancelled booking
+-. Feedback from customer on booking
+-. inquires response via email
+-. Driver Email verification
