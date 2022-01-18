@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Booking } from 'src/app/Models/booking.model';
@@ -38,11 +38,12 @@ export class BookingDetailComponent implements OnInit {
     dateUpdated: new Date().toISOString(),
   };
 
-  rating3: number;
-  public form = new FormGroup({
-    rating1: new FormControl('', [Validators.required]),
-    rating2: new FormControl(''),
+  public ratingForm = new FormGroup({
+    rating: new FormControl(0),
+    review: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(100)])
   });
+
+  public feedbackData: Feedback[] = [];
 
   constructor(
     public bookinglogsService: BookinglogsService,
@@ -57,15 +58,12 @@ export class BookingDetailComponent implements OnInit {
   ) {
     this.booking = JSON.parse(this.activatedRoute.snapshot.queryParams._data);
     console.log(this.booking)
-
-
-    this.rating3 = 0;
-
   }
 
   ngOnInit(): void {
     this.getBookingLogs(this.booking.id);
     this.getPaymentByBookingId(this.booking.id);
+    this.getFeedback(this.booking.id);
 
     if (this.booking) {
       // To calculate the time difference of two dates
@@ -80,6 +78,43 @@ export class BookingDetailComponent implements OnInit {
 
       this.totalPrice = this.totaldays * this.booking.vehicle.price;
     }
+  }
+
+  public hasError = (controlName: string, errorName: string) => {
+    return this.ratingForm.controls[controlName].hasError(errorName);
+  }
+
+  addFeedback(formValue: any, formDirective: FormGroupDirective) {
+    this.feedbackObj.bookingId = this.booking.id;
+    this.feedbackObj.comment = formValue.review;
+    this.feedbackObj.rating = formValue.rating;
+
+    // console.log(this.feedbackObj)
+
+    this.feedbackService.add(this.feedbackObj).subscribe(
+      (response: any) => {
+        this.feedbackData = response;
+        formDirective.resetForm();
+        this.feedbackObj = new Feedback();
+        this.toastr.success('', 'Feedback Send Successfully');
+      },
+      error => {
+        this.toastr.error('', 'Feedback Sending Error');
+        console.log("Error: ", error);
+      }
+    );
+  }
+
+  getFeedback(bookingId: number) {
+    this.feedbackService.getByBookingId(bookingId).subscribe(
+      (response: any) => {
+        console.log(response)
+        this.feedbackData = response;
+      },
+      error => {
+        console.log("Error: ", error);
+      }
+    );
   }
 
   getPaymentByBookingId(bookingId: number) {

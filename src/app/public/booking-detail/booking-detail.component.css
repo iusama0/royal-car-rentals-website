@@ -9,20 +9,13 @@
 }
 
 .cont {
-    width: 93%;
-    max-width: 350px;
-    text-align: center;
-    margin: 4% auto;
-    padding: 30px 0;
-    background: #111;
-    color: #EEE;
+    padding: 10px 15px;
     border-radius: 5px;
     border: thin solid #444;
     overflow: hidden;
-  }
-  
-  div.stars {
+}
+
+div.stars {
     width: 270px;
     display: inline-block;
-  }
-  
+}

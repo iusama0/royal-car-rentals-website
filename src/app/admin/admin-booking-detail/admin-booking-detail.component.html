@@ -11,8 +11,9 @@
                     Booking Information
                     <div class="float-end">
                         <!-- Button trigger modal -->
-                        <button *ngIf="booking?.status != 'completed' && booking?.status != 'cancelled'" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#editBookingModel" (click)="showEditModel()">
+                        <button *ngIf="booking?.status != 'completed' && booking?.status != 'cancelled'" type="button"
+                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBookingModel"
+                            (click)="showEditModel()">
                             Change Booking Status
                         </button>
                         <!-- Button trigger modal -->
@@ -35,7 +36,8 @@
                                 <td>{{booking?.vehicle?.registrationNumber}}</td>
                                 <td>Vehicle Name</td>
                                 <td>:</td>
-                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+" "+ booking?.vehicle?.modelYear}}</td>
+                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+"
+                                    "+ booking?.vehicle?.modelYear}}</td>
                             </tr>
                             <tr>
                                 <td>Customer Name</td>
@@ -94,7 +96,8 @@
                     <div>
                         <div class="time-line-wrapper" *ngFor="let log of bookingLogs">
                             <div class="d-flex">
-                                <div class="time-line-action text-end pe-3 pb-4" style="border-right: 2px solid #858484;">
+                                <div class="time-line-action text-end pe-3 pb-4"
+                                    style="border-right: 2px solid #858484;">
                                     <p class="m-0">{{log.dateAdded | date:'shortTime'}}</p>
                                     <p class="m-0">{{log.dateAdded | date:'mediumDate'}}</p>
                                 </div>
@@ -107,7 +110,8 @@
                                         </span>
                                     </p>
                                     <p class="m-0">{{log.description}}</p>
-                                    <span [ngStyle]="{'border-color': log.action.trim() === 'pending' ? '#ffc107' : (log.action.trim() === 'approved' ? '#0dcaf0' : (log.action.trim() === 'completed' ? '#198754' : (log.action.trim() === 'created' ? '#198754' : '#dc3545')))}" 
+                                    <span
+                                        [ngStyle]="{'border-color': log.action.trim() === 'pending' ? '#ffc107' : (log.action.trim() === 'approved' ? '#0dcaf0' : (log.action.trim() === 'completed' ? '#198754' : (log.action.trim() === 'created' ? '#198754' : '#dc3545')))}"
                                         style="border: 3px solid red;padding: 4px;border-radius: 50%;min-height: 15px;min-width: 15px;display: inline-block;position: absolute;top: 8px;left: -8px;background-color: #fff;">
                                     </span>
                                 </div>
@@ -183,6 +187,30 @@
 
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Booking Feedback
+        </div>
+        <div class="card-body">
+
+            <div *ngIf="feedbackData.length>0">
+                <h4>Ratings and reviews about booking</h4>
+                <div *ngFor="let feedback of feedbackData">
+                    <div class="cont">
+                        <div class="stars">
+                            <ngx-star-rating class="float-start" [(ngModel)]="feedback.rating" [disabled]="true">
+                            </ngx-star-rating>
+                        </div>
+                        <div> {{feedback.comment}}</div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="feedbackData.length==0">
+                No ratings and reviews
+            </div>
         </div>
     </div>
 </div>

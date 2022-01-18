@@ -7,3 +7,15 @@
     border-image: linear-gradient(transparent 0%, #858484 0% 35%, transparent 25%) 0 1 0 0 / 2px !important;
     margin-top: -3px;
 }
+
+.cont {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: thin solid #444;
+    overflow: hidden;
+}
+
+div.stars {
+    width: 270px;
+    display: inline-block;
+}

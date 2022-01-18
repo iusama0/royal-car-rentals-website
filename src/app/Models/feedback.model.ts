@@ -3,6 +3,6 @@ export class Feedback {
     bookingId: number;
     rating: number;
     comment: string;
-    dateAdded: string;
-    dateUpdated: string;
+    dateAdded: string = new Date().toISOString();
+    dateUpdated: string = new Date().toISOString();
 }

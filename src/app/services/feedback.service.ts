@@ -26,6 +26,10 @@ export class FeedbackService {
     return this.http.get(this.baseUrl + "/" + data.id);
   }
 
+  getByBookingId(id: number) {
+    return this.http.get(this.baseUrl + "/getbybookingid/" + id);
+  }
+
   gets() {
     return this.http.get(this.baseUrl);
   }

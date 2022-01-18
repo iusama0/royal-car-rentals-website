@@ -179,31 +179,47 @@
         </div>
         <div class="card-body">
 
-            <form [formGroup]="form">
-                <div class="cont">
-                    <div class="stars">
-                        <ngx-star-rating formControlName="rating1" [id]="'rating'"></ngx-star-rating>
+            <div *ngIf="feedbackData.length>0">
+                <h4>Your rating and review about booking</h4>
+                <div *ngFor="let feedback of feedbackData">
+                    <div class="cont">
+                        <div class="stars">
+                            <ngx-star-rating class="float-start" [(ngModel)]="feedback.rating" [disabled]="true">
+                            </ngx-star-rating>
+                        </div>
+                        <div> {{feedback.comment}}</div>
                     </div>
-                    <div>Rating: {{form.value.rating1}}</div>
-                    <p>form is valid: {{ form.valid ? 'true' : 'false' }}</p>
+                </div>
+                <div *ngIf="feedbackData.length==0">
+                    <h4>Write your rating and review</h4>
+                    <form [formGroup]="ratingForm" #formDirective="ngForm" autocomplete="off" novalidate
+                        (ngSubmit)="addFeedback(ratingForm.value, formDirective)" class="row">
+                        <div class="col-md-12">
+                            <ngx-star-rating class="float-start" formControlName="rating" id="rating"></ngx-star-rating>
+                        </div>
+                        <div class="col-md-12">
+                            <mat-form-field appearance="outline" class="w-100">
+                                <mat-label>Review</mat-label>
+                                <textarea required matInput placeholder="Placeholder" formControlName="review"
+                                    id="review"></textarea>
+                                <mat-error *ngIf="hasError('review', 'required')">Review is required</mat-error>
+                                <mat-error *ngIf="hasError('review', 'minlength')">Only enter between 10 to 100
+                                    characters
+                                </mat-error>
+                                <mat-error *ngIf="hasError('review', 'maxlength')">Only enter between 10 to 100
+                                    characters
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" [disabled]="!ratingForm.valid"
+                                class="btn btn-success w-100 py-3 fw-bold">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="cont">
-                    <div class="stars">
-                        <ngx-star-rating formControlName="rating2" [id]="'rating2'" [disabled]="true"></ngx-star-rating>
-                    </div>
-                    <div>Rating(Disabled): {{form.value.rating2}}</div>
-                </div>
-            </form>
-
-
-            <div class="cont">
-                <div class="stars">
-                    <ngx-star-rating [(ngModel)]="rating3" [id]="'rating3'"></ngx-star-rating>
-                </div>
-                <div>Rating: {{ rating3 }}</div>
             </div>
-
         </div>
     </div>
-</div>
