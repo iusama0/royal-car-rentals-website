@@ -93,7 +93,7 @@ export class BookingDetailComponent implements OnInit {
 
     this.feedbackService.add(this.feedbackObj).subscribe(
       (response: any) => {
-        this.feedbackData = response;
+        this.getFeedback(this.booking.id);
         formDirective.resetForm();
         this.feedbackObj = new Feedback();
         this.toastr.success('', 'Feedback Send Successfully');
@@ -108,7 +108,7 @@ export class BookingDetailComponent implements OnInit {
   getFeedback(bookingId: number) {
     this.feedbackService.getByBookingId(bookingId).subscribe(
       (response: any) => {
-        console.log(response)
+        console.log("response", response)
         this.feedbackData = response;
       },
       error => {

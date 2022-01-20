@@ -1,5 +1,6 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Booking Information</h1>
+    
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">driver/booking-detail</li>
     </ol>
@@ -35,7 +36,8 @@
                                 <td>{{booking?.vehicle?.registrationNumber}}</td>
                                 <td>Vehicle Name</td>
                                 <td>:</td>
-                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+" "+ booking?.vehicle?.modelYear}}</td>
+                                <td>{{booking?.vehicle?.maker?.displayName +" "+ booking?.vehicle?.model?.displayName+"
+                                    "+ booking?.vehicle?.modelYear}}</td>
                             </tr>
                             <tr>
                                 <td>Customer Name</td>
@@ -120,7 +122,7 @@
             </div>
         </div>
     </div>
-   
+
     <div class="card mb-4">
         <div class="card-header">
             Payment Details
@@ -135,6 +137,29 @@
         </div>
         <div class="card-body">
 
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Booking Feedback
+        </div>
+        <div class="card-body">
+            <div *ngIf="feedbackData.length>0">
+                <h4>Ratings and reviews about booking</h4>
+                <div *ngFor="let feedback of feedbackData">
+                    <div class="cont">
+                        <div class="stars">
+                            <ngx-star-rating class="float-start" [(ngModel)]="feedback.rating" [disabled]="true">
+                            </ngx-star-rating>
+                        </div>
+                        <div> {{feedback.comment}}</div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="feedbackData.length==0">
+                No ratings and reviews
+            </div>
         </div>
     </div>
 </div>
